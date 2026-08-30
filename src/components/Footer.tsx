@@ -11,7 +11,6 @@ export default function Footer() {
           <NewsletterForm />
           <FooterLinks />
 
-
           <div className="flex w-full max-w-[300px] flex-col items-end gap-4 text-right">
             <div className="flex items-center gap-2">
               <span className="text-2xl font-black text-white">شست‌وشو سبز</span>

@@ -146,7 +146,6 @@ export default function CategoriesGrid({
           />
         ))}
 
-
         <button
           type="button"
           onClick={openAddModal}

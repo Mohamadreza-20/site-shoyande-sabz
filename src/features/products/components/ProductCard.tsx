@@ -45,11 +45,7 @@ function ProductCard({ product }: { product: Product }) {
       variants={gridItem}
       className="flex flex-col gap-4 rounded-3xl border border-brand-200 bg-white p-4 transition hover:shadow-md"
     >
-<<<<<<< HEAD
       <Link href={`/products/${product.id}`} prefetch className="cursor-pointer flex flex-col gap-4">
-=======
-      <Link href={`/products/${product.id}`} className="cursor-pointer flex flex-col gap-4">
->>>>>>> origin/main
         <div className="relative h-[220px] w-full overflow-hidden rounded-2xl bg-brand-50">
           <ProductImage
             src={product.image}

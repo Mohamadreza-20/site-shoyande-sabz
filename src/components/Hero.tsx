@@ -32,7 +32,6 @@ export default function Hero() {
           </div>
         </motion.div>
 
-
         <motion.div
           initial="hidden"
           animate="show"

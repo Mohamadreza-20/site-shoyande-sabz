@@ -1,9 +1,4 @@
 import type { Metadata } from "next";
-<<<<<<< HEAD
-=======
-import Sidebar from "@/features/dashboard/components/Sidebar";
-import TopHeader from "@/features/dashboard/components/TopHeader";
->>>>>>> origin/main
 import PageHeader from "@/features/dashboard/components/PageHeader";
 import ReportsOverview from "@/features/dashboard/components/ReportsOverview";
 import { getAnalytics } from "@/features/dashboard/api";
@@ -25,7 +20,6 @@ export default async function AdminReportsPage() {
   ]);
 
   return (
-<<<<<<< HEAD
     <>
       <PageHeader
         title="گزارشات و آمار فروش"
@@ -38,24 +32,5 @@ export default async function AdminReportsPage() {
         initialCustomers={customers}
       />
     </>
-=======
-    <div className="flex min-h-screen w-full flex-col bg-admin-bg lg:flex-row">
-      <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-10 sm:py-8">
-        <TopHeader />
-        <PageHeader
-          title="گزارشات و آمار فروش"
-          description="نمای کلی از عملکرد فروش، درآمد و رفتار مشتریان فروشگاه"
-        />
-        <ReportsOverview
-          initialAnalytics={analytics}
-          initialProducts={products}
-          initialOrders={orders}
-          initialCustomers={customers}
-         
-        />
-      </main>
-      <Sidebar />
-    </div>
->>>>>>> origin/main
   );
 }

@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
-=======
->>>>>>> origin/main
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProduct,
   deleteProduct,
-<<<<<<< HEAD
   getProduct,
-=======
->>>>>>> origin/main
   getProducts,
   getFeaturedProducts,
   getProductsByIds,
@@ -86,7 +80,6 @@ export function useProductStockSummary(
   });
 }
 
-<<<<<<< HEAD
 export function useProduct(id: string, initialData?: Product, initialDataUpdatedAt?: number) {
   return useQuery({
     queryKey: productKeys.detail(id),
@@ -101,12 +94,6 @@ export function useProduct(id: string, initialData?: Product, initialDataUpdated
   });
 }
 
-/**
- * Seeds the react-query cache for each product's detail query (`productKeys.detail(id)`)
- * from a product list that has already been fetched (search results, featured list,
- * related products, ...). This way, clicking through to `/products/[id]` finds fresh
- * data already sitting in the cache and `useProduct` skips the extra client fetch.
- */
 export function useSeedProductDetailCache(products?: Product[], fetchedAt?: number) {
   const queryClient = useQueryClient();
   const [fallbackFetchedAt] = useState(() => Date.now());
@@ -124,8 +111,6 @@ export function useSeedProductDetailCache(products?: Product[], fetchedAt?: numb
   }, [products, effectiveFetchedAt, queryClient]);
 }
 
-=======
->>>>>>> origin/main
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({

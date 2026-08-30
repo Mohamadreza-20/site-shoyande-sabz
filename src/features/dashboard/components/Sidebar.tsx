@@ -64,7 +64,6 @@ export default function Sidebar() {
         </span>
       </div>
 
-
       <nav className="flex flex-col gap-2">
         {sidebarNav.map((item) => {
           const Icon = icons[item.icon];
@@ -91,7 +90,6 @@ export default function Sidebar() {
         })}
       </nav>
 
-
       <div className="flex flex-col gap-3 rounded-2xl bg-admin-primary p-4 text-right text-white">
         <p className="text-sm font-bold">کاهش مصرف پلاستیک!</p>
         <p className="text-xs leading-[1.5] opacity-80">
@@ -99,7 +97,6 @@ export default function Sidebar() {
           زیست‌تخریب‌پذیر را جایگزین کنیم.
         </p>
       </div>
-
 
       <button
         type="button"

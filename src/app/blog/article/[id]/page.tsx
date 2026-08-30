@@ -106,13 +106,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           <div className="flex flex-col items-end gap-5 text-right">
-<<<<<<< HEAD
             {post.content.map((paragraph, index) => (
               <p key={index} className="text-[15px] leading-[1.9] text-ink">
-=======
-            {post.content.map((paragraph) => (
-              <p key={paragraph} className="text-[15px] leading-[1.9] text-ink">
->>>>>>> origin/main
                 {paragraph}
               </p>
             ))}

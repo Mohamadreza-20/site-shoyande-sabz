@@ -8,21 +8,15 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import ProductCard from "./ProductCard";
 import type { Product } from "@/features/products/types";
-<<<<<<< HEAD
 import { useSeedProductDetailCache } from "@/features/products/hooks";
-=======
->>>>>>> origin/main
 
 const AUTO_PLAY_MS = 3500;
 
 export default function RelatedProductsCarousel({ products }: { products: Product[] }) {
   const swiperRef = useRef<SwiperType | null>(null);
 
-<<<<<<< HEAD
   useSeedProductDetailCache(products);
 
-=======
->>>>>>> origin/main
   if (products.length === 0) return null;
 
   return (

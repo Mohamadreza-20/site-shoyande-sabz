@@ -4,11 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import type { Product } from "@/features/products/types";
-<<<<<<< HEAD
 import { useFeaturedProducts, useSeedProductDetailCache } from "@/features/products/hooks";
-=======
-import { useFeaturedProducts } from "@/features/products/hooks";
->>>>>>> origin/main
 import ProductCard from "./ProductCard";
 import { gridContainer } from "@/components/motion/variants";
 import { StaleDataNotice } from "@/components/ui/StaleDataNotice";
@@ -26,11 +22,8 @@ export default function FeaturedProductsClient({
     refetch,
   } = useFeaturedProducts(initialProducts, fetchedAt);
 
-<<<<<<< HEAD
   useSeedProductDetailCache(products, fetchedAt);
 
-=======
->>>>>>> origin/main
   return (
     <section className="mx-auto w-full max-w-[1440px] px-6 py-12 lg:px-[120px] lg:py-16">
       <div className="mb-8 flex flex-col-reverse items-start justify-between gap-4 sm:flex-row sm:items-center">

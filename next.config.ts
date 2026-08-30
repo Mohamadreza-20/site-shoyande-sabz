@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
     qualities: [40, 60, 75],
     deviceSizes: [320, 640, 960, 1280],
     imageSizes: [320, 640, 960, 1280],
-<<<<<<< HEAD
     remotePatterns: [
       {
         protocol: "https",
@@ -15,8 +14,6 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
-=======
->>>>>>> origin/main
   },
 };
 

@@ -35,7 +35,6 @@ export default function AuthPortal() {
           </div>
         </div>
 
-
         <div className="mx-auto flex w-full max-w-[420px] items-center gap-1 rounded-[14px] border border-admin-line bg-white p-1">
           <button
             type="button"
@@ -61,12 +60,10 @@ export default function AuthPortal() {
           </button>
         </div>
 
-
         <div className="mx-auto flex w-full max-w-[420px] flex-col gap-5 rounded-[24px] border border-admin-line bg-white p-6 sm:p-8">
           {isLogin ? <LoginForm /> : <SignupForm />}
         </div>
       </div>
-
 
       <div className="relative hidden w-[500px] shrink-0 flex-col justify-between overflow-hidden p-12 lg:flex">
         <SmartImage

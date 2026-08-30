@@ -33,7 +33,6 @@ export default function ContactPage() {
           </p>
         </section>
 
-
         <section className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-4 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-[120px]">
           {contactInfo.map(({ icon: Icon, title, detail }) => (
             <div
@@ -50,7 +49,6 @@ export default function ContactPage() {
             </div>
           ))}
         </section>
-
 
         <section className="mx-auto flex w-full max-w-[1440px] flex-col-reverse items-start gap-8 px-6 pb-20 lg:flex-row lg:px-[120px]">
           <div className="h-[280px] w-full overflow-hidden rounded-[24px] border border-brand-200 lg:h-auto lg:flex-1 lg:self-stretch">

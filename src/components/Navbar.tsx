@@ -75,7 +75,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-
         <nav className="hidden items-center gap-8 text-[15px] md:flex">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -95,7 +94,6 @@ export default function Navbar() {
             );
           })}
         </nav>
-
 
         <div className="flex items-center gap-3">
           <button

@@ -60,7 +60,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-
         <section className="w-full bg-brand-700">
           <div className="mx-auto grid w-full max-w-[1440px] grid-cols-2 gap-8 px-6 py-12 lg:grid-cols-4 lg:px-[120px]">
             {stats.map(({ icon: Icon, value, label }) => (
@@ -77,7 +76,6 @@ export default function AboutPage() {
 
         <WhyChooseUs />
         <Ingredients />
-
 
         <section className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6 px-6 py-16 text-center lg:px-[120px]">
           <span className="flex size-14 items-center justify-center rounded-2xl bg-brand-300">
