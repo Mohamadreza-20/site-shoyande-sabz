@@ -6,7 +6,10 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Product } from "@/features/products/types";
 import type { SortValue } from "@/features/products/product-sort";
+<<<<<<< HEAD
 import { useSeedProductDetailCache } from "@/features/products/hooks";
+=======
+>>>>>>> origin/main
 import ProductsFilterSidebar from "./ProductsFilterSidebar";
 import ProductsToolbar from "./ProductsToolbar";
 import ProductsResultsGrid from "./ProductsResultsGrid";
@@ -23,7 +26,10 @@ export default function ProductsExplorer({
   selectedCategories,
   search,
   sort,
+<<<<<<< HEAD
   fetchedAt,
+=======
+>>>>>>> origin/main
 }: {
   products: Product[];
   totalCount: number;
@@ -34,15 +40,21 @@ export default function ProductsExplorer({
   selectedCategories: string[];
   search: string;
   sort: SortValue;
+<<<<<<< HEAD
   fetchedAt?: number;
+=======
+>>>>>>> origin/main
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
+<<<<<<< HEAD
   useSeedProductDetailCache(products, fetchedAt);
 
+=======
+>>>>>>> origin/main
   const [searchInput, setSearchInput] = useState(search);
   const initialPageRef = useRef(page);
   const previousPageRef = useRef(page);

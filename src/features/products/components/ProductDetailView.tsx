@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 "use client";
 
+=======
+>>>>>>> origin/main
 import Link from "next/link";
 import { Suspense } from "react";
 import { Check, RotateCcw, ShieldCheck, Star, Truck } from "lucide-react";
@@ -7,9 +10,16 @@ import ProductImage from "@/features/products/components/ProductImage";
 import ProductActions from "@/features/products/components/ProductActions";
 import ProductReviews from "@/features/products/components/ProductReviews";
 import RelatedProductsCarousel from "@/features/products/components/RelatedProductsCarousel";
+<<<<<<< HEAD
 import { useProduct } from "@/features/products/hooks";
 import type { Product, Review } from "@/features/products/types";
 
+=======
+import type { Product, Review } from "@/features/products/types";
+
+const RATING_STAR_IDS = ["rating-star-1", "rating-star-2", "rating-star-3", "rating-star-4", "rating-star-5"] as const;
+
+>>>>>>> origin/main
 const trustBadges = [
   { icon: Truck, label: "ارسال سریع", text: "ارسال طی ۲۴ تا ۴۸ ساعت در سراسر کشور" },
   { icon: RotateCcw, label: "بازگشت آسان", text: "۷ روز فرصت بازگشت کالا بدون قید و شرط" },
@@ -30,11 +40,19 @@ function ProductRating({ value, reviewCount }: { value: number; reviewCount: num
     <div className="flex items-center gap-2">
       <span className="text-sm font-bold text-ink">{value}</span>
       <div className="flex items-center" aria-label={`امتیاز ${value} از ۵`}>
+<<<<<<< HEAD
         {Array.from({ length: 5 }, (_, index) => (
           <Star
             key={index}
             className={
               index < filledStars
+=======
+        {RATING_STAR_IDS.map((id, position) => (
+          <Star
+            key={id}
+            className={
+              position < filledStars
+>>>>>>> origin/main
                 ? "size-4 fill-amber-400 text-amber-400"
                 : "size-4 text-brand-200"
             }
@@ -66,13 +84,20 @@ function TrustBadges() {
 }
 
 export default function ProductDetailView({
+<<<<<<< HEAD
   product: initialProduct,
+=======
+  product,
+>>>>>>> origin/main
   reviews,
   relatedProducts,
   fetchedAt,
 }: ProductDetailViewProps) {
+<<<<<<< HEAD
   const { data: product = initialProduct } = useProduct(initialProduct.id, initialProduct, fetchedAt);
 
+=======
+>>>>>>> origin/main
   const discountPercent =
     product.oldPriceValue && product.oldPriceValue > product.priceValue
       ? Math.round(((product.oldPriceValue - product.priceValue) / product.oldPriceValue) * 100)

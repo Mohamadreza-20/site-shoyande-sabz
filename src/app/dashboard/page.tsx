@@ -1,4 +1,9 @@
 import type { Metadata } from "next";
+<<<<<<< HEAD
+=======
+import Sidebar from "@/features/dashboard/components/Sidebar";
+import TopHeader from "@/features/dashboard/components/TopHeader";
+>>>>>>> origin/main
 import WelcomeRow from "@/features/dashboard/components/WelcomeRow";
 import DashboardOverview from "@/features/dashboard/components/DashboardOverview";
 import { getDashboardOverview } from "@/features/dashboard/api";
@@ -13,9 +18,20 @@ export default async function DashboardPage() {
   const [overview, orders] = await Promise.all([getDashboardOverview(), getLatestOrders(20)]);
 
   return (
+<<<<<<< HEAD
     <>
       <WelcomeRow />
       <DashboardOverview initialOverview={overview} initialOrders={orders} />
     </>
+=======
+    <div className="flex min-h-screen w-full flex-col bg-admin-bg lg:flex-row">
+      <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-10 sm:py-8">
+        <TopHeader />
+        <WelcomeRow />
+        <DashboardOverview initialOverview={overview} initialOrders={orders} />
+      </main>
+      <Sidebar />
+    </div>
+>>>>>>> origin/main
   );
 }

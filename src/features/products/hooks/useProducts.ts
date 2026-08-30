@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
+=======
+>>>>>>> origin/main
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProduct,
   deleteProduct,
+<<<<<<< HEAD
   getProduct,
+=======
+>>>>>>> origin/main
   getProducts,
   getFeaturedProducts,
   getProductsByIds,
@@ -80,6 +86,7 @@ export function useProductStockSummary(
   });
 }
 
+<<<<<<< HEAD
 export function useProduct(id: string, initialData?: Product, initialDataUpdatedAt?: number) {
   return useQuery({
     queryKey: productKeys.detail(id),
@@ -117,6 +124,8 @@ export function useSeedProductDetailCache(products?: Product[], fetchedAt?: numb
   }, [products, effectiveFetchedAt, queryClient]);
 }
 
+=======
+>>>>>>> origin/main
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({

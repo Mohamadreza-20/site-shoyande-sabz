@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+<<<<<<< HEAD
+=======
+import Sidebar from "@/features/dashboard/components/Sidebar";
+import TopHeader from "@/features/dashboard/components/TopHeader";
+>>>>>>> origin/main
 import PageHeader from "@/features/dashboard/components/PageHeader";
 import UsersTable from "@/features/customers/components/UsersTable";
 import UsersStats from "@/features/customers/components/UsersStats";
@@ -20,6 +25,7 @@ export default async function AdminUsersPage() {
   const fetchedAt = Date.now();
 
   return (
+<<<<<<< HEAD
     <>
       <PageHeader
         title="مدیریت کاربران"
@@ -32,5 +38,23 @@ export default async function AdminUsersPage() {
         <UsersTable initialResult={firstPage} pageSize={ADMIN_USERS_PAGE_SIZE} fetchedAt={fetchedAt} />
       </Suspense>
     </>
+=======
+    <div className="flex min-h-screen w-full flex-col bg-admin-bg lg:flex-row">
+      <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-10 sm:py-8">
+        <TopHeader />
+        <PageHeader
+          title="مدیریت کاربران"
+          description="فهرست کاربران ثبت‌نام‌شده، وضعیت فعالیت و سابقه خرید هرکدام"
+        />
+
+        <UsersStats initialCustomers={customers} fetchedAt={fetchedAt} />
+
+        <Suspense fallback={null}>
+          <UsersTable initialResult={firstPage} pageSize={ADMIN_USERS_PAGE_SIZE} fetchedAt={fetchedAt} />
+        </Suspense>
+      </main>
+      <Sidebar />
+    </div>
+>>>>>>> origin/main
   );
 }

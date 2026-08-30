@@ -60,7 +60,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const categoryLabels = Array.from(
     new Set([...Object.keys(categoryCounts), ...categories.map((c) => c.title)])
   );
+<<<<<<< HEAD
   const fetchedAt = Date.now();
+=======
+>>>>>>> origin/main
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-brand-50">
@@ -77,7 +80,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             selectedCategories={selectedCategories}
             search={search}
             sort={sort}
+<<<<<<< HEAD
             fetchedAt={fetchedAt}
+=======
+>>>>>>> origin/main
           />
         </Suspense>
       </main>
