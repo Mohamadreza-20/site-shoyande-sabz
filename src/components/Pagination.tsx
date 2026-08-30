@@ -67,7 +67,7 @@ function Pagination({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex w-full items-center justify-center gap-2">
+    <div className="flex w-full flex-wrap items-center justify-center gap-1.5 sm:gap-2">
       <button
         type="button"
         onClick={() => handleChange(Math.max(currentPage - 1, 1))}

@@ -39,7 +39,7 @@ function FooterLinkColumn({ title, links }: { title: string; links: readonly str
 
 export default function FooterLinks() {
   return (
-    <div className="flex gap-16 whitespace-nowrap">
+    <div className="flex w-full flex-col items-end gap-8 whitespace-nowrap sm:w-auto sm:flex-row sm:items-start sm:gap-16">
       <FooterLinkColumn title="خدمات مشتریان" links={footerLinks.services} />
       <FooterLinkColumn title="شست‌وشو سبز" links={footerLinks.company} />
     </div>

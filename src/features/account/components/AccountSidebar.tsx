@@ -32,8 +32,8 @@ export default function AccountSidebar({
       </div>
 
       <div className="flex w-full flex-col gap-2 border-t border-brand-200 pt-4">
-        <div className="flex items-center justify-end gap-2 text-sm text-muted">
-          <span>{email}</span>
+        <div className="flex min-w-0 items-center justify-end gap-2 text-sm text-muted">
+          <span className="min-w-0 truncate" dir="ltr">{email}</span>
           <Mail className="size-4 shrink-0" strokeWidth={2} />
         </div>
         {phone && (

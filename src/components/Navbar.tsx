@@ -38,21 +38,21 @@ export default function Navbar() {
 
   return (
     <header className="w-full border-b border-brand-200 bg-white">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-5 lg:px-[120px]">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-3 py-4 sm:px-6 sm:py-5 lg:px-[120px]">
 
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 items-center gap-1.5 sm:gap-4">
           <button
             type="button"
             onClick={() => {
               setCartTouched(true);
               setCartOpen(true);
             }}
-            className="cursor-pointer relative flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2.5 text-sm font-bold text-brand-700 transition hover:bg-brand-100"
+            className="cursor-pointer relative flex shrink-0 items-center gap-1 rounded-full bg-brand-50 px-2.5 py-2 text-sm font-bold text-brand-700 transition hover:bg-brand-100 sm:gap-2 sm:px-4 sm:py-2.5"
           >
-            <span className="inline-block min-w-[20px] text-center tabular-nums">
+            <span className="hidden min-w-[20px] text-center tabular-nums sm:inline">
               {totalItems.toLocaleString("fa-IR")}
             </span>
-            <span>مورد</span>
+            <span className="hidden sm:inline">مورد</span>
             <ShoppingBag className="size-5" strokeWidth={2} />
             {totalItems > 0 && (
               <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-brand-400 text-[10px] font-bold tabular-nums text-white">
@@ -64,7 +64,7 @@ export default function Navbar() {
           </button>
           <Link
             href={accountButton.href}
-            className="cursor-pointer flex items-center gap-2 rounded-full bg-brand-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-brand-500"
+            className="cursor-pointer flex shrink-0 items-center gap-2 rounded-full bg-brand-400 px-2.5 py-2 text-sm font-bold text-white transition hover:bg-brand-500 sm:px-4 sm:py-2.5"
           >
             {user ? (
               <LayoutDashboard className="size-5" strokeWidth={2} />
@@ -95,7 +95,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-1.5 sm:gap-3">
           <button
             type="button"
             onClick={() => {
@@ -103,14 +103,14 @@ export default function Navbar() {
               setMobileMenuOpen(true);
             }}
             aria-label="باز کردن منو"
-            className="cursor-pointer flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition hover:bg-brand-100 md:hidden"
+            className="cursor-pointer flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition hover:bg-brand-100 sm:size-10 md:hidden"
           >
             <Menu className="size-5" strokeWidth={2} />
           </button>
-          <Link href="/" className="cursor-pointer flex items-center gap-2.5">
-            <span className="text-[22px] font-black text-brand-700">شست‌وشو سبز</span>
-            <span className="flex size-9 items-center justify-center rounded-xl bg-brand-400">
-              <Leaf className="size-[22px] text-white" strokeWidth={2} />
+          <Link href="/" className="cursor-pointer flex min-w-0 items-center gap-1.5 sm:gap-2.5">
+            <span className="truncate text-base font-black text-brand-700 sm:text-[22px]">شست‌وشو سبز</span>
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-brand-400 sm:size-9">
+              <Leaf className="size-4 text-white sm:size-[22px]" strokeWidth={2} />
             </span>
           </Link>
         </div>

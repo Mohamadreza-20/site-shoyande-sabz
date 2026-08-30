@@ -26,7 +26,7 @@ export function StaleDataNotice({
   return (
     <div
       role="alert"
-      className={`flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-right text-xs font-semibold ${styles.wrap}`}
+      className={`flex w-full flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-right text-xs font-semibold ${styles.wrap}`}
     >
       {onRetry && (
         <button
@@ -37,7 +37,7 @@ export function StaleDataNotice({
           تلاش دوباره
         </button>
       )}
-      <span className="flex items-center gap-2">
+      <span className="flex min-w-0 flex-1 items-center gap-2">
         {message}
         <AlertTriangle className="size-4 shrink-0" strokeWidth={2} />
       </span>

@@ -85,7 +85,7 @@ export default function DiscountModal({
           dir="ltr"
         />
 
-        <div className="grid w-full grid-cols-2 gap-3">
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
           <SelectField label="نوع تخفیف" {...register("type")}>
             <option value="percent">درصدی</option>
             <option value="fixed">مبلغ ثابت</option>

@@ -130,7 +130,7 @@ export default function UserEditModal({
 
         <label className="flex w-full flex-col gap-2 text-right">
           <span className="text-sm font-semibold text-admin-ink">نقش کاربر</span>
-          <div className="grid w-full grid-cols-3 gap-2">
+          <div className="grid w-full grid-cols-3 gap-1.5 sm:gap-2">
             {roleOptions.map((option) => {
               const selected = role === option;
               return (
@@ -138,7 +138,7 @@ export default function UserEditModal({
                   key={option}
                   type="button"
                   onClick={() => setValue("role", option, { shouldDirty: true })}
-                  className={`cursor-pointer rounded-xl border p-3 text-center text-sm font-bold transition ${
+                  className={`cursor-pointer rounded-xl border p-2 text-center text-xs font-bold transition sm:p-3 sm:text-sm ${
                     selected
                       ? "border-admin-sidebar bg-admin-sidebar text-white"
                       : "border-admin-line bg-white text-admin-muted hover:text-admin-ink"
@@ -153,7 +153,7 @@ export default function UserEditModal({
 
         <label className="flex w-full flex-col gap-2 text-right">
           <span className="text-sm font-semibold text-admin-ink">وضعیت حساب</span>
-          <div className="grid w-full grid-cols-2 gap-2">
+          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
             {statusOptions.map((option) => {
               const selected = status === option;
               const style = customerStatusStyles[option];
