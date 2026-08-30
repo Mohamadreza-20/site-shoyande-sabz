@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4faf7;
+  --foreground: #0d3e36;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #f4faf7;
+  --color-brand-100: #eaf5f0;
+  --color-brand-200: #d8ece6;
+  --color-brand-300: #d1fae5;
+  --color-brand-400: #10b981;
+  --color-brand-500: #047857;
+  --color-brand-600: #1a4033;
+  --color-brand-700: #0d3e36;
+
+  --color-ink: #111b18;
+  --color-muted: #4a615c;
+  --color-muted-light: #a7c7c3;
+  --color-line: #d8ece6;
+
+  --color-admin-bg: #f4f7f5;
+  --color-admin-surface: #ffffff;
+  --color-admin-sidebar: #0f2e23;
+  --color-admin-primary: #4c7c6d;
+  --color-admin-accent: #d9a752;
+  --color-admin-ink: #1f2e26;
+  --color-admin-muted: #607368;
+  --color-admin-line: #d6e2de;
+  --color-admin-success: #22c55e;
+  --color-admin-success-bg: #eefbf3;
+  --color-admin-warning: #d9a752;
+  --color-admin-warning-bg: #fffdf0;
+  --color-admin-danger: #ef4444;
+  --color-admin-danger-bg: #feeceb;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Vazirmatn Variable", Arial, Helvetica, sans-serif;
+}

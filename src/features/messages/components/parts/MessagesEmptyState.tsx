@@ -1,0 +1,2 @@
+import { Mail } from "lucide-react";
+export default function MessagesEmptyState() { return <div className="flex w-full flex-col items-center gap-3 rounded-3xl border border-admin-line bg-white p-16 text-center"><span className="flex size-14 items-center justify-center rounded-full bg-admin-bg"><Mail className="size-6 text-admin-muted" strokeWidth={1.75} /></span><p className="text-sm text-admin-muted">هنوز پیامی از فرم تماس با ما ثبت نشده است.</p></div>; }
