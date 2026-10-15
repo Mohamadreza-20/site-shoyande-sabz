@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# 🧼 Shooyande Sabz
+# Shooyande Sabz
 
 <p align="center">
   <strong>Modern Persian E-Commerce Dashboard & Storefront</strong>
@@ -26,7 +25,7 @@
 
 ---
 
-## ✨ Overview
+## Overview
 
 **Shooyande Sabz** is a Persian, RTL e-commerce application built as a **frontend portfolio project** with Next.js App Router and TypeScript.
 
@@ -38,7 +37,7 @@ The application is intentionally structured so that the frontend can be evaluate
 
 ---
 
-## 🎯 What this project demonstrates
+## What this project demonstrates
 
 - Modern **Next.js App Router** architecture
 - Practical **Server Component / Client Component** boundaries
@@ -58,9 +57,9 @@ The application is intentionally structured so that the frontend can be evaluate
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🛍️ Storefront
+### Storefront
 
 - Product listing and product detail pages
 - Search and filtering
@@ -73,7 +72,7 @@ The application is intentionally structured so that the frontend can be evaluate
 - Responsive product cards and layouts
 - Smooth scroll-to-top behavior on route and pagination changes
 
-### 🔐 Authentication & Account
+### Authentication & Account
 
 - Sign in and registration flows
 - Auth.js integration
@@ -82,7 +81,7 @@ The application is intentionally structured so that the frontend can be evaluate
 - Protected dashboard routes
 - Account information management
 
-### 🎛️ Admin Dashboard
+### Admin Dashboard
 
 - Overview dashboard
 - Reports and charts
@@ -96,7 +95,7 @@ The application is intentionally structured so that the frontend can be evaluate
 - Settings
 - Product image upload, replacement, and deletion
 
-### 🖼️ Image Handling
+### Image Handling
 
 - Optimized images through `next/image`
 - AVIF and WebP support
@@ -104,7 +103,7 @@ The application is intentionally structured so that the frontend can be evaluate
 - Cloudinary integration for product uploads
 - Validation of uploaded image types
 
-### 🎨 UX & UI
+### UX & UI
 
 - Persian RTL layout
 - Fully responsive interface
@@ -117,7 +116,7 @@ The application is intentionally structured so that the frontend can be evaluate
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 | --- | --- |
@@ -140,7 +139,7 @@ The application is intentionally structured so that the frontend can be evaluate
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 The application follows a **feature-based architecture** instead of grouping everything by technical type alone.
 
@@ -193,72 +192,7 @@ Interactive behavior stays in Client Components, while static and data-oriented 
 
 ---
 
-## 📦 Getting Started
-=======
-# Shooyande Sabz
-
-A modern Persian RTL e-commerce application built with **Next.js, React, and TypeScript**.
-
-Shooyande Sabz includes a customer-facing storefront and an administration dashboard, with a local `json-server` API for portfolio and development purposes.
-
-> **Portfolio project:** The repository is configured for local development and demonstration. Production deployments should use a real backend and persistent database.
-
-## ✨ Features
-
-### Storefront
-- Product listing with search, filtering, sorting, and pagination
-- Product details and reviews
-- Shopping cart and wishlist
-- Authentication and account pages
-- Responsive Persian RTL interface
-- Loading, error, and empty states
-
-### Admin Dashboard
-- Dashboard overview and reports
-- Product and category management
-- Customer and order management
-- Discounts and promotional content
-- Messages and blog content management
-- Protected dashboard routes
-
-### Engineering
-- Server/client architecture with Next.js App Router
-- TanStack Query for server-state management
-- React Hook Form + Zod for form handling and validation
-- Auth.js for authentication
-- Tailwind CSS for styling
-- Framer Motion for animations
-- Optional Sentry monitoring
-- Optional Upstash Redis rate limiting
-- Optional Cloudinary uploads
-
-## 🛠 Tech Stack
-
-| Technology | Purpose |
-| --- | --- |
-| Next.js 16 | Application framework |
-| React 19 | UI development |
-| TypeScript | Type safety |
-| Tailwind CSS 4 | Styling |
-| TanStack Query | Server-state and caching |
-| React Hook Form | Form management |
-| Zod | Validation |
-| Auth.js | Authentication |
-| Framer Motion | Animations |
-| Recharts | Dashboard charts |
-| Lucide React | Icons |
-| Sonner | Toast notifications |
-| json-server | Local development API |
-
-## 📋 Requirements
-
-Before running the project, make sure you have:
-
-- **Node.js 20+**
-- **npm 10+**
-
-## 🚀 Getting Started
->>>>>>> origin/main
+## Getting Started
 
 ### 1. Clone the repository
 
@@ -273,7 +207,6 @@ cd shooyande-sabz
 npm install
 ```
 
-<<<<<<< HEAD
 ### 3. Create the environment file
 
 Copy `.env.example` to `.env.local`.
@@ -285,19 +218,11 @@ cp .env.example .env.local
 ```
 
 **Windows PowerShell:**
-=======
-### 3. Create `.env.local`
-
-Copy the example environment file:
-
-**Windows PowerShell**
->>>>>>> origin/main
 
 ```powershell
 Copy-Item .env.example .env.local
 ```
 
-<<<<<<< HEAD
 Then fill in the required values as described below.
 
 ### 4. Start the demo API
@@ -327,37 +252,14 @@ http://localhost:3000
 ```
 
 ### Or run both together
-=======
-**macOS / Linux**
-
-```bash
-cp .env.example .env.local
-```
-
-Then open `.env.local` and set your values.
-
-For a local demo, the minimum configuration is:
-
-```env
-API_URL=http://localhost:4000
-AUTH_SECRET=your-private-random-secret
-```
-
-Generate a new secret for your own environment. **Never commit `.env.local`, API tokens, authentication secrets, or other credentials to GitHub.**
-
-### 4. Start the project
-
-The easiest option is to start both the Next.js application and the local API together:
->>>>>>> origin/main
 
 ```bash
 npm run dev:all
 ```
 
-<<<<<<< HEAD
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 The repository includes `.env.example` so the project can be configured without exposing secrets.
 
@@ -454,7 +356,7 @@ CLOUDINARY_UPLOAD_PRESET=
 
 ---
 
-## 🧪 Available Scripts
+## Available Scripts
 
 | Command | Description |
 | --- | --- |
@@ -467,7 +369,7 @@ CLOUDINARY_UPLOAD_PRESET=
 
 ---
 
-## 🗂️ Main Routes
+## Main Routes
 
 | Route | Purpose |
 | --- | --- |
@@ -492,7 +394,7 @@ CLOUDINARY_UPLOAD_PRESET=
 
 ---
 
-## 🔒 Security Notes
+## Security Notes
 
 The repository contains application-level security concerns such as authentication checks, protected dashboard access, validation, and rate-limiting utilities.
 
@@ -509,7 +411,7 @@ The included `json-server` setup is intentionally for **portfolio/demo developme
 
 ---
 
-## 📸 Screenshots / Demo
+## Screenshots / Demo
 
 For the GitHub repository, add a few screenshots here to make the project immediately understandable to visitors.
 
@@ -534,7 +436,7 @@ Example section:
 
 ---
 
-## ✅ Portfolio Highlights
+## Portfolio Highlights
 
 This project is designed to demonstrate more than visual implementation. The main focus areas are:
 
@@ -552,7 +454,7 @@ This project is designed to demonstrate more than visual implementation. The mai
 
 ---
 
-## 📌 Project Status
+## Project Status
 
 **Status: Portfolio-ready frontend demo**
 
@@ -560,149 +462,13 @@ The storefront and dashboard are designed to be run locally with the included de
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Mohamadreza Obaidi**  
 Frontend Developer — React · Next.js · TypeScript
 
 ---
 
-## 📄 License
+## License
 
 This repository is presented as a personal portfolio project. Educational use and code study are welcome; re-publishing the complete project as your own work is not permitted without permission from the author.
-=======
-The application will be available at:
-
-```text
-http://localhost:3000
-```
-
-The local API runs at:
-
-```text
-http://localhost:4000
-```
-
-### 5. Run the services separately
-
-Next.js only:
-
-```bash
-npm run dev
-```
-
-Local API only:
-
-```bash
-npm run api
-```
-
-## 🔐 Environment Variables
-
-Use `.env.example` as the template for `.env.local`.
-
-| Variable | Required | Description |
-| --- | --- | --- |
-| `API_URL` | Yes | Base URL for the local or custom API |
-| `AUTH_SECRET` | Yes | Secret used by Auth.js |
-| `UPSTASH_REDIS_REST_URL` | No | Upstash Redis REST endpoint |
-| `UPSTASH_REDIS_REST_TOKEN` | No | Upstash Redis authentication token |
-| `SENTRY_DSN` | No | Server-side Sentry DSN |
-| `NEXT_PUBLIC_SENTRY_DSN` | No | Client-side Sentry DSN |
-| `SENTRY_ORG` | No | Sentry organization |
-| `SENTRY_PROJECT` | No | Sentry project |
-| `SENTRY_AUTH_TOKEN` | No | Sentry build authentication token |
-| `CLOUDINARY_CLOUD_NAME` | No | Cloudinary cloud name |
-| `CLOUDINARY_UPLOAD_PRESET` | No | Cloudinary upload preset |
-
-Optional services can remain empty during local development unless the related feature is required.
-
-## 🗄 Local API
-
-The project includes `db.json` as local development data and uses `json-server` as a lightweight REST API.
-
-Start it with:
-
-```bash
-npm run api
-```
-
-The API is bound to `127.0.0.1:4000` by default.
-
-For a production application, replace `json-server` with a real backend, database, authentication provider, and persistent file storage.
-
-## 📁 Project Structure
-
-```text
-src/
-├── app/                    Next.js routes, layouts and route handlers
-├── components/             Shared UI components
-├── features/               Domain-focused application modules
-├── lib/                    Shared utilities, HTTP, security and storage
-├── types/                  Shared TypeScript declarations
-├── auth.ts                 Auth.js configuration
-├── proxy.ts                Request and route orchestration
-└── instrumentation*.ts     Runtime instrumentation
-
-public/
-└── images/                 Static assets
-
-db.json                     Local development data
-.env.example                Environment variable template
-```
-
-The `features` directory keeps related domain logic together, making it easier to maintain API functions, hooks, components, validation, types, and query logic within each feature.
-
-## 📜 Available Scripts
-
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Next.js development server |
-| `npm run api` | Start `json-server` on port `4000` |
-| `npm run dev:all` | Start Next.js and `json-server` together |
-| `npm run lint` | Run ESLint |
-| `npm run build` | Create a production build |
-| `npm start` | Start the production server |
-
-## 🧪 Production Build
-
-Before deploying, run:
-
-```bash
-npm run lint
-npm run build
-npm start
-```
-
-The production server will use the environment variables configured by your hosting provider.
-
-## ☁️ Deployment Notes
-
-For deployment, configure environment variables in your hosting platform instead of uploading `.env.local`.
-
-The bundled `json-server` setup is intended for development and portfolio demonstrations. A production version should use a persistent backend and database.
-
-Sentry, Upstash Redis, and Cloudinary are optional integrations and only need to be configured when those services are used.
-
-## 🔒 GitHub Safety
-
-Before pushing the repository, verify that:
-
-- `.env.local` is not tracked
-- No real API keys or authentication secrets exist in the repository
-- `node_modules` and `.next` are not committed
-- `*.tsbuildinfo` files are not committed
-- `.env.example` contains placeholders only
-
-The repository `.gitignore` already excludes common local, build, and environment files.
-
-## 📄 License
-
-This project is intended for portfolio and educational use.
-
-## 👤 Author
-
-**Mohamadreza Abidi**
-
-Frontend developer and creator of this project.
->>>>>>> origin/main
