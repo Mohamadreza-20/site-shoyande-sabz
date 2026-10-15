@@ -25,9 +25,9 @@
       "id": "p2",
       "category": "شوینده لباس",
       "title": "مایع لباسشویی ضد حساسیت با رایحه اسطوخودوس",
-      "rating": "۴٫۵",
-      "ratingValue": 4.5,
-      "reviewCount": 2,
+      "rating": "۴٫۷",
+      "ratingValue": 4.7,
+      "reviewCount": 3,
       "price": "۱۴۵,۰۰۰ تومان",
       "priceValue": 145000,
       "image": "/images/catalog/product-2.svg",
@@ -103,9 +103,9 @@
       "id": "p6",
       "category": "خوش‌بوکننده",
       "title": "خوش‌بوکننده طبیعی هوا با رایحه یاس",
-      "rating": "۵٫۰",
-      "ratingValue": 5,
-      "reviewCount": 2,
+      "rating": "۴٫۷",
+      "ratingValue": 4.7,
+      "reviewCount": 3,
       "price": "۹۹,۰۰۰ تومان",
       "priceValue": 99000,
       "oldPrice": "۱۲۰,۰۰۰ تومان",
@@ -229,7 +229,7 @@
       "title": "پاک‌کننده شیشه تغلیظ‌شده با اسانس نعناع",
       "rating": "۵٫۰",
       "ratingValue": 5,
-      "reviewCount": 1,
+      "reviewCount": 2,
       "price": "۱۳۱,۰۰۰ تومان",
       "priceValue": 131000,
       "image": "/images/catalog/product-4.svg",
@@ -1811,7 +1811,7 @@
       "title": "پاک‌کننده شیشه قدرتمند با اسانس رزماری",
       "rating": "۴٫۰",
       "ratingValue": 4,
-      "reviewCount": 1,
+      "reviewCount": 2,
       "price": "۱۳۴,۰۰۰ تومان",
       "priceValue": 134000,
       "image": "/images/catalog/product-4.svg",
@@ -2141,6 +2141,44 @@
       ],
       "usage": "از فاصله حداقل یک متری در فضای مورد نظر اسپری کنید.",
       "stock": 30
+    },
+    {
+      "id": "pmtx00ri9839",
+      "title": "مایع ظرف شویی",
+      "category": "مایع ظرفشویی",
+      "rating": "۵٫۰",
+      "ratingValue": 5,
+      "reviewCount": 1,
+      "price": "۱۲۰٬۰۰۰ تومان",
+      "priceValue": 120000,
+      "oldPrice": "۲٬۰۰۰٬۰۰۰ تومان",
+      "oldPriceValue": 2000000,
+      "image": "/images/catalog/product-1.svg",
+      "description": "مایع ظرف شویی",
+      "highlights": [
+        "به پوست آسیب نمیزند"
+      ],
+      "usage": "در هنگام شستن ظرف استفاده شود",
+      "stock": 45
+    },
+    {
+      "id": "pmtx70nh6132",
+      "title": "مایع ظرف شویی",
+      "category": "مایع ظرفشویی",
+      "rating": "۰.۰",
+      "ratingValue": 0,
+      "reviewCount": 0,
+      "price": "۱۲۰٬۰۰۰ تومان",
+      "priceValue": 120000,
+      "oldPrice": "۲٬۰۰۰٬۰۰۰ تومان",
+      "oldPriceValue": 2000000,
+      "image": "/images/catalog/product-1.svg",
+      "description": "مایع ظرف شویی با طعم پرتقال",
+      "highlights": [
+        "بسیار باکیفیت"
+      ],
+      "usage": "هنگام ظرف شستن",
+      "stock": 25
     }
   ],
   "reviews": [
@@ -3079,6 +3117,46 @@
       "comment": "عالیه",
       "date": "همین حالا",
       "id": "VPeh7OA"
+    },
+    {
+      "productId": "p12",
+      "name": "مریم احمدی",
+      "ratingValue": 5,
+      "comment": "محصول خوبی است پیشنهاد میکنم بخرید",
+      "date": "همین حالا",
+      "id": "fHoGA7V"
+    },
+    {
+      "productId": "p92",
+      "name": "مریم احمدی",
+      "ratingValue": 4,
+      "comment": "محصول بسیار عالی هست پیشنهاد میکنم خرید کنید",
+      "date": "همین حالا",
+      "id": "s-kSg39"
+    },
+    {
+      "productId": "p6",
+      "name": "محمدرضا عبیدی",
+      "ratingValue": 4,
+      "comment": "محصول بسیار عالی هست پیشنهاد میکنم خرید کنید",
+      "date": "همین حالا",
+      "id": "u76iDTJ"
+    },
+    {
+      "productId": "pmtx00ri9839",
+      "name": "محمدرضا عبیدی",
+      "ratingValue": 5,
+      "comment": "بسیار عالی هست",
+      "date": "همین حالا",
+      "id": "cFiEi6X"
+    },
+    {
+      "productId": "p2",
+      "name": "علی احمدی",
+      "ratingValue": 5,
+      "comment": "خیلی محصول باکیفیتی هست پیشنهاد میکنم بخرید",
+      "date": "همین حالا",
+      "id": "QvOFpJS"
     }
   ],
   "categories": [
@@ -3108,7 +3186,7 @@
     },
     {
       "id": "c5",
-      "title": "خوش‌بوکننده",
+      "title": "خوش‌ بوکننده",
       "icon": "flower",
       "bg": "bg-purple-100"
     }
@@ -4220,7 +4298,7 @@
       "id": "u1",
       "name": "مریم احمدی",
       "email": "maryam.ahmadi@example.com",
-      "phone": "۰۹۱۲۱۲۳۴۵۶۷",
+      "phone": "09121234567",
       "ordersCount": 14,
       "totalSpent": "۱,۸۵۰,۰۰۰ تومان",
       "joinDate": "۱۴۰۳/۰۲/۱۱",
@@ -5660,6 +5738,36 @@
       "password": "$2b$10$Di8mOrUE04m/OovzTyFvaOh1byfam2bpg3qoYKFZBlpRrIOr7XaJG",
       "role": "customer",
       "wishlist": []
+    },
+    {
+      "id": "umtx6slno325",
+      "name": "علی احمدی",
+      "email": "aliahmadi@gmail.com",
+      "phone": "09198876548",
+      "password": "$2b$10$vhdCs82htL0hZ1riUg44T.N/HKMsaqZWVmsXyJ7iLVyYF8zzy5hTm",
+      "role": "customer",
+      "ordersCount": 0,
+      "totalSpent": "۰ تومان",
+      "joinDate": "۱۴۰۵/۶/۲۰",
+      "status": "active",
+      "wishlist": [
+        "p2"
+      ]
+    },
+    {
+      "id": "umtx91pid363",
+      "name": "علی احمدی",
+      "email": "aliahmaadii24@gmail.com",
+      "phone": "09109876544",
+      "password": "$2b$10$Pm1WateWhrv.NUY/Mcg8w.5gFC3ugpDP2xhJ1RtPi/bKpIZvBiT5S",
+      "role": "customer",
+      "ordersCount": 0,
+      "totalSpent": "۰ تومان",
+      "joinDate": "۱۴۰۵/۶/۲۰",
+      "status": "active",
+      "wishlist": [
+        "p1"
+      ]
     }
   ],
   "discounts": [
@@ -8057,6 +8165,71 @@
       "reply": null,
       "repliedAt": null,
       "userId": null
+    },
+    {
+      "name": "نگار رستمی",
+      "email": "support@sabzineh.com",
+      "userId": "u11",
+      "phone": "۰۹۱۲۳۳۳۳۳۳۳",
+      "subject": "محصولات",
+      "message": "مرسی از سایت خوبتون ❤️",
+      "date": "2026-09-11T12:31:59.303Z",
+      "status": "pending",
+      "reply": null,
+      "repliedAt": null,
+      "id": "Ou3K8ew"
+    },
+    {
+      "name": "نگار رستمی",
+      "email": "support@sabzineh.com",
+      "userId": "u11",
+      "phone": "۰۹۱۲۳۳۳۳۳۳۳",
+      "subject": "محصولات",
+      "message": "مرسی از محصولات خوبتون",
+      "date": "2026-09-11T12:47:59.663Z",
+      "status": "pending",
+      "reply": null,
+      "repliedAt": null,
+      "id": "ggOr2B2"
+    },
+    {
+      "name": "نگار رستمی",
+      "email": "support@sabzineh.com",
+      "userId": "u11",
+      "phone": "۰۹۱۲۳۳۳۳۳۳۳",
+      "subject": "محصولات",
+      "message": "محصولات بسیار عالی دارید",
+      "date": "2026-09-11T13:32:20.422Z",
+      "status": "pending",
+      "reply": null,
+      "repliedAt": null,
+      "id": "eZFS4da"
+    },
+    {
+      "name": "علی احمدی",
+      "email": "aliahmadi@gmail.com",
+      "userId": "umtx6slno325",
+      "phone": "09198876548",
+      "subject": "محصولات",
+      "message": "خیلی محصولات خوبی دارید ممنونم",
+      "date": "2026-09-11T16:46:56.611Z",
+      "status": "pending",
+      "reply": null,
+      "repliedAt": null,
+      "id": "LBmWjSM"
+    },
+    {
+      "name": "علی احمدی",
+      "email": "aliahmaadii24@gmail.com",
+      "userId": "umtx91pid363",
+      "phone": "09109876544",
+      "subject": "محصولات",
+      "message": "محصولات بسیار باکیفیتی دارید مرسی",
+      "date": "2026-09-11T17:48:38.488Z",
+      "status": "pending",
+      "reply": null,
+      "repliedAt": null,
+      "id": "hhBrVBC"
     }
   ]
 }
