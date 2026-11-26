@@ -10,10 +10,34 @@ type Props = {
 export default function NotificationsSettings({ getBoolean, setSetting }: Props) {
   return (
     <>
-      <Toggle name="newOrderNotifications" label="اعلان سفارش جدید" description="ارسال ایمیل و پیامک به مدیر فروشگاه هنگام ثبت سفارش جدید" checked={getBoolean("newOrderNotifications", true)} onChange={(value) => setSetting("newOrderNotifications", value)} />
-      <Toggle name="lowStockNotifications" label="اعلان موجودی رو به اتمام" description="اطلاع‌رسانی زمانی که موجودی یک محصول کمتر از ۱۵ عدد شود" checked={getBoolean("lowStockNotifications", true)} onChange={(value) => setSetting("lowStockNotifications", value)} />
-      <Toggle name="newReviewNotifications" label="اعلان نظرات جدید مشتریان" description="اطلاع‌رسانی زمانی که مشتری برای محصولی نظر ثبت می‌کند" checked={getBoolean("newReviewNotifications")} onChange={(value) => setSetting("newReviewNotifications", value)} />
-      <Toggle name="adminNewsletter" label="خبرنامه هفتگی برای مدیر" description="ارسال خلاصه عملکرد فروشگاه هر یکشنبه صبح" checked={getBoolean("adminNewsletter", true)} onChange={(value) => setSetting("adminNewsletter", value)} />
+      <Toggle
+        name="newOrderNotifications"
+        label="New order alerts"
+        description="Email and text the store admin when a new order is placed"
+        checked={getBoolean("newOrderNotifications", true)}
+        onChange={(value) => setSetting("newOrderNotifications", value)}
+      />
+      <Toggle
+        name="lowStockNotifications"
+        label="Low stock alerts"
+        description="Notify when a product drops below 15 units"
+        checked={getBoolean("lowStockNotifications", true)}
+        onChange={(value) => setSetting("lowStockNotifications", value)}
+      />
+      <Toggle
+        name="newReviewNotifications"
+        label="New review alerts"
+        description="Notify when a customer reviews a product"
+        checked={getBoolean("newReviewNotifications")}
+        onChange={(value) => setSetting("newReviewNotifications", value)}
+      />
+      <Toggle
+        name="adminNewsletter"
+        label="Weekly admin digest"
+        description="Send a store performance summary every Sunday morning"
+        checked={getBoolean("adminNewsletter", true)}
+        onChange={(value) => setSetting("adminNewsletter", value)}
+      />
     </>
   );
 }

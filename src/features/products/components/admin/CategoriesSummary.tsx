@@ -18,9 +18,9 @@ export default function CategoriesSummary({
 
   return (
     <>
-      {`${categories.length.toLocaleString("fa-IR")} دسته‌بندی فعال، شامل ${totalProducts.toLocaleString(
-        "fa-IR"
-      )} محصول`}
+      {`${categories.length.toLocaleString("en-US")} active categories, covering ${totalProducts.toLocaleString(
+        "en-US"
+      )} products`}
     </>
   );
 }

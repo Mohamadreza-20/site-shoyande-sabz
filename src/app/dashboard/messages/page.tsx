@@ -1,3 +1,4 @@
+import { fetchedAtNow } from "@/lib/http";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHeader from "@/features/dashboard/components/PageHeader";
@@ -6,19 +7,19 @@ import MessagesStats from "@/features/messages/components/MessagesStats";
 import { getMessages } from "@/features/messages/api";
 
 export const metadata: Metadata = {
-  title: "پیام‌های تماس با ما | پنل مدیریت شست‌وشو سبز",
-  description: "مشاهده و پاسخ‌گویی به پیام‌های ارسالی مشتریان از فرم تماس با ما.",
+  title: "Contact messages | Admin",
+  description: "View and answer customer messages from the contact form.",
 };
 
 export default async function AdminMessagesPage() {
   const messages = await getMessages();
-  const fetchedAt = Date.now();
+  const fetchedAt = fetchedAtNow();
 
   return (
     <>
       <PageHeader
-        title="پیام‌های تماس با ما"
-        description="پیام‌های ارسالی مشتریان از فرم تماس با ما را مشاهده و پاسخ دهید"
+        title="Contact messages"
+        description="View and answer messages sent through the contact form"
       />
 
       <MessagesStats initialMessages={messages} fetchedAt={fetchedAt} />

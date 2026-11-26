@@ -29,8 +29,7 @@ export function useCreateDiscount() {
 export function useUpdateDiscount() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: DiscountInput }) =>
-      updateDiscount(id, input),
+    mutationFn: ({ id, input }: { id: string; input: DiscountInput }) => updateDiscount(id, input),
     onSuccess: (data, variables) => {
       queryClient.setQueryData<Discount[]>(discountKeys.list(), (prev) =>
         prev ? prev.map((discount) => (discount.id === variables.id ? data : discount)) : prev

@@ -1,11 +1,28 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { BarChart3, ShoppingCart, TrendingUp, Users } from "lucide-react";
 import type { Analytics } from "@/features/dashboard/types";
 import type { Customer } from "@/features/customers/types";
 import type { Order } from "@/features/orders/types";
 import type { Product } from "@/features/products/types";
-import RevenueChart from "./RevenueChart";
-import TrafficSources from "./TrafficSources";
 import TopProductsList from "@/features/products/components/admin/TopProductsList";
+
+const ChartSkeleton = () => (
+  <div
+    className="h-[320px] w-full animate-pulse rounded-[24px] border border-admin-line bg-white"
+    aria-hidden
+  />
+);
+
+const RevenueChart = dynamic(() => import("./RevenueChart"), {
+  ssr: false,
+  loading: () => <ChartSkeleton />,
+});
+const TrafficSources = dynamic(() => import("./TrafficSources"), {
+  ssr: false,
+  loading: () => <ChartSkeleton />,
+});
 
 export default function ReportsOverview({
   initialAnalytics,
@@ -25,23 +42,23 @@ export default function ReportsOverview({
   const stats = [
     {
       icon: TrendingUp,
-      label: "درآمد ۶ ماه اخیر",
-      value: `${totalRevenue.toLocaleString("fa-IR")} میلیون تومان`,
+      label: "Revenue, last 6 months",
+      value: `$${totalRevenue.toLocaleString("en-US")}K`,
     },
     {
       icon: BarChart3,
-      label: "میانگین درآمد ماهانه",
-      value: `${avgMonthly.toLocaleString("fa-IR")} میلیون تومان`,
+      label: "Average monthly revenue",
+      value: `$${avgMonthly.toLocaleString("en-US")}K`,
     },
     {
       icon: ShoppingCart,
-      label: "سفارشات ثبت‌شده",
-      value: `${initialOrders.length.toLocaleString("fa-IR")} سفارش`,
+      label: "Orders placed",
+      value: `${initialOrders.length.toLocaleString("en-US")} orders`,
     },
     {
       icon: Users,
-      label: "مشتریان ثبت‌نام‌شده",
-      value: `${initialCustomers.length.toLocaleString("fa-IR")} نفر`,
+      label: "Registered customers",
+      value: `${initialCustomers.length.toLocaleString("en-US")} people`,
     },
   ];
 
@@ -51,15 +68,15 @@ export default function ReportsOverview({
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="flex items-center justify-between gap-3 rounded-[20px] border border-admin-line bg-white p-5"
+            className="flex items-center gap-4 rounded-[24px] border border-admin-line bg-white p-5 shadow-[0_8px_24px_rgba(15,47,34,0.05)]"
           >
-            <div className="flex flex-col items-end gap-1 text-right">
-              <p className="text-lg font-bold text-admin-ink">{stat.value}</p>
+            <span className="rounded-full bg-admin-accent p-3">
+              <stat.icon className="size-5 text-brand-700" strokeWidth={2} />
+            </span>
+            <div className="flex flex-col gap-1 text-left">
+              <p className="font-display text-xl font-extrabold text-admin-ink">{stat.value}</p>
               <p className="text-xs font-medium text-admin-muted">{stat.label}</p>
             </div>
-            <span className="rounded-xl bg-admin-bg p-2.5">
-              <stat.icon className="size-5 text-admin-primary" strokeWidth={2} />
-            </span>
           </div>
         ))}
       </div>

@@ -11,10 +11,10 @@ export default function DiscountCodeCopy({ code }: { code: string }) {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      toast.success("کد تخفیف کپی شد.");
+      toast.success("Discount code copied.");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("کپی کردن کد تخفیف انجام نشد.");
+      toast.error("Couldn't copy the discount code.");
     }
   }
 
@@ -22,10 +22,14 @@ export default function DiscountCodeCopy({ code }: { code: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="cursor-pointer flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-brand-700 transition hover:bg-brand-50"
+      className="flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-brand-700 transition hover:bg-brand-50"
     >
-      {copied ? <Check className="size-4" strokeWidth={2.5} /> : <Copy className="size-4" strokeWidth={2.5} />}
-      <span dir="ltr">{code}</span>
+      {copied ? (
+        <Check className="size-4" strokeWidth={2.5} />
+      ) : (
+        <Copy className="size-4" strokeWidth={2.5} />
+      )}
+      <span>{code}</span>
     </button>
   );
 }

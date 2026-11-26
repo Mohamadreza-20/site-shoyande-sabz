@@ -1,16 +1,17 @@
+import { cn } from "@/lib/cn";
 type SkeletonProps = {
   className?: string;
 };
 
 export function Skeleton({ className = "" }: SkeletonProps) {
-  return <div className={`animate-pulse rounded-xl bg-brand-100 ${className}`} />;
+  return <div className={cn("animate-pulse rounded-xl bg-brand-100", className)} />;
 }
 
 export function AdminSkeleton({ className = "" }: SkeletonProps) {
-  return <div className={`animate-pulse rounded-xl bg-admin-line/60 ${className}`} />;
+  return <div className={cn("animate-pulse rounded-xl bg-admin-line/60", className)} />;
 }
 
-export function SkeletonCard() {
+function SkeletonCard() {
   return (
     <div className="flex w-full flex-col gap-3 rounded-[20px] border border-brand-200 bg-white p-4">
       <Skeleton className="h-40 w-full" />

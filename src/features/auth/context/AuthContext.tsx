@@ -4,7 +4,5 @@ import { SessionProvider } from "next-auth/react";
 import type { ReactNode } from "react";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <SessionProvider refetchOnWindowFocus={false}>{children}</SessionProvider>;
 }
-
-export type { AuthUser, ActionResult, UserRole } from "../types";

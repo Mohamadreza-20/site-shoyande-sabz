@@ -3,19 +3,19 @@ export const productStatusStyles: Record<
   { label: string; text: string; bg: string; border: string }
 > = {
   inStock: {
-    label: "موجود",
+    label: "In stock",
     text: "text-admin-success",
     bg: "bg-admin-success-bg",
     border: "border-admin-success",
   },
   lowStock: {
-    label: "رو به اتمام",
+    label: "Low stock",
     text: "text-admin-warning",
     bg: "bg-admin-warning-bg",
     border: "border-admin-warning",
   },
   outOfStock: {
-    label: "ناموجود",
+    label: "Out of stock",
     text: "text-admin-danger",
     bg: "bg-admin-danger-bg",
     border: "border-admin-danger",

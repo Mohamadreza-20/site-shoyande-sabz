@@ -1,4 +1,11 @@
-import { apiFetch, apiMutate, generateId, CATALOG_REVALIDATE_SECONDS, CACHE_TAGS } from "@/lib/http";
+import {
+  apiFetch,
+  apiMutate,
+  generateId,
+  CATALOG_REVALIDATE_SECONDS,
+  CACHE_TAGS,
+} from "@/lib/http";
+import { images } from "@/lib/assets";
 import type { BlogPost } from "./data";
 import { blogPosts } from "./data";
 
@@ -22,21 +29,15 @@ export type ArticleInput = {
 export function createArticle(input: ArticleInput) {
   const payload: BlogPost = {
     id: generateId("a"),
-    date: new Date().toLocaleDateString("fa-IR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
+    date: new Date().toISOString().slice(0, 10),
     title: input.title,
     excerpt: input.excerpt,
     content: input.content
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean),
-    image:
-      input.image.trim() ||
-      "/images/catalog/blog-1.svg",
-    author: input.author.trim() || "تیم شست‌وشو سبز",
+    image: input.image.trim() || images.blog1,
+    author: input.author.trim() || "Leafwash Team",
     category: input.category,
   };
   return apiMutate<BlogPost>("/articles", "POST", payload);

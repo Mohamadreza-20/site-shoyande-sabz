@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
 import {
   createProduct,
   deleteProduct,
   getProduct,
-  getProducts,
   getFeaturedProducts,
   getProductsByIds,
   getProductsFiltered,
@@ -29,16 +34,6 @@ export function useProductsPage(
     initialData: page === 1 && !search ? initialData : undefined,
     initialDataUpdatedAt: page === 1 && !search ? initialDataUpdatedAt : undefined,
     placeholderData: keepPreviousData,
-    staleTime: CATALOG_STALE_TIME,
-  });
-}
-
-export function useProducts(initialData?: Product[], initialDataUpdatedAt?: number) {
-  return useQuery({
-    queryKey: productKeys.list(),
-    queryFn: getProducts,
-    initialData,
-    initialDataUpdatedAt,
     staleTime: CATALOG_STALE_TIME,
   });
 }
@@ -111,6 +106,15 @@ export function useSeedProductDetailCache(products?: Product[], fetchedAt?: numb
   }, [products, effectiveFetchedAt, queryClient]);
 }
 
+function invalidateProductDependents(queryClient: QueryClient) {
+  queryClient.invalidateQueries({ queryKey: productKeys.featured() });
+  queryClient.invalidateQueries({ queryKey: productKeys.adminList() });
+  queryClient.invalidateQueries({ queryKey: productKeys.stockSummary() });
+  queryClient.invalidateQueries({ queryKey: categoryKeys.withCounts() });
+  queryClient.invalidateQueries({ queryKey: dashboardKeys.overview });
+  void revalidateProductsCache();
+}
+
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -120,12 +124,7 @@ export function useCreateProduct() {
         prev ? [...prev, data] : prev
       );
       queryClient.setQueryData(productKeys.detail(data.id), data);
-      queryClient.invalidateQueries({ queryKey: productKeys.featured() });
-      queryClient.invalidateQueries({ queryKey: productKeys.adminList() });
-      queryClient.invalidateQueries({ queryKey: productKeys.stockSummary() });
-      queryClient.invalidateQueries({ queryKey: categoryKeys.withCounts() });
-      queryClient.invalidateQueries({ queryKey: dashboardKeys.overview });
-      void revalidateProductsCache();
+      invalidateProductDependents(queryClient);
     },
   });
 }
@@ -133,19 +132,13 @@ export function useCreateProduct() {
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: ProductInput }) =>
-      updateProduct(id, input),
+    mutationFn: ({ id, input }: { id: string; input: ProductInput }) => updateProduct(id, input),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(productKeys.detail(variables.id), data);
       queryClient.setQueryData<Product[]>(productKeys.list(), (prev) =>
         prev ? prev.map((product) => (product.id === variables.id ? data : product)) : prev
       );
-      queryClient.invalidateQueries({ queryKey: productKeys.featured() });
-      queryClient.invalidateQueries({ queryKey: productKeys.adminList() });
-      queryClient.invalidateQueries({ queryKey: productKeys.stockSummary() });
-      queryClient.invalidateQueries({ queryKey: categoryKeys.withCounts() });
-      queryClient.invalidateQueries({ queryKey: dashboardKeys.overview });
-      void revalidateProductsCache();
+      invalidateProductDependents(queryClient);
     },
   });
 }
@@ -174,7 +167,10 @@ export function useDeleteProduct() {
                 ...prev,
                 products: prev.products.filter((product) => product.id !== id),
                 total: Math.max(0, prev.total - 1),
-                totalPages: Math.max(1, Math.ceil(Math.max(0, prev.total - 1) / Math.max(1, prev.products.length))),
+                totalPages: Math.max(
+                  1,
+                  Math.ceil(Math.max(0, prev.total - 1) / Math.max(1, prev.products.length))
+                ),
               }
             : prev
       );
@@ -203,8 +199,14 @@ export function useDeleteProduct() {
         queryClient.invalidateQueries({ queryKey: productKeys.adminList(), refetchType: "active" }),
         queryClient.invalidateQueries({ queryKey: productKeys.list(), refetchType: "active" }),
         queryClient.invalidateQueries({ queryKey: productKeys.featured(), refetchType: "active" }),
-        queryClient.invalidateQueries({ queryKey: productKeys.stockSummary(), refetchType: "active" }),
-        queryClient.invalidateQueries({ queryKey: categoryKeys.withCounts(), refetchType: "active" }),
+        queryClient.invalidateQueries({
+          queryKey: productKeys.stockSummary(),
+          refetchType: "active",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: categoryKeys.withCounts(),
+          refetchType: "active",
+        }),
         queryClient.invalidateQueries({ queryKey: dashboardKeys.overview, refetchType: "active" }),
         revalidateProductsCache(),
       ]);

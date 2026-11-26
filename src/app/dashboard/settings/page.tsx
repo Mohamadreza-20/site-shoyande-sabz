@@ -4,16 +4,16 @@ import PageHeader from "@/features/dashboard/components/PageHeader";
 import SettingsForm from "@/features/dashboard/components/SettingsForm";
 
 export const metadata: Metadata = {
-  title: "تنظیمات | پنل مدیریت شست‌وشو سبز",
-  description: "تنظیمات عمومی، ارسال، درگاه پرداخت و اعلان‌های فروشگاه شست‌وشو سبز.",
+  title: "Settings | Admin",
+  description: "General, shipping, payment and notification settings.",
 };
 
 export default function AdminSettingsPage() {
   return (
     <>
       <PageHeader
-        title="تنظیمات فروشگاه"
-        description="مدیریت اطلاعات کلی، ارسال، پرداخت و اعلان‌های پنل مدیریت"
+        title="Store settings"
+        description="Manage general info, shipping, payments and notifications"
       />
 
       <Suspense fallback={null}>

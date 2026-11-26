@@ -1,18 +1,33 @@
+import { fetchedAtNow } from "@/lib/http";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { buildPageMetadata } from "@/lib/seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductsExplorer from "@/features/products/components/ProductsExplorer";
-import { getCategories, getProductCategoryCounts, getProductsFiltered } from "@/features/products/api";
+import {
+  getCategories,
+  getProductCategoryCounts,
+  getProductsFiltered,
+} from "@/features/products/api";
 import { isSortValue, type SortValue } from "@/features/products/product-sort";
 
-export const metadata: Metadata = {
-  title: "محصولات | شست‌وشو سبز",
-  description:
-    "همه محصولات شوینده گیاهی و ارگانیک شست‌وشو سبز را مرور، فیلتر و مرتب‌سازی کنید.",
-};
+const PRODUCTS_TITLE = "Products";
+const PRODUCTS_DESCRIPTION =
+  "Browse, filter and sort every plant-based cleaning product from Leafwash.";
 
 const PRODUCTS_PER_PAGE = 15;
+
+export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const isFiltered = Boolean(params.category || params.q || params.sort || params.page);
+  return buildPageMetadata({
+    title: PRODUCTS_TITLE,
+    description: PRODUCTS_DESCRIPTION,
+    path: "/products",
+    noIndex: isFiltered,
+  });
+}
 
 type ProductsPageProps = {
   searchParams: Promise<{
@@ -60,10 +75,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const categoryLabels = Array.from(
     new Set([...Object.keys(categoryCounts), ...categories.map((c) => c.title)])
   );
-  const fetchedAt = Date.now();
+  const fetchedAt = fetchedAtNow();
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-brand-50">
+    <div className="flex min-h-screen w-full flex-col">
       <Navbar />
       <main className="flex w-full flex-col">
         <Suspense fallback={null}>

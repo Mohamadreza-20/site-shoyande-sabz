@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-export type Role = "customer" | "manager" | "support";
+type Role = "customer" | "manager" | "support";
 export type DataSession = { user?: { id: string; role: Role; active: boolean } } | null;
 
 const STAFF_ROLES: readonly Role[] = ["manager", "support"];
@@ -37,11 +37,15 @@ export function authorizeDataRequest(
   if (!resource) return { allowed: false, status: 404 };
 
   if (resource === "customers") {
-    if (method === "GET") return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: session ? 403 : 401 };
+    if (method === "GET")
+      return isStaff(session)
+        ? { allowed: true, searchParams }
+        : { allowed: false, status: session ? 403 : 401 };
     if (method === "PATCH" && segments.length === 2) {
       if (isStaff(session)) return { allowed: true, searchParams };
       const isSelf = session?.user?.id === segments[1];
-      if (isSelf && isOnlyAllowedFields(body, CUSTOMER_SELF_EDITABLE_FIELDS)) return { allowed: true, searchParams };
+      if (isSelf && isOnlyAllowedFields(body, CUSTOMER_SELF_EDITABLE_FIELDS))
+        return { allowed: true, searchParams };
     }
     return { allowed: false, status: 403 };
   }
@@ -49,7 +53,11 @@ export function authorizeDataRequest(
   if (resource === "products") {
     if (method === "GET") return { allowed: true, searchParams };
     if (isStaff(session)) return { allowed: true, searchParams };
-    if (method === "PATCH" && segments.length === 2 && isOnlyAllowedFields(body, RATING_RECALC_FIELDS)) {
+    if (
+      method === "PATCH" &&
+      segments.length === 2 &&
+      isOnlyAllowedFields(body, RATING_RECALC_FIELDS)
+    ) {
       return { allowed: true, searchParams };
     }
     return { allowed: false, status: 403 };
@@ -57,7 +65,9 @@ export function authorizeDataRequest(
 
   if (resource === "messages") {
     if (method === "PATCH" && segments.length === 2) {
-      return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: session ? 403 : 401 };
+      return isStaff(session)
+        ? { allowed: true, searchParams }
+        : { allowed: false, status: session ? 403 : 401 };
     }
     if (method !== "GET") return { allowed: false, status: 403 };
     if (isCollectionCall) {
@@ -71,7 +81,8 @@ export function authorizeDataRequest(
 
   if (resource in SCOPED_RESOURCES) {
     if (method !== "GET") return { allowed: false, status: 403 };
-    if (!isCollectionCall) return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: 403 };
+    if (!isCollectionCall)
+      return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: 403 };
     if (isStaff(session)) return { allowed: true, searchParams };
     if (!session?.user) return { allowed: false, status: 401 };
     searchParams.set(SCOPED_RESOURCES[resource], session.user.id);
@@ -82,12 +93,17 @@ export function authorizeDataRequest(
     if (resource === "discounts" && method === "GET") {
       return { allowed: true, searchParams };
     }
-    return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: session ? 403 : 401 };
+    return isStaff(session)
+      ? { allowed: true, searchParams }
+      : { allowed: false, status: session ? 403 : 401 };
   }
 
   if (PUBLIC_GET_RESOURCES.has(resource)) {
-    if (method === "GET" || (resource === "reviews" && method === "POST")) return { allowed: true, searchParams };
-    return isStaff(session) ? { allowed: true, searchParams } : { allowed: false, status: session ? 403 : 401 };
+    if (method === "GET" || (resource === "reviews" && method === "POST"))
+      return { allowed: true, searchParams };
+    return isStaff(session)
+      ? { allowed: true, searchParams }
+      : { allowed: false, status: session ? 403 : 401 };
   }
 
   return { allowed: false, status: 404 };

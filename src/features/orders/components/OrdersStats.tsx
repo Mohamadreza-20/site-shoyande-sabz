@@ -15,23 +15,26 @@ export default function OrdersStats({
 }) {
   const { data: orders = initialOrders } = useOrders(initialOrders, fetchedAt);
 
-  const counts = useMemo(() => ({
-    processing: orders.filter((o) => o.status === "processing").length,
-    shipped: orders.filter((o) => o.status === "shipped").length,
-    delivered: orders.filter((o) => o.status === "delivered").length,
-    cancelled: orders.filter((o) => o.status === "cancelled").length,
-  }), [orders]);
+  const counts = useMemo(
+    () => ({
+      processing: orders.filter((o) => o.status === "processing").length,
+      shipped: orders.filter((o) => o.status === "shipped").length,
+      delivered: orders.filter((o) => o.status === "delivered").length,
+      cancelled: orders.filter((o) => o.status === "cancelled").length,
+    }),
+    [orders]
+  );
   const { processing, shipped, delivered, cancelled } = counts;
 
   const stats = [
-    { icon: ShoppingBag, label: "کل سفارشات", value: orders.length.toLocaleString("fa-IR") },
-    { icon: Clock, label: "در حال پردازش", value: processing.toLocaleString("fa-IR") },
+    { icon: ShoppingBag, label: "Total orders", value: orders.length.toLocaleString("en-US") },
+    { icon: Clock, label: "Processing", value: processing.toLocaleString("en-US") },
     {
       icon: CheckCircle2,
-      label: "ارسال یا تحویل شده",
-      value: (shipped + delivered).toLocaleString("fa-IR"),
+      label: "Shipped or delivered",
+      value: (shipped + delivered).toLocaleString("en-US"),
     },
-    { icon: XCircle, label: "لغو شده", value: cancelled.toLocaleString("fa-IR") },
+    { icon: XCircle, label: "Cancelled", value: cancelled.toLocaleString("en-US") },
   ];
 
   return <StatsCardsGrid stats={stats} />;

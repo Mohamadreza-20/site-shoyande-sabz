@@ -69,7 +69,7 @@ export default function ProductModal({
     emptyValues: emptyForm,
     validate: (form) =>
       !form.title.trim() || !form.category.trim() || form.priceValue <= 0
-        ? "لطفاً عنوان، دسته‌بندی و قیمت را به‌درستی وارد کنید."
+        ? "Please enter a valid title, category and price."
         : null,
     submit: async (form) => {
       const payload: ProductInput = {
@@ -89,7 +89,7 @@ export default function ProductModal({
       if (isEdit && product) await updateProduct.mutateAsync({ id: product.id, input: payload });
       else await createProduct.mutateAsync(payload);
     },
-    successMessage: isEdit ? "محصول با موفقیت ویرایش شد." : "محصول جدید با موفقیت افزوده شد.",
+    successMessage: isEdit ? "Product updated." : "New product added.",
     onSaved,
   });
 
@@ -97,8 +97,8 @@ export default function ProductModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={isEdit ? "ویرایش محصول" : "افزودن محصول جدید"}
-      description="اطلاعات محصول را وارد کنید و ذخیره کنید."
+      title={isEdit ? "Edit product" : "Add new product"}
+      description="Enter the product details and save."
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
         <ProductFormFields
@@ -113,8 +113,8 @@ export default function ProductModal({
         <ModalFormActions
           onCancel={onClose}
           saving={busy}
-          savingLabel={uploadingImage ? "در حال آپلود تصویر..." : "در حال ذخیره..."}
-          submitLabel={isEdit ? "ذخیره تغییرات" : "افزودن محصول"}
+          savingLabel={uploadingImage ? "Uploading image..." : "Saving..."}
+          submitLabel={isEdit ? "Save changes" : "Add product"}
         />
       </form>
     </Modal>

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 import Link from "next/link";
+import MarkerLabel from "@/components/ui/MarkerLabel";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Product } from "@/features/products/types";
 import type { SortValue } from "@/features/products/product-sort";
@@ -66,9 +67,12 @@ export default function ProductsExplorer({
     }
   }, [search]);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    },
+    []
+  );
 
   const pushParams = useCallback(
     (mutate: (params: URLSearchParams) => void, resetPage = true) => {
@@ -143,27 +147,39 @@ export default function ProductsExplorer({
 
   return (
     <>
-
-      <section className="w-full bg-brand-100">
-        <div className="mx-auto flex w-full max-w-[1440px] flex-col items-end gap-4 px-6 py-10 text-right lg:px-[120px] lg:py-12">
-          <div className="flex items-center gap-2 text-sm text-muted">
-            <Link href="/" className="cursor-pointer transition hover:text-brand-500">
-              خانه
-            </Link>
-            <span>/</span>
-            <span className="font-bold text-brand-700">محصولات</span>
+      <section className="mx-auto w-full max-w-[1440px] px-4 pt-6 sm:px-6 lg:px-[60px]">
+        <div className="relative overflow-hidden rounded-[32px] bg-brand-100 px-6 py-10 lg:px-14 lg:py-14">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-10 -top-10 size-48 rounded-full bg-accent/70 lg:size-64"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-16 right-24 size-36 rounded-full bg-brand-400/20"
+          />
+          <div className="relative flex w-full flex-col items-start gap-4 text-left">
+            <nav
+              aria-label="Breadcrumb"
+              className="flex items-center gap-2 text-sm font-medium text-muted"
+            >
+              <Link href="/" className="transition hover:text-brand-700">
+                Home
+              </Link>
+              <span>/</span>
+              <span className="font-bold text-brand-700">Products</span>
+            </nav>
+            <h1 className="text-[34px] leading-tight lg:text-[52px]">
+              <MarkerLabel>Our products</MarkerLabel>
+            </h1>
+            <p className="max-w-[560px] text-[15px] leading-[1.7] text-muted lg:text-base">
+              Plant-based cleaners for every corner of your home. Browse the full range, then filter
+              by category or sort by price and rating.
+            </p>
           </div>
-          <h1 className="text-[28px] font-black text-brand-700 lg:text-[36px]">
-            همه محصولات ارگانیک
-          </h1>
-          <p className="max-w-[560px] text-[15px] leading-[1.7] text-muted">
-            مجموعه‌ای کامل از شوینده‌های گیاهی و طبیعی شست‌وشوی سبز را مرور کنید و بر اساس
-            دسته‌بندی، قیمت و محبوبیت فیلتر کنید.
-          </p>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1440px] px-6 py-10 lg:px-[120px] lg:py-14">
+      <section className="mx-auto w-full max-w-[1440px] px-4 py-10 sm:px-6 lg:px-[60px] lg:py-14">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <ProductsFilterSidebar
             allCategories={categories}

@@ -6,12 +6,7 @@ const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
 
 export const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
-export const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-] as const;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"] as const;
 
 type AllowedImageType = (typeof ALLOWED_IMAGE_TYPES)[number];
 
@@ -51,20 +46,23 @@ function hasValidImageSignature(bytes: Uint8Array, type: AllowedImageType): bool
   return false;
 }
 
-export function validateImage(file: File, bytes: Uint8Array): { ok: true } | { ok: false; message: string } {
+export function validateImage(
+  file: File,
+  bytes: Uint8Array
+): { ok: true } | { ok: false; message: string } {
   if (!isAllowedImageType(file.type)) {
-    return { ok: false, message: "لطفاً یک فایل تصویری معتبر انتخاب کنید." };
+    return { ok: false, message: "Please choose a valid image file." };
   }
   if (file.size > MAX_IMAGE_SIZE) {
-    return { ok: false, message: "حجم تصویر نباید بیشتر از ۲ مگابایت باشد." };
+    return { ok: false, message: "Image size must not exceed 2 MB." };
   }
   if (!hasValidImageSignature(bytes, file.type)) {
-    return { ok: false, message: "محتوای فایل با نوع تصویر انتخاب‌شده مطابقت ندارد." };
+    return { ok: false, message: "The file content does not match the selected image type." };
   }
   return { ok: true };
 }
 
-export function isCloudinaryConfigured(): boolean {
+function isCloudinaryConfigured(): boolean {
   return Boolean(CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET);
 }
 
@@ -109,10 +107,11 @@ export async function uploadImageToStorage(file: File): Promise<string> {
   body.append("upload_preset", uploadPreset);
   body.append("folder", "shooyande-sabz/products");
 
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-    { method: "POST", body, cache: "no-store" }
-  );
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+    method: "POST",
+    body,
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error("image-storage-upload-failed");

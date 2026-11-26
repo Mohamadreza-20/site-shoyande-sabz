@@ -5,8 +5,8 @@ import { getDashboardOverview } from "@/features/dashboard/api";
 import { getLatestOrders } from "@/features/orders/api";
 
 export const metadata: Metadata = {
-  title: "پنل کاربری | شست‌وشو سبز",
-  description: "داشبورد مدیریت فروشگاه محصولات شوینده ارگانیک شست‌وشو سبز",
+  title: "Admin dashboard",
+  description: "Manage products, orders, customers and reports for the Leafwash store.",
 };
 
 export default async function DashboardPage() {

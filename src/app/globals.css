@@ -1,42 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4faf7;
-  --foreground: #0d3e36;
+  --background: #f7f3e8;
+  --foreground: #10231b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Manrope Variable", ui-sans-serif, sans-serif;
 
-  --color-brand-50: #f4faf7;
-  --color-brand-100: #eaf5f0;
-  --color-brand-200: #d8ece6;
-  --color-brand-300: #d1fae5;
-  --color-brand-400: #10b981;
-  --color-brand-500: #047857;
-  --color-brand-600: #1a4033;
-  --color-brand-700: #0d3e36;
+  --color-brand-50: #f1f4e8;
+  --color-brand-100: #e6ecd8;
+  --color-brand-200: #e2dfcc;
+  --color-brand-300: #fbe9b7;
+  --color-brand-400: #256b4a;
+  --color-brand-500: #1b5a3e;
+  --color-brand-600: #14442f;
+  --color-brand-700: #0f2f22;
 
-  --color-ink: #111b18;
-  --color-muted: #4a615c;
-  --color-muted-light: #a7c7c3;
-  --color-line: #d8ece6;
+  --color-ink: #13231b;
+  --color-muted: #55655d;
+  --color-muted-light: #b9cbbd;
+  --color-line: #e2dfcc;
+  --color-accent: #f2b33d;
+  --color-accent-soft: #fbe9b7;
 
-  --color-admin-bg: #f4f7f5;
+  --color-admin-bg: #f6f6ef;
   --color-admin-surface: #ffffff;
-  --color-admin-sidebar: #0f2e23;
-  --color-admin-primary: #4c7c6d;
-  --color-admin-accent: #d9a752;
+  --color-admin-sidebar: #0f2f22;
+  --color-admin-primary: #256b4a;
+  --color-admin-accent: #f2b33d;
   --color-admin-ink: #1f2e26;
   --color-admin-muted: #607368;
   --color-admin-line: #d6e2de;
-  --color-admin-success: #22c55e;
+  --color-admin-success: #15803d;
   --color-admin-success-bg: #eefbf3;
-  --color-admin-warning: #d9a752;
+  --color-admin-warning: #92600a;
   --color-admin-warning-bg: #fffdf0;
-  --color-admin-danger: #ef4444;
+  --color-admin-danger: #b91c1c;
   --color-admin-danger-bg: #feeceb;
 }
 
@@ -48,5 +51,249 @@ button:not(:disabled),
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Vazirmatn Variable", Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.marker {
+  background: linear-gradient(
+    transparent 12%,
+    var(--color-accent) 12%,
+    var(--color-accent) 92%,
+    transparent 92%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0.05em 0.45em;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+[role="button"],
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500, #256b4a);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  button[class*="size-7"],
+  button[class*="size-8"],
+  button[class*="size-9"] {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.overflow-x-auto {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+  [role="region"][aria-label="Scrollable table"] {
+    overflow-x: visible;
+    padding: 0 0.75rem 0.75rem;
+  }
+  [role="region"][aria-label="Scrollable table"] table,
+  [role="region"][aria-label="Scrollable table"] tbody,
+  [role="region"][aria-label="Scrollable table"] tr,
+  [role="region"][aria-label="Scrollable table"] td {
+    display: block;
+    width: 100%;
+    min-width: 0 !important;
+  }
+  [role="region"][aria-label="Scrollable table"] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  [role="region"][aria-label="Scrollable table"] tbody tr {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0;
+    border: 1px solid rgb(0 0 0 / 0.08);
+    border-radius: 1rem;
+    background: #fff;
+  }
+  [role="region"][aria-label="Scrollable table"] td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem !important;
+    border: 0 !important;
+    text-align: right;
+  }
+  [role="region"][aria-label="Scrollable table"] td::before {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #607368;
+    text-align: left;
+  }
+  [role="region"][aria-label="Scrollable table"] td[colspan]::before {
+    display: none;
+  }
+
+  table[data-table="recent-orders"] td:nth-child(1)::before {
+    content: "ID";
+  }
+  table[data-table="recent-orders"] td:nth-child(2)::before {
+    content: "Customer";
+  }
+  table[data-table="recent-orders"] td:nth-child(3)::before {
+    content: "Products";
+  }
+  table[data-table="recent-orders"] td:nth-child(4)::before {
+    content: "Total";
+  }
+  table[data-table="recent-orders"] td:nth-child(5)::before {
+    content: "Order status";
+  }
+  table[data-table="account-orders"] td:nth-child(1)::before {
+    content: "Order ID";
+  }
+  table[data-table="account-orders"] td:nth-child(2)::before {
+    content: "Products";
+  }
+  table[data-table="account-orders"] td:nth-child(3)::before {
+    content: "Date";
+  }
+  table[data-table="account-orders"] td:nth-child(4)::before {
+    content: "Amount";
+  }
+  table[data-table="account-orders"] td:nth-child(5)::before {
+    content: "Status";
+  }
+  table[data-table="orders"] td:nth-child(1)::before {
+    content: "ID";
+  }
+  table[data-table="orders"] td:nth-child(2)::before {
+    content: "Customer";
+  }
+  table[data-table="orders"] td:nth-child(3)::before {
+    content: "Products";
+  }
+  table[data-table="orders"] td:nth-child(4)::before {
+    content: "Order date";
+  }
+  table[data-table="orders"] td:nth-child(5)::before {
+    content: "Total";
+  }
+  table[data-table="orders"] td:nth-child(6)::before {
+    content: "Order status";
+  }
+  table[data-table="orders"] td:nth-child(7)::before {
+    content: "Details";
+  }
+  table[data-table="users"] td:nth-child(1)::before {
+    content: "User";
+  }
+  table[data-table="users"] td:nth-child(2)::before {
+    content: "Phone";
+  }
+  table[data-table="users"] td:nth-child(3)::before {
+    content: "Role";
+  }
+  table[data-table="users"] td:nth-child(4)::before {
+    content: "Orders";
+  }
+  table[data-table="users"] td:nth-child(5)::before {
+    content: "Total spent";
+  }
+  table[data-table="users"] td:nth-child(6)::before {
+    content: "Joined";
+  }
+  table[data-table="users"] td:nth-child(7)::before {
+    content: "Status";
+  }
+  table[data-table="users"] td:nth-child(8)::before {
+    content: "Actions";
+  }
+  table[data-table="discounts"] td:nth-child(1)::before {
+    content: "Code";
+  }
+  table[data-table="discounts"] td:nth-child(2)::before {
+    content: "Value";
+  }
+  table[data-table="discounts"] td:nth-child(3)::before {
+    content: "Usage";
+  }
+  table[data-table="discounts"] td:nth-child(4)::before {
+    content: "Expiry";
+  }
+  table[data-table="discounts"] td:nth-child(5)::before {
+    content: "Status";
+  }
+  table[data-table="discounts"] td:nth-child(6)::before {
+    content: "Actions";
+  }
+  table[data-table="products"] td:nth-child(1)::before {
+    content: "Product";
+  }
+  table[data-table="products"] td:nth-child(2)::before {
+    content: "Category";
+  }
+  table[data-table="products"] td:nth-child(3)::before {
+    content: "Price";
+  }
+  table[data-table="products"] td:nth-child(4)::before {
+    content: "Rating";
+  }
+  table[data-table="products"] td:nth-child(5)::before {
+    content: "Stock";
+  }
+  table[data-table="products"] td:nth-child(6)::before {
+    content: "Status";
+  }
+  table[data-table="products"] td:nth-child(7)::before {
+    content: "Actions";
+  }
+  [role="region"][aria-label="Scrollable table"] td[colspan] {
+    display: block;
+    text-align: center;
+  }
 }

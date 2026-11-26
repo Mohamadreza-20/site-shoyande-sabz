@@ -15,10 +15,10 @@ function stripPasswords<T>(payload: T): T {
 }
 
 function errorMessage(status: number): string {
-  if (status === 401) return "لطفاً وارد شوید.";
-  if (status === 403) return "دسترسی مجاز نیست.";
-  if (status === 404) return "منبع موردنظر پیدا نشد.";
-  return `درخواست با خطای سرور (${status}) مواجه شد.`;
+  if (status === 401) return "Please sign in.";
+  if (status === 403) return "You are not authorized.";
+  if (status === 404) return "The requested resource was not found.";
+  return `The request failed with server error (${status}).`;
 }
 
 async function readBody(request: NextRequest): Promise<unknown> {
@@ -26,7 +26,16 @@ async function readBody(request: NextRequest): Promise<unknown> {
   return request.json().catch(() => undefined);
 }
 
+function hasUnsafeSegment(path: string[]): boolean {
+  return path.some(
+    (segment) => !segment || segment === "." || segment === ".." || /[/\\?#%]/.test(segment)
+  );
+}
+
 export async function proxyDataRequest(request: NextRequest, path: string[]) {
+  if (hasUnsafeSegment(path)) {
+    return NextResponse.json({ error: errorMessage(404) }, { status: 404 });
+  }
   const rawSession = (await auth()) as DataSession;
   const session = rawSession?.user?.active ? rawSession : null;
   const body = await readBody(request);
@@ -37,7 +46,7 @@ export async function proxyDataRequest(request: NextRequest, path: string[]) {
   }
 
   const query = decision.searchParams.toString();
-  const upstreamUrl = `${API_BASE}/${path.join("/")}${query ? `?${query}` : ""}`;
+  const upstreamUrl = `${API_BASE}/${path.map(encodeURIComponent).join("/")}${query ? `?${query}` : ""}`;
   const hasBody = body !== undefined;
 
   let upstreamRes: Response;
@@ -50,7 +59,7 @@ export async function proxyDataRequest(request: NextRequest, path: string[]) {
     });
   } catch {
     return NextResponse.json(
-      { error: 'سرور API در دسترس نیست. از اجرا بودن "npm run api" مطمئن شوید.' },
+      { error: 'The API server is unavailable. Make sure "npm run api" is running.' },
       { status: 503 }
     );
   }
@@ -67,12 +76,14 @@ export async function proxyDataRequest(request: NextRequest, path: string[]) {
           if (verifyRes.status === 404) {
             return NextResponse.json(true, { status: 200 });
           }
-        } catch {
-        }
+        } catch {}
       }
     }
 
-    return NextResponse.json({ error: errorMessage(upstreamRes.status) }, { status: upstreamRes.status });
+    return NextResponse.json(
+      { error: errorMessage(upstreamRes.status) },
+      { status: upstreamRes.status }
+    );
   }
 
   if (request.method === "DELETE") return NextResponse.json(true, { status: 200 });

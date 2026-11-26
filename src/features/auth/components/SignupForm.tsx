@@ -31,65 +31,72 @@ export default function SignupForm() {
       return;
     }
     reset({ name: "", email: "", phone: "", password: "", confirmPassword: "" });
-    toast.success(`ثبت‌نام شما با موفقیت انجام شد، ${result.user.name}!`);
+    toast.success(`Welcome to Leafwash, ${result.user.name}!`);
     router.push(readSafeCallbackUrl() ?? "/");
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5">
-      <div className="flex w-full flex-col gap-1.5 text-right">
-        <p className="text-lg font-bold text-admin-ink">ایجاد حساب کاربری جدید</p>
-        <p className="text-[13px] font-normal text-admin-muted">
-          به خانواده دوستداران طبیعت بپیوندید و تخفیف‌های ویژه دریافت کنید
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-3.5">
+      <div className="flex w-full flex-col gap-1.5 text-left">
+        <h1 className="font-display text-2xl font-extrabold text-brand-700">Create your account</h1>
+        <p className="text-[13px] font-normal text-muted">
+          Join the green-living community and unlock member-only offers.
         </p>
       </div>
 
       <TextField
-        label="نام و نام خانوادگی"
+        label="Full name"
         type="text"
         {...register("name")}
-        placeholder="مثال: سهراب سپهری"
+        autoComplete="name"
+        placeholder="e.g. Jane Rivera"
         error={errors.name?.message}
       />
 
       <TextField
-        label="پست الکترونیک (ایمیل)"
+        label="Email address"
         type="email"
         {...register("email")}
-        placeholder="sohrab@sabzineh.com"
+        autoComplete="email"
+        inputMode="email"
+        placeholder="you@example.com"
         error={errors.email?.message}
       />
 
       <TextField
-        label="شماره تلفن همراه"
+        label="Phone number"
         type="tel"
         {...register("phone")}
-        placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+        autoComplete="tel"
+        inputMode="tel"
+        placeholder="+1 555 123 4567"
         error={errors.phone?.message}
       />
 
       <PasswordField
-        label="رمز عبور"
+        label="Password"
         {...register("password")}
-        placeholder="حداقل ۶ کاراکتر"
+        autoComplete="new-password"
+        placeholder="At least 6 characters"
         error={errors.password?.message}
-        toggleAriaLabel="نمایش رمز عبور"
+        toggleAriaLabel="Show password"
       />
 
       <PasswordField
-        label="تکرار رمز عبور"
+        label="Confirm password"
         {...register("confirmPassword")}
-        placeholder="تکرار رمز عبور بالا"
+        autoComplete="new-password"
+        placeholder="Repeat your password"
         error={errors.confirmPassword?.message}
-        toggleAriaLabel="نمایش تکرار رمز عبور"
+        toggleAriaLabel="Show password confirmation"
       />
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="cursor-pointer w-full rounded-xl bg-admin-primary p-3.5 text-base font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-full bg-brand-700 p-3.5 text-base font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "در حال ثبت‌نام..." : "ثبت‌نام در سبزینه"}
+        {isSubmitting ? "Creating account..." : "Create account"}
       </button>
     </form>
   );

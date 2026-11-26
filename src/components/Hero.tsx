@@ -1,75 +1,94 @@
 "use client";
 
 import Link from "next/link";
-import SmartImage from "@/components/ui/SmartImage";
 import { motion } from "framer-motion";
-import { Check, Info, ShoppingCart } from "lucide-react";
+import { ArrowRight, Leaf } from "lucide-react";
+import DiscImage from "@/components/ui/DiscImage";
 import { images } from "@/lib/assets";
 import { heroContainer, heroItem, heroVisual } from "@/components/motion/variants";
 
 export default function Hero() {
   return (
-    <section className="w-full bg-brand-100">
-      <div className="mx-auto flex max-w-[1440px] flex-col-reverse items-center gap-12 px-6 py-16 lg:flex-row lg:items-center lg:justify-between lg:px-[120px] lg:py-20">
-
+    <section className="relative mx-auto w-full max-w-[1440px] overflow-hidden px-4 pb-16 pt-10 sm:px-6 lg:px-[60px] lg:pb-24 lg:pt-16">
+      <div className="flex flex-col items-start gap-12 lg:flex-row lg:items-center lg:justify-between">
         <motion.div
           initial="hidden"
           animate="show"
-          variants={heroVisual}
-          className="relative h-[320px] w-full max-w-[480px] overflow-hidden rounded-[40px] border border-brand-200 bg-white lg:h-[440px]"
+          variants={heroContainer}
+          className="flex w-full max-w-[640px] flex-col items-start gap-7"
         >
-          <SmartImage
-            src={images.hero}
-            alt="محصولات شوینده گیاهی شست‌وشو سبز"
-            fill
-            sizes="(max-width: 1024px) 100vw, 480px"
-            className="object-cover"
-            priority
-          />
-          <div className="absolute bottom-6 left-6 flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 shadow-[0px_4px_12px_0px_rgba(13,62,54,0.1)]">
-            <span className="text-[13px] font-bold text-brand-500">فرمولاسیون ۱۰۰٪ گیاهی</span>
-            <Check className="size-3.5 text-brand-500" strokeWidth={3} />
-          </div>
+          <motion.div variants={heroItem} className="flex items-center gap-3">
+            <span className="flex size-14 items-center justify-center rounded-full bg-brand-700">
+              <Leaf className="size-7 text-accent" strokeWidth={2} />
+            </span>
+            <p className="font-display text-3xl font-extrabold leading-none text-brand-700 sm:text-4xl">
+              LEAF
+              <br />
+              <span className="text-brand-400">WASH</span>
+            </p>
+          </motion.div>
+
+          <motion.h1 variants={heroItem} className="flex flex-col items-start gap-3">
+            <span className="font-display text-[34px] font-extrabold leading-[1.15] sm:text-5xl lg:text-[58px]">
+              <span className="marker">Plant-powered cleaning,</span>
+            </span>
+            <span className="font-display text-[34px] font-extrabold leading-[1.15] sm:text-5xl lg:text-[58px]">
+              <span className="marker">straight from organic farms.</span>
+            </span>
+          </motion.h1>
+
+          <motion.p
+            variants={heroItem}
+            className="max-w-[520px] text-[17px] leading-[1.75] text-muted"
+          >
+            Refillable dish, laundry and home cleaners made with coconut-derived surfactants and
+            steam-distilled essential oils. Tough on grease, gentle on everyone who lives with it.
+          </motion.p>
+
+          <motion.div variants={heroItem} className="flex flex-wrap gap-3">
+            <Link
+              href="/products"
+              className="flex items-center gap-2 rounded-full bg-brand-700 px-7 py-4 text-[15px] font-bold text-white transition hover:bg-brand-600"
+            >
+              Shop all products
+              <ArrowRight className="size-[18px]" strokeWidth={2.5} />
+            </Link>
+            <Link
+              href="/about"
+              className="flex items-center gap-2 rounded-full border-2 border-brand-700 px-7 py-[14px] text-[15px] font-bold text-brand-700 transition hover:bg-brand-700 hover:text-white"
+            >
+              Our story
+            </Link>
+          </motion.div>
         </motion.div>
 
         <motion.div
           initial="hidden"
           animate="show"
-          variants={heroContainer}
-          className="flex w-full max-w-[580px] flex-col items-end gap-6 text-right"
+          variants={heroVisual}
+          className="relative mx-auto aspect-square w-full max-w-[320px] shrink-0 sm:max-w-[420px] lg:mx-0 lg:max-w-[520px]"
         >
-          <motion.span
-            variants={heroItem}
-            className="rounded-full bg-brand-300 px-4 py-1.5 text-[13px] font-bold text-brand-500"
-          >
-            پاک‌کننده‌های سازگار با طبیعت
-          </motion.span>
-          <motion.h1
-            variants={heroItem}
-            className="text-[32px] font-black leading-[1.25] text-brand-700 sm:text-[40px] lg:text-[48px]"
-          >
-            خانه‌ای درخشان و سالم با قدرت شفابخش طبیعت
-          </motion.h1>
-          <motion.p variants={heroItem} className="text-[17px] leading-[1.7] text-muted">
-            با محصولات شوینده شست‌وشوی سبز، کثیفی‌ها را بدون استفاده از مواد شیمیایی خشن از بین
-            ببرید. غنی‌شده با عصاره‌های ارگانیک گیاهی و اسانس‌های طبیعی خوش‌بو.
-          </motion.p>
-          <motion.div variants={heroItem} className="flex flex-wrap gap-4">
-            <Link
-              href="/about"
-              className="cursor-pointer flex items-center gap-2 rounded-full bg-white border-[1.5px] border-brand-200 px-6 py-3.5 text-[15px] font-bold text-brand-700 transition hover:bg-brand-50"
-            >
-              <Info className="size-[18px]" strokeWidth={2} />
-              درباره فرمولاسیون ما
-            </Link>
-            <Link
-              href="/products"
-              className="cursor-pointer flex items-center gap-2 rounded-full bg-brand-400 px-6 py-3.5 text-[15px] font-bold text-white transition hover:bg-brand-500"
-            >
-              <ShoppingCart className="size-[18px]" strokeWidth={2} />
-              مشاهده تمام محصولات
-            </Link>
-          </motion.div>
+          <DiscImage
+            src={images.hero}
+            alt="Plant-based cleaning bottles with fresh lemons and herbs"
+            sizes="(max-width: 1024px) 420px, 520px"
+            className="size-full"
+            priority
+          />
+          <DiscImage
+            src={images.heroSecondary}
+            alt="Refill pouch beside a glass bottle"
+            sizes="200px"
+            tone="green"
+            className="absolute -right-2 bottom-4 size-[38%] sm:-right-6"
+          />
+          <span className="absolute right-4 top-2 flex size-24 rotate-12 flex-col items-center justify-center rounded-full bg-brand-700 text-center text-[11px] font-bold uppercase leading-tight tracking-wide text-accent sm:size-28">
+            100%
+            <br />
+            plant
+            <br />
+            based
+          </span>
         </motion.div>
       </div>
     </section>

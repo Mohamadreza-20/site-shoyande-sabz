@@ -1,6 +1,13 @@
 import { unstable_rethrow } from "next/navigation";
 import { apiFetch, apiMutate, createNetworkError, resolveBase, throwForResponse } from "@/lib/http";
-import type { Customer, CustomerEditInput, CustomerListQuery, CustomerListResult, CustomerProfileInput, UserRole } from "./types";
+import type {
+  Customer,
+  CustomerEditInput,
+  CustomerListQuery,
+  CustomerListResult,
+  CustomerProfileInput,
+  UserRole,
+} from "./types";
 
 export function getCustomers() {
   return apiFetch<Customer[]>("/customers");

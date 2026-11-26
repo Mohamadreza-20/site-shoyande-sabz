@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/cn";
 import { memo, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -72,10 +73,10 @@ function Pagination({
         type="button"
         onClick={() => handleChange(Math.max(currentPage - 1, 1))}
         disabled={disabled || currentPage === 1}
-        aria-label="صفحه قبلی"
-        className="cursor-pointer flex size-9 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-brand-100 disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Previous page"
+        className="flex size-10 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <ChevronRight className="size-4" strokeWidth={2} />
+        <ChevronLeft className="size-4" strokeWidth={2} />
       </button>
 
       {items.map((item, index) =>
@@ -83,7 +84,7 @@ function Pagination({
           <span
             key={`ellipsis-${index}`}
             aria-hidden="true"
-            className="flex size-9 items-center justify-center text-sm font-semibold text-muted"
+            className="flex size-10 items-center justify-center text-sm font-semibold text-muted"
           >
             {ELLIPSIS}
           </span>
@@ -94,13 +95,14 @@ function Pagination({
             onClick={() => handleChange(item)}
             disabled={disabled}
             aria-current={item === currentPage ? "page" : undefined}
-            className={`cursor-pointer flex size-9 items-center justify-center rounded-full text-sm font-semibold transition disabled:cursor-not-allowed ${
+            className={cn(
+              "flex size-10 items-center justify-center rounded-full text-sm font-semibold transition disabled:cursor-not-allowed",
               item === currentPage
-                ? "bg-brand-400 text-white"
-                : "border border-brand-200 bg-white text-ink hover:bg-brand-100"
-            }`}
+                ? "bg-brand-700 text-white"
+                : "border border-brand-200 bg-white text-ink hover:bg-accent-soft"
+            )}
           >
-            {item.toLocaleString("fa-IR")}
+            {item.toLocaleString("en-US")}
           </button>
         )
       )}
@@ -109,10 +111,10 @@ function Pagination({
         type="button"
         onClick={() => handleChange(Math.min(currentPage + 1, totalPages))}
         disabled={disabled || currentPage === totalPages}
-        aria-label="صفحه بعدی"
-        className="cursor-pointer flex size-9 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-brand-100 disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Next page"
+        className="flex size-10 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <ChevronLeft className="size-4" strokeWidth={2} />
+        <ChevronRight className="size-4" strokeWidth={2} />
       </button>
     </div>
   );

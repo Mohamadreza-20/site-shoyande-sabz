@@ -7,10 +7,10 @@ import { orderStatusStyles } from "@/features/orders/constants";
 import Modal from "@/components/ui/Modal";
 
 const rows: { key: keyof Order; label: string; icon: typeof User }[] = [
-  { key: "customer", label: "مشتری", icon: User },
-  { key: "products", label: "محصولات انتخاب شده", icon: Package },
-  { key: "date", label: "تاریخ ثبت", icon: Calendar },
-  { key: "amount", label: "مجموع مبلغ", icon: CreditCard },
+  { key: "customer", label: "Customer", icon: User },
+  { key: "products", label: "Products", icon: Package },
+  { key: "date", label: "Order date", icon: Calendar },
+  { key: "amount", label: "Total", icon: CreditCard },
 ];
 
 export default function OrderDetailsModal({
@@ -37,8 +37,8 @@ export default function OrderDetailsModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={`جزئیات سفارش ${displayOrder.orderNumber}`}
-      description="اطلاعات کامل این سفارش را در ادامه مشاهده می‌کنید."
+      title={`Order details ${displayOrder.orderNumber}`}
+      description="Full details of this order are shown below."
     >
       <div className="flex w-full flex-col gap-4">
         <div className="flex items-center justify-between rounded-2xl border border-admin-line bg-admin-bg px-4 py-3">
@@ -57,7 +57,7 @@ export default function OrderDetailsModal({
                 <Icon className="size-4" strokeWidth={2} />
                 {label}
               </div>
-              <p className="max-w-[65%] text-right text-sm font-semibold text-admin-ink">
+              <p className="max-w-[65%] text-left text-sm font-semibold text-admin-ink">
                 {displayOrder[key]}
               </p>
             </div>

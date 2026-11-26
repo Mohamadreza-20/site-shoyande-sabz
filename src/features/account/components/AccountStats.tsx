@@ -1,4 +1,5 @@
-import { Package, ShoppingBag, User as UserIcon } from "lucide-react";
+import { Package, ShoppingBag, Wallet } from "lucide-react";
+import { formatNumber } from "@/lib/money";
 
 export default function AccountStats({
   ordersCount,
@@ -10,9 +11,9 @@ export default function AccountStats({
   cartTotal: string;
 }) {
   const stats = [
-    { icon: Package, value: ordersCount.toLocaleString("fa-IR"), label: "سفارش‌های ثبت شده" },
-    { icon: ShoppingBag, value: cartItemsCount.toLocaleString("fa-IR"), label: "کالا در سبد خرید فعلی" },
-    { icon: UserIcon, value: cartTotal, label: "مبلغ سبد خرید فعلی" },
+    { icon: Package, value: formatNumber(ordersCount), label: "Orders placed" },
+    { icon: ShoppingBag, value: formatNumber(cartItemsCount), label: "Items in your cart" },
+    { icon: Wallet, value: cartTotal, label: "Current cart total" },
   ];
 
   return (
@@ -20,15 +21,15 @@ export default function AccountStats({
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-white p-5"
+          className="flex items-center gap-4 rounded-[28px] border border-brand-200 bg-white p-5"
         >
-          <div className="flex flex-col items-end gap-1 text-right">
-            <p className="text-lg font-bold text-brand-700">{stat.value}</p>
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent">
+            <stat.icon className="size-5 text-brand-700" strokeWidth={2} />
+          </span>
+          <div className="flex flex-col items-start gap-0.5 text-left">
+            <p className="font-display text-xl font-extrabold text-brand-700">{stat.value}</p>
             <p className="text-xs font-medium text-muted">{stat.label}</p>
           </div>
-          <span className="rounded-xl bg-brand-100 p-2.5">
-            <stat.icon className="size-5 text-brand-500" strokeWidth={2} />
-          </span>
         </div>
       ))}
     </div>

@@ -5,7 +5,11 @@ import { messageStatusStyles } from "@/features/messages/constants";
 
 function formatDate(iso: string) {
   try {
-    return new Date(iso).toLocaleDateString("fa-IR", { year: "numeric", month: "long", day: "numeric" });
+    return new Date(iso).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   } catch {
     return iso;
   }
@@ -25,12 +29,16 @@ export const MessageListItem = memo(function MessageListItem({
     <button
       type="button"
       onClick={() => onSelect(message.id)}
-      className={`cursor-pointer flex flex-col items-end gap-2 rounded-2xl border p-4 text-right transition ${
-        isSelected ? "border-admin-primary bg-admin-success-bg/40" : "border-transparent hover:bg-admin-bg"
+      className={`flex flex-col items-start gap-2 rounded-2xl border p-4 text-left transition ${
+        isSelected
+          ? "border-admin-primary bg-admin-success-bg/40"
+          : "border-transparent hover:bg-admin-bg"
       }`}
     >
       <div className="flex w-full items-center justify-between">
-        <span className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${status.bg} ${status.border} ${status.text}`}>
+        <span
+          className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${status.bg} ${status.border} ${status.text}`}
+        >
           {status.label}
         </span>
         <span className="flex items-center gap-1.5 text-sm font-bold text-admin-ink">

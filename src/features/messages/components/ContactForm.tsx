@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { storeInputClass } from "@/components/ui/FormField";
 import { apiErrorMessage } from "@/lib/http";
 import { useCreateMessage } from "@/features/messages/hooks";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -36,7 +37,7 @@ export default function ContactForm() {
         email: values.email.trim(),
         userId: user?.id,
         phone: user?.phone,
-        subject: values.subject.trim() || "بدون موضوع",
+        subject: values.subject.trim() || "No subject",
         message: values.message.trim(),
       });
     } catch (error) {
@@ -53,63 +54,67 @@ export default function ContactForm() {
       className="flex w-full flex-col gap-5 rounded-[24px] border border-brand-200 bg-white p-6 sm:p-8"
     >
       <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
-        <label className="flex w-full flex-col gap-2 text-right">
-          <span className="text-sm font-semibold text-ink">نام و نام خانوادگی</span>
+        <label className="flex w-full flex-col gap-2 text-left">
+          <span className="text-sm font-semibold text-ink">Full name</span>
           <input
             required
             type="text"
             {...register("name", { required: true })}
-            placeholder="نام شما"
-            className="w-full rounded-xl border border-brand-200 px-4 py-3 text-right text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand-400/30"
+            autoComplete="name"
+            placeholder="Your name"
+            className={storeInputClass}
           />
         </label>
 
-        <label className="flex w-full flex-col gap-2 text-right">
-          <span className="text-sm font-semibold text-ink">ایمیل</span>
+        <label className="flex w-full flex-col gap-2 text-left">
+          <span className="text-sm font-semibold text-ink">Email</span>
           <input
             required
             type="email"
             {...register("email", { required: true })}
+            autoComplete="email"
+            inputMode="email"
             placeholder="you@example.com"
-            className="w-full rounded-xl border border-brand-200 px-4 py-3 text-right text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand-400/30"
+            className={storeInputClass}
           />
         </label>
       </div>
 
-      <label className="flex w-full flex-col gap-2 text-right">
-        <span className="text-sm font-semibold text-ink">موضوع</span>
+      <label className="flex w-full flex-col gap-2 text-left">
+        <span className="text-sm font-semibold text-ink">Subject</span>
         <input
           type="text"
           {...register("subject")}
-          placeholder="موضوع پیام شما"
-          className="w-full rounded-xl border border-brand-200 px-4 py-3 text-right text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand-400/30"
+          autoComplete="off"
+          placeholder="Message subject"
+          className={storeInputClass}
         />
       </label>
 
-      <label className="flex w-full flex-col gap-2 text-right">
-        <span className="text-sm font-semibold text-ink">پیام شما</span>
+      <label className="flex w-full flex-col gap-2 text-left">
+        <span className="text-sm font-semibold text-ink">Your message</span>
         <textarea
           required
           rows={5}
           {...register("message", { required: true })}
-          placeholder="پیام خود را اینجا بنویسید..."
-          className="w-full resize-none rounded-xl border border-brand-200 px-4 py-3 text-right text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand-400/30"
+          placeholder="Write your message here..."
+          className={`${storeInputClass} resize-none`}
         />
       </label>
 
       <button
         type="submit"
         disabled={createMessage.isPending}
-        className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-xl bg-brand-400 p-3.5 text-base font-bold text-white transition hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-400 p-3.5 text-base font-bold text-white transition hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Send className="size-[18px]" strokeWidth={2} />
-        {createMessage.isPending ? "در حال ارسال..." : "ارسال پیام"}
+        {createMessage.isPending ? "Sending..." : "Send message"}
       </button>
 
       {submitted && (
         <p className="rounded-xl bg-brand-100 px-4 py-3 text-center text-sm font-semibold text-brand-500">
-          پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.
-          {user ? " می‌توانید وضعیت پاسخ را در پنل کاربری خود پیگیری کنید." : ""}
+          Your message was sent. We&apos;ll get back to you soon.
+          {user ? " You can follow the reply in your account." : ""}
         </p>
       )}
     </form>

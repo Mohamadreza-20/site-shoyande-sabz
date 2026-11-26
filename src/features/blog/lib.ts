@@ -2,39 +2,29 @@ import type { BlogPost } from "./data";
 
 export const BLOG_POSTS_PER_PAGE = 9;
 
-export const PERSIAN_MONTH_NAMES = [
-  "فروردین",
-  "اردیبهشت",
-  "خرداد",
-  "تیر",
-  "مرداد",
-  "شهریور",
-  "مهر",
-  "آبان",
-  "آذر",
-  "دی",
-  "بهمن",
-  "اسفند",
+export const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ] as const;
 
-const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+type BlogPostDate = { day: number; month: number; year: number };
 
-function toLatinDigits(value: string): string {
-  return value.replace(/[۰-۹]/g, (digit) => String(PERSIAN_DIGITS.indexOf(digit)));
-}
-
-export type BlogPostDate = { day: number; month: number; year: number };
-
-export function parseBlogDate(date: string): BlogPostDate | null {
-  const parts = date.trim().split(/\s+/);
-  if (parts.length < 3) return null;
-
-  const day = Number(toLatinDigits(parts[0]));
-  const monthIndex = PERSIAN_MONTH_NAMES.indexOf(parts[1] as (typeof PERSIAN_MONTH_NAMES)[number]);
-  const year = Number(toLatinDigits(parts[2]));
-
-  if (Number.isNaN(day) || monthIndex === -1 || Number.isNaN(year)) return null;
-  return { day, month: monthIndex + 1, year };
+function parseBlogDate(date: string): BlogPostDate | null {
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return null;
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(date);
+  if (iso) return { year: Number(iso[1]), month: Number(iso[2]), day: Number(iso[3]) };
+  return { year: parsed.getFullYear(), month: parsed.getMonth() + 1, day: parsed.getDate() };
 }
 
 export function getAvailableBlogYears(posts: BlogPost[]): number[] {

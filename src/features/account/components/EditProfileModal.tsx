@@ -8,6 +8,7 @@ import { customerProfileSchema, type CustomerProfileFormValues } from "@/feature
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { TextField } from "@/components/ui/FormField";
 import Modal from "@/components/ui/Modal";
+import { ModalFormActions } from "@/components/ui/ModalFormActions";
 
 export default function EditProfileModal({
   open,
@@ -40,7 +41,7 @@ export default function EditProfileModal({
     };
     const fieldErrors = getFieldErrors(customerProfileSchema, normalizedValues);
     if (Object.keys(fieldErrors).length > 0) {
-      toast.error("لطفاً اطلاعات را به‌درستی تکمیل کنید.");
+      toast.error("Please complete the form correctly.");
       return;
     }
     const result = await updateProfile(normalizedValues);
@@ -48,52 +49,40 @@ export default function EditProfileModal({
       toast.error(result.error);
       return;
     }
-    toast.success("اطلاعات حساب کاربری با موفقیت به‌روزرسانی شد.");
+    toast.success("Your profile was updated.");
     onClose();
   }
 
   if (!user) return null;
 
   return (
-    <Modal open={open} onClose={onClose} title="ویرایش اطلاعات حساب کاربری">
+    <Modal open={open} onClose={onClose} title="Edit profile">
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
         <TextField
-          label="نام و نام خانوادگی"
+          label="Full name"
           type="text"
           {...register("name")}
           error={formErrors.name?.message}
         />
         <TextField
-          label="ایمیل"
+          label="Email"
           type="email"
-          dir="ltr"
           {...register("email")}
           error={formErrors.email?.message}
         />
         <TextField
-          label="شماره تماس"
+          label="Phone number"
           type="text"
-          dir="ltr"
           {...register("phone")}
           error={formErrors.phone?.message}
         />
 
-        <div className="flex items-center justify-end gap-3 pt-1">
-          <button
-            type="button"
-            onClick={onClose}
-            className="cursor-pointer rounded-xl border border-brand-200 px-5 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
-          >
-            انصراف
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="cursor-pointer rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isSubmitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
-          </button>
-        </div>
+        <ModalFormActions
+          onCancel={onClose}
+          saving={isSubmitting}
+          savingLabel="Saving..."
+          submitLabel="Save changes"
+        />
       </form>
     </Modal>
   );

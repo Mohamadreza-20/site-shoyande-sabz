@@ -2,9 +2,13 @@ import type { MetadataRoute } from "next";
 import { getProducts } from "@/features/products/api";
 import { getBlogPosts } from "@/features/blog/api";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://shooyande-sabz.example.com";
+import { SITE_URL } from "@/lib/seo";
 
-const STATIC_ROUTES: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
+const STATIC_ROUTES: {
+  path: string;
+  priority: number;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+}[] = [
   { path: "", priority: 1, changeFrequency: "daily" },
   { path: "/products", priority: 0.9, changeFrequency: "daily" },
   { path: "/blog", priority: 0.7, changeFrequency: "daily" },

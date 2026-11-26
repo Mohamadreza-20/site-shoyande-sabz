@@ -9,9 +9,9 @@ import { ModalFormActions } from "@/components/ui/ModalFormActions";
 import Modal from "@/components/ui/Modal";
 
 const statusOptions: { value: DiscountStatus; label: string }[] = [
-  { value: "active", label: "فعال" },
-  { value: "scheduled", label: "زمان‌بندی‌شده" },
-  { value: "expired", label: "منقضی‌شده" },
+  { value: "active", label: "Active" },
+  { value: "scheduled", label: "Scheduled" },
+  { value: "expired", label: "Expired" },
 ];
 
 function emptyForm(): DiscountInput {
@@ -19,7 +19,7 @@ function emptyForm(): DiscountInput {
     code: "",
     type: "percent",
     value: "",
-    usage: "۰ از نامحدود",
+    usage: "0 of unlimited",
     expiry: "",
     status: "active",
   };
@@ -66,53 +66,49 @@ export default function DiscountModal({
         await createDiscount.mutateAsync(payload);
       }
     },
-    successMessage: isEdit
-      ? "کد تخفیف با موفقیت ویرایش شد."
-      : "کد تخفیف جدید با موفقیت ساخته شد.",
+    successMessage: isEdit ? "Discount code updated." : "New discount code created.",
     onSaved,
   });
 
   const type = watch("type");
 
   return (
-    <Modal open={open} onClose={onClose} title={isEdit ? "ویرایش کد تخفیف" : "ساخت کد تخفیف جدید"}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={isEdit ? "Edit discount code" : "Create new discount code"}
+    >
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
         <TextField
-          label="کد تخفیف"
+          label="Discount code"
           type="text"
           {...register("code", { required: true })}
-          placeholder="مثال: SABZ20"
-          dir="ltr"
+          placeholder="e.g. GREEN20"
         />
 
         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
-          <SelectField label="نوع تخفیف" {...register("type")}>
-            <option value="percent">درصدی</option>
-            <option value="fixed">مبلغ ثابت</option>
+          <SelectField label="Discount type" {...register("type")}>
+            <option value="percent">Percentage</option>
+            <option value="fixed">Fixed amount</option>
           </SelectField>
           <TextField
-            label="میزان تخفیف"
+            label="Discount value"
             type="text"
             {...register("value", { required: true })}
-            placeholder={type === "percent" ? "۲۰٪" : "۵۰,۰۰۰ تومان"}
+            placeholder={type === "percent" ? "20%" : "$5"}
           />
         </div>
 
-        <TextField
-          label="میزان استفاده"
-          type="text"
-          {...register("usage")}
-          placeholder="مثال: ۱۴۲ از ۵۰۰"
-        />
+        <TextField label="Usage" type="text" {...register("usage")} placeholder="e.g. 142 of 500" />
 
         <TextField
-          label="تاریخ انقضا"
+          label="Expiry date"
           type="text"
           {...register("expiry")}
-          placeholder="مثال: ۳۰ اسفند ۱۴۰۴ یا بدون انقضا"
+          placeholder="e.g. Mar 30, 2027 or No expiry"
         />
 
-        <SelectField label="وضعیت" {...register("status")}>
+        <SelectField label="Status" {...register("status")}>
           {statusOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
@@ -123,8 +119,8 @@ export default function DiscountModal({
         <ModalFormActions
           onCancel={onClose}
           saving={saving}
-          savingLabel="در حال ذخیره..."
-          submitLabel={isEdit ? "ذخیره تغییرات" : "ساخت کد تخفیف"}
+          savingLabel="Saving..."
+          submitLabel={isEdit ? "Save changes" : "Create code"}
         />
       </form>
     </Modal>

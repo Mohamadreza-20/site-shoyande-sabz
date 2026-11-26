@@ -1,13 +1,18 @@
+import { fetchedAtNow } from "@/lib/http";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHeader from "@/features/dashboard/components/PageHeader";
 import ProductsTable from "@/features/products/components/admin/ProductsTable";
 import ProductsStats from "@/features/products/components/admin/ProductsStats";
-import { getCategories, getProductsFiltered, getProductStockSummary } from "@/features/products/api";
+import {
+  getCategories,
+  getProductsFiltered,
+  getProductStockSummary,
+} from "@/features/products/api";
 
 export const metadata: Metadata = {
-  title: "محصولات | پنل مدیریت شست‌وشو سبز",
-  description: "مدیریت فهرست محصولات، موجودی و وضعیت انبار فروشگاه شست‌وشو سبز.",
+  title: "Products | Admin",
+  description: "Manage the product list, stock and inventory status.",
 };
 
 const ADMIN_PRODUCTS_PAGE_SIZE = 12;
@@ -18,13 +23,13 @@ export default async function AdminProductsPage() {
     getCategories(),
     getProductStockSummary(),
   ]);
-  const fetchedAt = Date.now();
+  const fetchedAt = fetchedAtNow();
 
   return (
     <>
       <PageHeader
-        title="مدیریت محصولات"
-        description="فهرست کامل محصولات فروشگاه، موجودی انبار و وضعیت فروش هر کالا"
+        title="Manage products"
+        description="The full product list with stock and sales status"
       />
 
       <ProductsStats initialStockSummary={stockSummary} fetchedAt={fetchedAt} />

@@ -11,6 +11,10 @@ export async function revalidateCategoriesCache() {
   updateTag(CACHE_TAGS.categories);
 }
 
+export async function revalidateReviewsCache() {
+  updateTag(CACHE_TAGS.reviews);
+}
+
 export async function revalidateBlogCache() {
   updateTag(CACHE_TAGS.blog);
 }

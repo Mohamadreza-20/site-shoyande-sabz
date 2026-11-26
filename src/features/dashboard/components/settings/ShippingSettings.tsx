@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import FieldLabel from "./FieldLabel";
+import { adminInputClass } from "@/components/ui/FormField";
 import Toggle from "./Toggle";
 
 type Props = {
@@ -8,22 +9,51 @@ type Props = {
   setSetting: (name: string, value: string | boolean) => void;
 };
 
-const inputClass = "w-full rounded-xl border border-admin-line px-4 py-3 text-right text-sm text-admin-ink placeholder:text-admin-muted focus:outline-none focus:ring-2 focus:ring-admin-primary/30";
-const FieldLabel = ({ children }: { children: ReactNode }) => <span className="text-sm font-semibold text-admin-ink">{children}</span>;
-
 export default function ShippingSettings({ getBoolean, setSetting }: Props) {
   return (
     <>
       <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-right"><FieldLabel>هزینه ارسال پیش‌فرض</FieldLabel><input name="defaultShippingCost" type="text" defaultValue="۳۵,۰۰۰ تومان" className={inputClass} /></label>
-        <label className="flex flex-col gap-2 text-right"><FieldLabel>حداقل خرید برای ارسال رایگان</FieldLabel><input name="freeShippingThreshold" type="text" defaultValue="۵۰۰,۰۰۰ تومان" className={inputClass} /></label>
-        <label className="flex flex-col gap-2 text-right"><FieldLabel>زمان تحویل تهران</FieldLabel><input name="tehranDeliveryTime" type="text" defaultValue="۱ تا ۲ روز کاری" className={inputClass} /></label>
-        <label className="flex flex-col gap-2 text-right"><FieldLabel>زمان تحویل سایر شهرها</FieldLabel><input name="otherDeliveryTime" type="text" defaultValue="۳ تا ۵ روز کاری" className={inputClass} /></label>
+        <label className="flex flex-col gap-2 text-left">
+          <FieldLabel>Default shipping cost</FieldLabel>
+          <input
+            name="defaultShippingCost"
+            type="text"
+            defaultValue="$6.00"
+            className={adminInputClass}
+          />
+        </label>
+        <label className="flex flex-col gap-2 text-left">
+          <FieldLabel>Free shipping minimum</FieldLabel>
+          <input
+            name="freeShippingThreshold"
+            type="text"
+            defaultValue="$50.00"
+            className={adminInputClass}
+          />
+        </label>
+        <label className="flex flex-col gap-2 text-left">
+          <FieldLabel>Local delivery time</FieldLabel>
+          <input
+            name="tehranDeliveryTime"
+            type="text"
+            defaultValue="1–2 business days"
+            className={adminInputClass}
+          />
+        </label>
+        <label className="flex flex-col gap-2 text-left">
+          <FieldLabel>Delivery time, other regions</FieldLabel>
+          <input
+            name="otherDeliveryTime"
+            type="text"
+            defaultValue="3–5 business days"
+            className={adminInputClass}
+          />
+        </label>
       </div>
       <Toggle
         name="freeShippingEnabled"
-        label="ارسال رایگان فعال باشد"
-        description="در صورت رسیدن سبد خرید به حداقل مبلغ تعیین‌شده، ارسال رایگان محاسبه شود"
+        label="Enable free shipping"
+        description="Shipping is free once the cart reaches the minimum amount"
         checked={getBoolean("freeShippingEnabled", true)}
         onChange={(value) => setSetting("freeShippingEnabled", value)}
       />

@@ -14,8 +14,12 @@ export function normalizeDiscountCode(value: string): string {
 export function parseDiscountAmount(discount: Discount, subtotal: number): number {
   if (subtotal <= 0 || discount.status !== "active") return 0;
 
-  const usageMatch = toEnglishDigits(discount.usage).match(/^(\d+)\s*از\s*(نامحدود|\d+)$/);
-  if (usageMatch && usageMatch[2] !== "نامحدود" && Number(usageMatch[1]) >= Number(usageMatch[2])) {
+  const usageMatch = toEnglishDigits(discount.usage).match(/^(\d+)\s+of\s+(unlimited|\d+)$/i);
+  if (
+    usageMatch &&
+    usageMatch[2].toLowerCase() !== "unlimited" &&
+    Number(usageMatch[1]) >= Number(usageMatch[2])
+  ) {
     return 0;
   }
 
@@ -31,6 +35,10 @@ export function parseDiscountAmount(discount: Discount, subtotal: number): numbe
 
 export function discountIsUsable(discount: Discount): boolean {
   if (discount.status !== "active") return false;
-  const usageMatch = toEnglishDigits(discount.usage).match(/^(\d+)\s*از\s*(نامحدود|\d+)$/);
-  return !(usageMatch && usageMatch[2] !== "نامحدود" && Number(usageMatch[1]) >= Number(usageMatch[2]));
+  const usageMatch = toEnglishDigits(discount.usage).match(/^(\d+)\s+of\s+(unlimited|\d+)$/i);
+  return !(
+    usageMatch &&
+    usageMatch[2].toLowerCase() !== "unlimited" &&
+    Number(usageMatch[1]) >= Number(usageMatch[2])
+  );
 }

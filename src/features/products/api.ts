@@ -11,7 +11,7 @@ import {
   CACHE_TAGS,
 } from "@/lib/http";
 import { unstable_rethrow } from "next/navigation";
-import { formatTomanAmount } from "@/lib/money";
+import { formatPrice } from "@/lib/money";
 import { logger } from "@/lib/logger";
 import type {
   Product,
@@ -92,7 +92,10 @@ export async function getProduct(id: string): Promise<Product | null> {
 }
 
 export function getProductReviews(productId: string) {
-  return apiFetch<Review[]>(`/reviews?productId=${productId}`);
+  return apiFetch<Review[]>(`/reviews?productId=${encodeURIComponent(productId)}`, {
+    revalidate: 30,
+    tags: [CACHE_TAGS.reviews],
+  });
 }
 
 export function getCategories() {
@@ -188,13 +191,13 @@ export function createProduct(input: ProductInput) {
     id: generateId("p"),
     title: input.title,
     category: input.category,
-    rating: "۰.۰",
+    rating: "0.0",
     ratingValue: 0,
     reviewCount: 0,
-    price: formatTomanAmount(input.priceValue),
+    price: formatPrice(input.priceValue),
     priceValue: input.priceValue,
     ...(input.oldPriceValue
-      ? { oldPrice: formatTomanAmount(input.oldPriceValue), oldPriceValue: input.oldPriceValue }
+      ? { oldPrice: formatPrice(input.oldPriceValue), oldPriceValue: input.oldPriceValue }
       : {}),
     image: input.image,
     description: input.description,
@@ -209,9 +212,9 @@ export function updateProduct(id: string, input: ProductInput) {
   const payload: Partial<Product> = {
     title: input.title,
     category: input.category,
-    price: formatTomanAmount(input.priceValue),
+    price: formatPrice(input.priceValue),
     priceValue: input.priceValue,
-    oldPrice: input.oldPriceValue ? formatTomanAmount(input.oldPriceValue) : undefined,
+    oldPrice: input.oldPriceValue ? formatPrice(input.oldPriceValue) : undefined,
     oldPriceValue: input.oldPriceValue,
     image: input.image,
     description: input.description,
@@ -248,7 +251,10 @@ async function recalculateProductRating(productId: string) {
     const rounded = Math.round(average * 10) / 10;
     await apiMutate(`/products/${productId}`, "PATCH", {
       ratingValue: rounded,
-      rating: rounded.toLocaleString("fa-IR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+      rating: rounded.toLocaleString("en-US", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
       reviewCount,
     });
   } catch (error) {
@@ -262,7 +268,10 @@ export async function createReview(input: {
   ratingValue: number;
   comment: string;
 }): Promise<Review> {
-  const review = await apiMutate<Review>("/reviews", "POST", { ...input, date: "همین حالا" });
+  const review = await apiMutate<Review>("/reviews", "POST", {
+    ...input,
+    date: new Date().toISOString(),
+  });
   await recalculateProductRating(input.productId);
   return review;
 }

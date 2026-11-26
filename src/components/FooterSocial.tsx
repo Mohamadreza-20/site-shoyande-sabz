@@ -28,9 +28,9 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const socialLinks = [
-  { Icon: InstagramIcon, label: "اینستاگرام" },
-  { Icon: TwitterIcon, label: "توییتر" },
-  { Icon: YoutubeIcon, label: "یوتیوب" },
+  { Icon: InstagramIcon, label: "Instagram" },
+  { Icon: TwitterIcon, label: "X (Twitter)" },
+  { Icon: YoutubeIcon, label: "YouTube" },
 ];
 
 export default function FooterSocial() {
@@ -40,7 +40,7 @@ export default function FooterSocial() {
         <ComingSoonButton
           key={label}
           ariaLabel={label}
-          className="flex size-9 items-center justify-center rounded-full bg-white/[0.06] transition hover:bg-white/20"
+          className="flex size-11 items-center justify-center rounded-full bg-white/[0.06] transition hover:bg-white/20"
         >
           <Icon className="size-4 text-white" strokeWidth={2} />
         </ComingSoonButton>

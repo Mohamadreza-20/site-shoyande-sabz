@@ -15,16 +15,23 @@ export default function MessagesStats({
 }) {
   const { data: messages = initialMessages } = useMessages(initialMessages, fetchedAt);
 
-  const counts = useMemo(() => ({
-    pending: messages.filter((m) => m.status === "pending").length,
-    answered: messages.filter((m) => m.status === "answered").length,
-  }), [messages]);
+  const counts = useMemo(
+    () => ({
+      pending: messages.filter((m) => m.status === "pending").length,
+      answered: messages.filter((m) => m.status === "answered").length,
+    }),
+    [messages]
+  );
   const { pending, answered } = counts;
 
   const stats = [
-    { icon: MessageSquare, label: "کل پیام‌ها", value: messages.length.toLocaleString("fa-IR") },
-    { icon: Clock, label: "در انتظار پاسخ", value: pending.toLocaleString("fa-IR") },
-    { icon: CheckCircle2, label: "پاسخ داده شده", value: answered.toLocaleString("fa-IR") },
+    {
+      icon: MessageSquare,
+      label: "Total messages",
+      value: messages.length.toLocaleString("en-US"),
+    },
+    { icon: Clock, label: "Awaiting reply", value: pending.toLocaleString("en-US") },
+    { icon: CheckCircle2, label: "Answered", value: answered.toLocaleString("en-US") },
   ];
 
   return <StatsCardsGrid stats={stats} columns={3} />;

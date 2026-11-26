@@ -2,7 +2,7 @@ import { apiFetch, apiMutate, generateId } from "@/lib/http";
 import type { Discount, DiscountInput } from "./types";
 
 export function getDiscounts() {
-  return apiFetch<Discount[]>("/discounts");
+  return apiFetch<Discount[]>("/discounts", { revalidate: 60 });
 }
 
 export function createDiscount(input: DiscountInput) {

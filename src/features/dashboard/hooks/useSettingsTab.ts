@@ -10,14 +10,20 @@ export function useSettingsTab() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const param = searchParams.get("tab");
-  const activeTab: SettingsTab = SETTINGS_TAB_VALUES.includes(param as SettingsTab) ? (param as SettingsTab) : "general";
+  const activeTab: SettingsTab = SETTINGS_TAB_VALUES.includes(param as SettingsTab)
+    ? (param as SettingsTab)
+    : "general";
 
-  const setActiveTab = useCallback((value: SettingsTab) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value === "general") params.delete("tab"); else params.set("tab", value);
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  }, [pathname, router, searchParams]);
+  const setActiveTab = useCallback(
+    (value: SettingsTab) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value === "general") params.delete("tab");
+      else params.set("tab", value);
+      const query = params.toString();
+      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
 
   return { activeTab, setActiveTab };
 }

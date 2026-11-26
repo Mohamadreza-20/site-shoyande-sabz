@@ -1,12 +1,17 @@
 export const images = {
-  hero: "/images/catalog/hero.svg",
-  product1: "/images/catalog/product-1.svg",
-  product2: "/images/catalog/product-2.svg",
-  product3: "/images/catalog/product-3.svg",
-  product4: "/images/catalog/product-4.svg",
-  ingredients: "/images/catalog/ingredients.svg",
-  blog1: "/images/catalog/blog-1.svg",
-  blog2: "/images/catalog/blog-2.svg",
-  blog3: "/images/catalog/blog-3.svg",
-  authBotanical: "/images/catalog/auth.svg",
+  hero: "/images/real/hero.jpg",
+  heroSecondary: "/images/real/hero-secondary.jpg",
+  ingredients: "/images/real/ingredients.jpg",
+  refill: "/images/real/refill.jpg",
+  about: "/images/real/about.jpg",
+  factory: "/images/real/factory.jpg",
+  contact: "/images/real/contact.jpg",
+  blog1: "/images/real/blog-1.jpg",
+  blog2: "/images/real/blog-2.jpg",
+  blog3: "/images/real/blog-3.jpg",
+  authBotanical: "/images/real/auth.jpg",
+  banner1: "/images/real/banner-1.jpg",
+  banner2: "/images/real/banner-2.jpg",
 } as const;
+
+export const PLACEHOLDER_IMAGE = "/images/catalog/placeholder.svg";

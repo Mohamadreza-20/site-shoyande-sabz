@@ -2,7 +2,7 @@ import { z } from "zod";
 import { logger } from "@/lib/logger";
 import type { CartItem } from "./types";
 
-export const STORAGE_KEY = "shooyande-sabz-cart";
+export const STORAGE_KEY = "shooyande-sabz-cart-v2-usd";
 
 const cartItemSchema = z.object({
   id: z.string().min(1),
@@ -28,20 +28,5 @@ export function parseStoredCart(raw: string | null): CartItem[] {
     return result.data;
   } catch {
     return [];
-  }
-}
-
-export function readStoredCart(): CartItem[] {
-  try {
-    return parseStoredCart(window.localStorage.getItem(STORAGE_KEY));
-  } catch {
-    return [];
-  }
-}
-
-export function persistCart(items: CartItem[]) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  } catch {
   }
 }

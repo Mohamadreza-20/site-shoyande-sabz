@@ -11,6 +11,4 @@ export type AuthUser = {
   wishlist: string[];
 };
 
-export type ActionResult =
-  | { ok: true; user: AuthUser }
-  | { ok: false; error: string };
+export type ActionResult = { ok: true; user: AuthUser } | { ok: false; error: string };

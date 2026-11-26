@@ -1,87 +1,61 @@
 import { z } from "zod";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const IRAN_PHONE_PATTERN = /^09\d{9}$/;
-
-const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
-const ARABIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+const PHONE_PATTERN = /^\+?[\d\s().-]{7,20}$/;
 
 export function normalizePersianDigits(value: string): string {
-  return value.replace(/[۰-۹٠-٩]/g, (char) => {
-    const persianIndex = PERSIAN_DIGITS.indexOf(char);
-    if (persianIndex !== -1) return String(persianIndex);
-    const arabicIndex = ARABIC_DIGITS.indexOf(char);
-    return arabicIndex !== -1 ? String(arabicIndex) : char;
+  return value.replace(/[\u06F0-\u06F9\u0660-\u0669]/g, (char) => {
+    const code = char.charCodeAt(0);
+    return String(code >= 0x06f0 ? code - 0x06f0 : code - 0x0660);
   });
 }
 
 export const loginSchema = z.object({
   identifier: z
     .string()
-    .min(1, "ایمیل یا شماره تلفن را وارد کنید")
+    .min(1, "Enter your email or phone number")
     .transform((val) => normalizePersianDigits(val.trim()))
     .refine(
-      (val) => EMAIL_PATTERN.test(val) || IRAN_PHONE_PATTERN.test(val),
-      "ایمیل یا شماره تلفن معتبر نیست"
+      (val) => EMAIL_PATTERN.test(val) || PHONE_PATTERN.test(val),
+      "Enter a valid email or phone number"
     ),
-  password: z.string().min(1, "رمز عبور را وارد کنید"),
+  password: z.string().min(1, "Enter your password"),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
 
+const signupFields = {
+  name: z
+    .string()
+    .trim()
+    .min(3, "Name must be at least 3 characters")
+    .max(60, "Name must be 60 characters or fewer"),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Enter your email")
+    .regex(EMAIL_PATTERN, "Enter a valid email address"),
+  phone: z
+    .string()
+    .min(1, "Enter your phone number")
+    .transform((val) => normalizePersianDigits(val.trim()))
+    .refine((val) => PHONE_PATTERN.test(val), "Enter a valid phone number (e.g. +1 555 123 4567)"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+};
+
 export const signupSchema = z
   .object({
-    name: z
-      .string()
-      .trim()
-      .min(3, "نام باید حداقل ۳ کاراکتر باشد")
-      .max(60, "نام نمی‌تواند بیشتر از ۶۰ کاراکتر باشد"),
-    email: z
-      .string()
-      .trim()
-      .min(1, "ایمیل را وارد کنید")
-      .regex(EMAIL_PATTERN, "ایمیل معتبر نیست"),
-    phone: z
-      .string()
-      .min(1, "شماره تلفن را وارد کنید")
-      .transform((val) => normalizePersianDigits(val.trim()))
-      .refine(
-        (val) => IRAN_PHONE_PATTERN.test(val),
-        "شماره تلفن معتبر نیست (مثال: ۰۹۱۲۳۴۵۶۷۸۹)"
-      ),
-    password: z.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد"),
-    confirmPassword: z.string().min(1, "تکرار رمز عبور را وارد کنید"),
+    ...signupFields,
+    confirmPassword: z.string().min(1, "Confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "رمز عبور و تکرار آن یکسان نیستند",
+    message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
 export type SignupInput = z.infer<typeof signupSchema>;
 
-export const signupApiSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(3, "نام باید حداقل ۳ کاراکتر باشد")
-    .max(60, "نام نمی‌تواند بیشتر از ۶۰ کاراکتر باشد"),
-  email: z
-    .string()
-    .trim()
-    .min(1, "ایمیل را وارد کنید")
-    .regex(EMAIL_PATTERN, "ایمیل معتبر نیست"),
-  phone: z
-    .string()
-    .min(1, "شماره تلفن را وارد کنید")
-    .transform((val) => normalizePersianDigits(val.trim()))
-    .refine(
-      (val) => IRAN_PHONE_PATTERN.test(val),
-      "شماره تلفن معتبر نیست (مثال: ۰۹۱۲۳۴۵۶۷۸۹)"
-    ),
-  password: z.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد"),
-});
-
-export type SignupApiInput = z.infer<typeof signupApiSchema>;
+export const signupApiSchema = z.object(signupFields);
 
 export function getFieldErrors<T>(
   schema: z.ZodType<T>,

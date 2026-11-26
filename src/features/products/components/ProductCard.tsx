@@ -7,14 +7,27 @@ import { Check, ShoppingCart, Star } from "lucide-react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { Product } from "@/features/products/types";
-import { useCartActions } from "@/features/cart/context/CartContext";
+import { useCartActions } from "@/features/cart/hooks/useCart";
+import { formatPrice } from "@/lib/money";
 import { gridItem } from "@/components/motion/variants";
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  priority,
+  headingAs: Heading = "h3",
+}: {
+  product: Product;
+  priority?: boolean;
+  headingAs?: "h2" | "h3";
+}) {
   const { addItem } = useCartActions();
   const [justAdded, setJustAdded] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const outOfStock = product.stock === 0;
+  const discountPercent =
+    product.oldPriceValue && product.oldPriceValue > product.priceValue
+      ? Math.round(((product.oldPriceValue - product.priceValue) / product.oldPriceValue) * 100)
+      : null;
 
   useEffect(() => {
     return () => {
@@ -29,13 +42,13 @@ function ProductCard({ product }: { product: Product }) {
       if (outOfStock) return;
       const added = addItem(product, 1);
       if (!added) {
-        toast.error("موجودی این محصول تمام شده است.");
+        toast.error("This product is out of stock.");
         return;
       }
       setJustAdded(true);
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setJustAdded(false), 1500);
-      toast.success(`${product.title} به سبد خرید افزوده شد.`);
+      toast.success(`${product.title} added to your cart.`);
     },
     [addItem, product, outOfStock]
   );
@@ -43,63 +56,85 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <motion.article
       variants={gridItem}
-      className="flex flex-col gap-4 rounded-3xl border border-brand-200 bg-white p-4 transition hover:shadow-md"
+      className="group flex h-full min-w-0 flex-col gap-3 rounded-[22px] border border-brand-200 bg-white p-3 shadow sm:gap-4 sm:rounded-[28px] sm:p-4 shadow-[0_8px_24px_rgba(15,47,34,0.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,47,34,0.12)]"
     >
-      <Link href={`/products/${product.id}`} prefetch className="cursor-pointer flex flex-col gap-4">
-        <div className="relative h-[220px] w-full overflow-hidden rounded-2xl bg-brand-50">
-          <ProductImage
-            src={product.image}
-            alt={product.title}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
-            quality={60}
-            className="object-cover"
+      <Link
+        href={`/products/${product.id}`}
+        prefetch
+        className="flex flex-1 flex-col items-center gap-3 sm:gap-4"
+      >
+        <div className="relative mt-1 aspect-square w-full max-w-[180px] sm:mt-2">
+          <span
+            aria-hidden
+            className="absolute -bottom-1 -left-1 size-[46%] rounded-full bg-accent transition-transform duration-300 group-hover:scale-125"
           />
+          <div className="relative size-full overflow-hidden rounded-full border-4 border-[#f7f3e8] sm:border-[5px] bg-brand-100 shadow-[0_10px_24px_rgba(15,47,34,0.15)]">
+            <ProductImage
+              src={product.image}
+              alt={product.title}
+              fill
+              sizes="180px"
+              quality={60}
+              priority={priority}
+              className="object-cover transition duration-500 group-hover:scale-110"
+            />
+          </div>
+          {discountPercent !== null && (
+            <span className="absolute -right-1 top-1 rounded-full bg-brand-700 px-2.5 py-1 text-[11px] font-extrabold text-accent shadow-md">
+              -{discountPercent}%
+            </span>
+          )}
         </div>
-        <div className="flex flex-col items-end gap-2 text-right">
-          <p className="text-xs font-medium text-brand-500">{product.category}</p>
-          <h3 className="line-clamp-1 w-full text-[16px] font-bold text-ink">
+        <div className="flex w-full flex-col items-start gap-2 text-left">
+          <p className="max-w-full truncate rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-bold text-brand-600 sm:text-xs">
+            {product.category}
+          </p>
+          <Heading className="line-clamp-2 min-h-[2.8em] w-full break-words font-display text-[14px] font-extrabold leading-[1.4] text-ink sm:text-[17px]">
             {product.title}
-          </h3>
+          </Heading>
           <div className="flex items-center gap-1">
-            <span className="text-xs text-muted">{product.rating}</span>
-            <Star className="size-3.5 fill-amber-400 text-amber-400" />
+            <Star className="size-3.5 fill-accent text-accent" />
+            <span className="text-xs font-bold text-ink">{product.ratingValue.toFixed(1)}</span>
+            <span className="text-xs text-muted">({product.reviewCount})</span>
           </div>
         </div>
       </Link>
-      <div className="flex flex-col items-end gap-2 text-right">
-        <hr className="w-full border-brand-200" />
-        <div className="flex w-full items-center justify-between">
-          <button
-            type="button"
-            onClick={handleAdd}
-            disabled={outOfStock}
-            aria-label={outOfStock ? "ناموجود" : "افزودن به سبد خرید"}
-            className={`cursor-pointer flex items-center justify-center gap-1.5 rounded-xl p-2.5 transition ${
-              outOfStock
-                ? "cursor-not-allowed bg-brand-100 text-muted"
-                : justAdded
-                  ? "bg-brand-500 text-white"
-                  : "bg-brand-300 hover:bg-brand-400 hover:text-white"
-            }`}
-          >
-            {outOfStock ? (
-              <span className="px-1 text-xs font-bold">ناموجود</span>
-            ) : justAdded ? (
-              <Check className="size-[18px]" strokeWidth={2.5} />
-            ) : (
-              <ShoppingCart className="size-[18px]" strokeWidth={2} />
-            )}
-          </button>
-          <div className="flex flex-col items-end gap-0.5">
-            {product.oldPrice && (
-              <span className="text-xs text-muted line-through">{product.oldPrice}</span>
-            )}
-            <span className="text-[16px] font-extrabold text-brand-700">
-              {product.price}
+      <div className="flex w-full flex-col gap-2 border-t border-brand-200 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:pt-4">
+        <div className="flex min-h-[2.6rem] flex-col items-start justify-end gap-0.5">
+          {product.oldPriceValue ? (
+            <span className="text-xs text-muted line-through">
+              {formatPrice(product.oldPriceValue)}
             </span>
-          </div>
+          ) : null}
+          <span className="font-display text-base font-extrabold text-brand-700 sm:text-lg">
+            {formatPrice(product.priceValue)}
+          </span>
         </div>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={outOfStock}
+          aria-label={outOfStock ? "Out of stock" : `Add ${product.title} to cart`}
+          className={`flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] sm:w-auto font-extrabold transition ${
+            outOfStock
+              ? "cursor-not-allowed bg-brand-100 text-muted"
+              : justAdded
+                ? "bg-brand-700 text-white"
+                : "bg-accent text-brand-700 hover:brightness-95"
+          }`}
+        >
+          {outOfStock ? (
+            "Sold out"
+          ) : justAdded ? (
+            <>
+              <Check className="size-4" strokeWidth={2.5} /> Added
+            </>
+          ) : (
+            <>
+              <ShoppingCart className="size-4" strokeWidth={2} /> Add
+            </>
+          )}
+        </button>
       </div>
     </motion.article>
   );

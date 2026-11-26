@@ -21,19 +21,17 @@ export default function RelatedProductsCarousel({ products }: { products: Produc
 
   return (
     <div className="w-full">
-
       <Swiper
-        dir="rtl"
         modules={[Autoplay, Navigation]}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
-        spaceBetween={16}
+        spaceBetween={12}
         loop={products.length > 1}
         autoplay={{ delay: AUTO_PLAY_MS, disableOnInteraction: false }}
-        slidesPerView={1}
+        slidesPerView={1.6}
         breakpoints={{
-          640: { slidesPerView: 2 },
+          640: { slidesPerView: 2.4, spaceBetween: 16 },
           1024: { slidesPerView: 4 },
         }}
       >
@@ -48,18 +46,18 @@ export default function RelatedProductsCarousel({ products }: { products: Produc
         <button
           type="button"
           onClick={() => swiperRef.current?.slidePrev()}
-          aria-label="محصولات قبلی"
-          className="cursor-pointer flex size-11 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-brand-100"
+          aria-label="Previous products"
+          className="flex size-11 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-accent-soft"
         >
-          <ChevronRight className="size-5" strokeWidth={2} />
+          <ChevronLeft className="size-5" strokeWidth={2} />
         </button>
         <button
           type="button"
           onClick={() => swiperRef.current?.slideNext()}
-          aria-label="محصولات بعدی"
-          className="cursor-pointer flex size-11 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-brand-100"
+          aria-label="Next products"
+          className="flex size-11 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-accent-soft"
         >
-          <ChevronLeft className="size-5" strokeWidth={2} />
+          <ChevronRight className="size-5" strokeWidth={2} />
         </button>
       </div>
     </div>

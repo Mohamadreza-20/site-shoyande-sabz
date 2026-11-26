@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 import { API_BASE } from "@/lib/http";
 
 type ContactBody = {
   name?: string;
   email?: string;
-  userId?: string;
   phone?: string;
   subject?: string;
   message?: string;
@@ -15,18 +15,16 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "بدنه درخواست نامعتبر است." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
+  const session = await auth();
   const name = body.name?.trim();
   const email = body.email?.trim();
   const message = body.message?.trim();
 
   if (!name || !email || !message) {
-    return NextResponse.json(
-      { error: "نام، ایمیل و متن پیام الزامی است." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
   }
 
   let apiRes: Response;
@@ -37,9 +35,9 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         name,
         email,
-        userId: body.userId,
+        userId: session?.user?.id,
         phone: body.phone,
-        subject: body.subject?.trim() || "بدون موضوع",
+        subject: body.subject?.trim() || "No subject",
         message,
         date: new Date().toISOString(),
         status: "pending",
@@ -49,13 +47,13 @@ export async function POST(request: Request) {
     });
   } catch {
     return NextResponse.json(
-      { error: 'سرور API در دسترس نیست. از اجرا بودن "npm run api" مطمئن شوید.' },
+      { error: 'The API server is unavailable. Make sure "npm run api" is running.' },
       { status: 503 }
     );
   }
 
   if (!apiRes.ok) {
-    return NextResponse.json({ error: "ارسال پیام با خطا مواجه شد." }, { status: apiRes.status });
+    return NextResponse.json({ error: "Failed to send your message." }, { status: apiRes.status });
   }
 
   const data = await apiRes.json();

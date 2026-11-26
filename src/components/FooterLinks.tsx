@@ -1,36 +1,32 @@
 import Link from "next/link";
-import ComingSoonButton from "@/components/ComingSoonButton";
 import { footerLinks } from "@/lib/site-content";
 
-const footerLinkRoutes: Record<string, string> = {
-  "درباره ما": "/about",
-  "تماس با ما": "/contact",
+type FooterLink = (typeof footerLinks.services | typeof footerLinks.company)[number];
+
+const footerLinkRoutes: Record<FooterLink, string> = {
+  "About us": "/about",
+  "Contact us": "/contact",
+  "Help center": "/contact",
+  "Shipping & payment": "/contact#faq",
+  "Returns policy": "/contact#faq",
+  FAQ: "/contact#faq",
+  "Our farms": "/about",
+  "Sustainability report": "/about",
 };
 
-function FooterLinkColumn({ title, links }: { title: string; links: readonly string[] }) {
+function FooterLinkColumn({ title, links }: { title: string; links: readonly FooterLink[] }) {
   return (
-    <div className="flex flex-col items-end gap-3">
-      <h4 className="text-[16px] font-bold text-white">{title}</h4>
+    <div className="flex flex-col items-start gap-3">
+      <h2 className="font-display text-base font-bold text-accent">{title}</h2>
       {links.map((link) => {
-        const route = footerLinkRoutes[link];
-        if (route) {
-          return (
-            <Link
-              key={link}
-              href={route}
-              className="cursor-pointer text-sm text-muted-light transition hover:text-white"
-            >
-              {link}
-            </Link>
-          );
-        }
         return (
-          <ComingSoonButton
+          <Link
             key={link}
-            className="text-sm text-muted-light transition hover:text-white"
+            href={footerLinkRoutes[link]}
+            className="-my-1.5 py-2.5 text-left text-sm text-muted-light transition hover:text-white"
           >
             {link}
-          </ComingSoonButton>
+          </Link>
         );
       })}
     </div>
@@ -39,9 +35,9 @@ function FooterLinkColumn({ title, links }: { title: string; links: readonly str
 
 export default function FooterLinks() {
   return (
-    <div className="flex w-full flex-col items-end gap-8 whitespace-nowrap sm:w-auto sm:flex-row sm:items-start sm:gap-16">
-      <FooterLinkColumn title="خدمات مشتریان" links={footerLinks.services} />
-      <FooterLinkColumn title="شست‌وشو سبز" links={footerLinks.company} />
+    <div className="grid grid-cols-2 gap-8 lg:col-span-1">
+      <FooterLinkColumn title="Customer care" links={footerLinks.services} />
+      <FooterLinkColumn title="Leafwash" links={footerLinks.company} />
     </div>
   );
 }

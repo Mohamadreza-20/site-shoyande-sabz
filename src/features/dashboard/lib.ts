@@ -1,4 +1,4 @@
-import { parseTomanAmount, formatTomanAmount } from "@/lib/money";
+import { formatNumber, formatPrice, parsePriceAmount } from "@/lib/money";
 import { getProductStockStatus } from "@/features/products/lib";
 import type { Product } from "@/features/products/types";
 import type { Order } from "@/features/orders/types";
@@ -6,15 +6,15 @@ import type { Customer } from "@/features/customers/types";
 import type { StatCard } from "./types";
 
 function trend(recent: number, older: number): string {
-  if (older === 0) return recent > 0 ? "+۱۰۰٪" : "۰٪";
+  if (older === 0) return recent > 0 ? "+100%" : "0%";
   const pct = Math.round(((recent - older) / older) * 100);
   const sign = pct >= 0 ? "+" : "";
-  return `${sign}${pct.toLocaleString("fa-IR")}٪`;
+  return `${sign}${formatNumber(pct)}%`;
 }
 
 function ratio(part: number, whole: number): string {
-  if (whole === 0) return "۰٪";
-  return `${Math.round((part / whole) * 100).toLocaleString("fa-IR")}٪`;
+  if (whole === 0) return "0%";
+  return `${formatNumber(Math.round((part / whole) * 100))}%`;
 }
 
 export function buildStatCards(
@@ -26,8 +26,8 @@ export function buildStatCards(
   const recentOrders = orders.slice(0, mid);
   const olderOrders = orders.slice(mid);
 
-  const recentRevenue = recentOrders.reduce((sum, o) => sum + parseTomanAmount(o.amount), 0);
-  const olderRevenue = olderOrders.reduce((sum, o) => sum + parseTomanAmount(o.amount), 0);
+  const recentRevenue = recentOrders.reduce((sum, o) => sum + parsePriceAmount(o.amount), 0);
+  const olderRevenue = olderOrders.reduce((sum, o) => sum + parsePriceAmount(o.amount), 0);
   const totalRevenue = recentRevenue + olderRevenue;
 
   const activeCustomers = customers.filter((c) => c.status === "active").length;
@@ -38,31 +38,31 @@ export function buildStatCards(
   return [
     {
       icon: "box",
-      title: "تعداد کل محصولات",
-      value: `${products.length.toLocaleString("fa-IR")} عدد`,
+      title: "Total products",
+      value: `${formatNumber(products.length)} items`,
       trendPct: ratio(inStockProducts, products.length),
-      trendLabel: "موجود در انبار",
+      trendLabel: "in stock",
     },
     {
       icon: "userPlus",
-      title: "کل مشتریان",
-      value: `${customers.length.toLocaleString("fa-IR")} نفر`,
+      title: "Total customers",
+      value: `${formatNumber(customers.length)} people`,
       trendPct: ratio(activeCustomers, customers.length),
-      trendLabel: "فعال هستند",
+      trendLabel: "are active",
     },
     {
       icon: "shoppingCart",
-      title: "سفارشات ثبت‌شده",
-      value: `${orders.length.toLocaleString("fa-IR")} سفارش`,
+      title: "Orders placed",
+      value: `${formatNumber(orders.length)} orders`,
       trendPct: trend(recentOrders.length, olderOrders.length),
-      trendLabel: "نسبت به نیمه قبل",
+      trendLabel: "vs. previous half",
     },
     {
       icon: "trendingUp",
-      title: "درآمد کل سفارشات",
-      value: formatTomanAmount(totalRevenue),
+      title: "Total order revenue",
+      value: formatPrice(totalRevenue),
       trendPct: trend(recentRevenue, olderRevenue),
-      trendLabel: "نسبت به نیمه قبل",
+      trendLabel: "vs. previous half",
     },
   ];
 }
@@ -71,7 +71,7 @@ export function buildRecentSalesTrend(orders: Order[]): { day: string; value: nu
   const chronological = [...orders].reverse();
   const recent = chronological.slice(-7);
   return recent.map((o) => ({
-    day: o.date.split(" ").slice(0, 2).join(" "),
-    value: parseTomanAmount(o.amount),
+    day: o.date.replace(/,.*$/, ""),
+    value: parsePriceAmount(o.amount),
   }));
 }

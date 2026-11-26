@@ -14,9 +14,9 @@ export default function ComingSoonButton({
   return (
     <button
       type="button"
-      onClick={() => toast.info("این بخش هنوز راه‌اندازی نشده است.")}
+      onClick={() => toast.info("This section is not available yet.")}
       aria-label={ariaLabel}
-      className={`cursor-pointer ${className}`}
+      className={className}
     >
       {children}
     </button>

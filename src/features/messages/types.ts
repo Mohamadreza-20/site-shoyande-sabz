@@ -1,4 +1,4 @@
-export type MessageStatus = "pending" | "answered";
+type MessageStatus = "pending" | "answered";
 
 export type ContactMessage = {
   id: string;

@@ -19,10 +19,10 @@ export default function UsersStats({
   const totalOrders = customers.reduce((sum, c) => sum + c.ordersCount, 0);
 
   const stats = [
-    { icon: UsersIcon, label: "کل کاربران", value: customers.length.toLocaleString("fa-IR") },
-    { icon: UserCheck, label: "کاربران فعال", value: active.toLocaleString("fa-IR") },
-    { icon: UserMinus, label: "کاربران غیرفعال", value: inactive.toLocaleString("fa-IR") },
-    { icon: Wallet, label: "مجموع سفارشات", value: `${totalOrders.toLocaleString("fa-IR")} سفارش` },
+    { icon: UsersIcon, label: "Total users", value: customers.length.toLocaleString("en-US") },
+    { icon: UserCheck, label: "Active users", value: active.toLocaleString("en-US") },
+    { icon: UserMinus, label: "Inactive users", value: inactive.toLocaleString("en-US") },
+    { icon: Wallet, label: "Total orders", value: `${totalOrders.toLocaleString("en-US")} orders` },
   ];
 
   return <StatsCardsGrid stats={stats} />;

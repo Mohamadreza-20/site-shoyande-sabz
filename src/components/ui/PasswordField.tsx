@@ -2,11 +2,12 @@
 
 import { useState, type InputHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { FieldError, fieldInputClass } from "@/components/ui/FormField";
 
 export function PasswordField({
   label,
   error,
-  toggleAriaLabel = "نمایش رمز عبور",
+  toggleAriaLabel = "Show password",
   ...inputProps
 }: {
   label: string;
@@ -16,23 +17,21 @@ export function PasswordField({
   const [visible, setVisible] = useState(false);
 
   return (
-    <label className="flex w-full flex-col gap-2 text-right">
+    <label className="flex w-full flex-col gap-1.5 text-left">
       <span className="text-sm font-semibold text-admin-ink">{label}</span>
-      <span
-        className={`flex w-full items-center rounded-xl border px-4 py-3 ${
-          error ? "border-admin-danger" : "border-admin-line"
-        }`}
-      >
+      <span className="relative flex w-full">
         <input
+          aria-invalid={Boolean(error)}
           {...inputProps}
           type={visible ? "text" : "password"}
-          className="w-full flex-1 text-right text-sm text-admin-ink placeholder:text-admin-muted focus:outline-none"
+          className={`${fieldInputClass(Boolean(error))} pr-11`}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
-          aria-label={toggleAriaLabel}
-          className="cursor-pointer shrink-0 text-admin-muted"
+          aria-label={visible ? toggleAriaLabel.replace("Show", "Hide") : toggleAriaLabel}
+          aria-pressed={visible}
+          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-xl text-admin-muted transition-colors hover:text-admin-ink"
         >
           {visible ? (
             <EyeOff className="size-[18px]" strokeWidth={2} />
@@ -41,7 +40,7 @@ export function PasswordField({
           )}
         </button>
       </span>
-      {error && <span className="text-xs font-medium text-admin-danger">{error}</span>}
+      <FieldError message={error} />
     </label>
   );
 }

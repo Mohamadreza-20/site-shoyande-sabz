@@ -1,15 +1,11 @@
-
 import type { ChangeEvent, RefObject } from "react";
-import type {
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import type { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { toast } from "sonner";
 import ProductImage from "../../ProductImage";
 import type { Category, ProductInput } from "@/features/products/types";
-import { TextField, TextAreaField } from "@/components/ui/FormField";
+import { TextField, TextAreaField, adminInputClass } from "@/components/ui/FormField";
 import { uploadImage } from "@/lib/http";
+import { pickImageFile } from "@/lib/pickImageFile";
 
 type ProductFormValues = Omit<ProductInput, "highlights"> & { highlightsText: string };
 
@@ -33,26 +29,16 @@ export default function ProductFormFields({
   setUploadingImage,
 }: Props) {
   async function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
+    const file = pickImageFile(event);
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      event.target.value = "";
-      toast.error("لطفاً یک فایل تصویری معتبر انتخاب کنید.");
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      event.target.value = "";
-      toast.error("حجم تصویر نباید بیشتر از ۲ مگابایت باشد.");
-      return;
-    }
 
     setUploadingImage(true);
     try {
       const imageUrl = await uploadImage(file);
       setValue("image", imageUrl, { shouldDirty: true, shouldValidate: true });
-      toast.success("تصویر با موفقیت آپلود شد.");
+      toast.success("Image uploaded.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "آپلود تصویر انجام نشد.");
+      toast.error(error instanceof Error ? error.message : "Image upload failed.");
     } finally {
       setUploadingImage(false);
       event.target.value = "";
@@ -62,20 +48,20 @@ export default function ProductFormFields({
   return (
     <>
       <TextField
-        label="عنوان محصول"
+        label="Product title"
         type="text"
         {...register("title", { required: true })}
-        placeholder="مثال: مایع ظرفشویی با عصاره لیمو"
+        placeholder="e.g. Lemon Dish Soap"
       />
 
-      <label className="flex w-full flex-col gap-1.5 text-right">
-        <span className="text-sm font-semibold text-admin-ink">دسته‌بندی</span>
+      <label className="flex w-full flex-col gap-1.5 text-left">
+        <span className="text-sm font-semibold text-admin-ink">Category</span>
         <input
           type="text"
           {...register("category", { required: true })}
-          placeholder="مثال: مایع ظرفشویی"
+          placeholder="e.g. Dish Soap"
           list="product-category-options"
-          className="w-full rounded-xl border border-admin-line px-4 py-2.5 text-right text-sm text-admin-ink placeholder:text-admin-muted focus:outline-none focus:ring-2 focus:ring-admin-primary/30"
+          className={adminInputClass}
         />
         <datalist id="product-category-options">
           {categories.map((category) => (
@@ -86,31 +72,32 @@ export default function ProductFormFields({
 
       <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
         <TextField
-          label="قیمت (تومان)"
+          label="Price (USD)"
           type="number"
           min={0}
           {...register("priceValue", { valueAsNumber: true, required: true, min: 1 })}
         />
         <TextField
-          label="قیمت قبل از تخفیف"
+          label="Price before discount"
           type="number"
           min={0}
           {...register("oldPriceValue", {
-            setValueAs: (value) => (value === "" || value === undefined ? undefined : Number(value)),
+            setValueAs: (value) =>
+              value === "" || value === undefined ? undefined : Number(value),
           })}
-          placeholder="اختیاری"
+          placeholder="Optional"
         />
       </div>
 
       <TextField
-        label="موجودی انبار"
+        label="Stock"
         type="number"
         min={0}
         {...register("stock", { valueAsNumber: true })}
       />
 
-      <label className="flex w-full flex-col gap-2 text-right">
-        <span className="text-sm font-semibold text-admin-ink">تصویر محصول</span>
+      <label className="flex w-full flex-col gap-2 text-left">
+        <span className="text-sm font-semibold text-admin-ink">Product image</span>
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
@@ -118,19 +105,19 @@ export default function ProductFormFields({
             disabled={busy}
             className="rounded-xl border border-admin-line bg-white px-4 py-2 text-sm font-semibold text-admin-ink transition hover:bg-admin-bg disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {watch("image") ? "تغییر تصویر" : "انتخاب تصویر"}
+            {watch("image") ? "Change image" : "Choose image"}
           </button>
           {watch("image") ? (
             <button
               type="button"
               onClick={() => {
                 setValue("image", "", { shouldDirty: true, shouldValidate: true });
-                toast.success("تصویر محصول حذف شد.");
+                toast.success("Product image removed.");
               }}
               disabled={busy}
               className="rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              حذف تصویر
+              Remove image
             </button>
           ) : null}
         </div>
@@ -141,14 +128,12 @@ export default function ProductFormFields({
           onChange={handleImageChange}
           className="sr-only"
         />
-        <span className="text-xs text-admin-muted">
-          حداکثر ۲ مگابایت · فایل‌های JPG، PNG، WebP یا GIF
-        </span>
+        <span className="text-xs text-admin-muted">Max 2 MB · JPG, PNG, WebP or GIF</span>
         {watch("image") ? (
           <div className="relative mt-1 h-36 w-full overflow-hidden rounded-2xl border border-admin-line bg-admin-bg">
             <ProductImage
               src={watch("image")}
-              alt="پیش‌نمایش تصویر محصول"
+              alt="Product image preview"
               fill
               sizes="(max-width: 768px) 100vw, 720px"
               className="object-contain"
@@ -157,14 +142,14 @@ export default function ProductFormFields({
         ) : null}
       </label>
 
-      <TextAreaField label="توضیحات" rows={3} {...register("description")} />
+      <TextAreaField label="Description" rows={3} {...register("description")} />
       <TextAreaField
-        label="ویژگی‌های کلیدی"
+        label="Key features"
         rows={3}
-        placeholder="هر ویژگی را در یک خط بنویسید"
+        placeholder="One feature per line"
         {...register("highlightsText")}
       />
-      <TextAreaField label="طریقه استفاده" rows={2} {...register("usage")} />
+      <TextAreaField label="How to use" rows={2} {...register("usage")} />
     </>
   );
 }

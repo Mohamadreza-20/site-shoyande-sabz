@@ -1,16 +1,32 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type {
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from "react";
+
+const inputBase =
+  "w-full rounded-xl border text-left placeholder:text-admin-muted focus:outline-none focus:ring-2 transition-shadow";
 
 export function fieldInputClass(hasError?: boolean) {
-  return `w-full rounded-xl border px-4 py-2.5 text-right text-sm text-admin-ink placeholder:text-admin-muted focus:outline-none focus:ring-2 ${
-    hasError
-      ? "border-admin-danger focus:ring-admin-danger/30"
-      : "border-admin-line focus:ring-admin-primary/30"
-  }`;
+  const tone = hasError
+    ? "border-admin-danger focus:ring-admin-danger/30"
+    : "border-admin-line focus:ring-admin-primary/30";
+  return `${inputBase} px-4 py-2.5 text-base text-admin-ink sm:text-sm ${tone}`;
 }
 
-function FieldError({ message }: { message?: string }) {
+export const adminInputClass = `${inputBase} border-admin-line bg-white px-4 py-3 text-sm text-admin-ink focus:ring-admin-primary/30`;
+
+export const storeInputClass =
+  "w-full rounded-xl border border-brand-200 px-4 py-3 text-left text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand-400/30";
+
+export function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <span className="text-xs font-medium text-admin-danger">{message}</span>;
+  return (
+    <span role="alert" className="text-xs font-medium text-admin-danger">
+      {message}
+    </span>
+  );
 }
 
 type FieldWrapperProps = {
@@ -21,7 +37,7 @@ type FieldWrapperProps = {
 
 function FieldWrapper({ label, error, children }: FieldWrapperProps) {
   return (
-    <label className="flex w-full flex-col gap-1.5 text-right">
+    <label className="flex w-full flex-col gap-1.5 text-left">
       <span className="text-sm font-semibold text-admin-ink">{label}</span>
       {children}
       <FieldError message={error} />
@@ -38,6 +54,7 @@ export function TextField({
   return (
     <FieldWrapper label={label} error={error}>
       <input
+        aria-invalid={Boolean(error)}
         {...inputProps}
         className={className ?? fieldInputClass(Boolean(error))}
       />
@@ -53,10 +70,7 @@ export function TextAreaField({
 }: FieldWrapperProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <FieldWrapper label={label} error={error}>
-      <textarea
-        {...textareaProps}
-        className={className ?? fieldInputClass(Boolean(error))}
-      />
+      <textarea {...textareaProps} className={className ?? fieldInputClass(Boolean(error))} />
     </FieldWrapper>
   );
 }

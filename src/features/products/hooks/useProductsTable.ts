@@ -1,13 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import type { Category, Product, ProductListResult } from "@/features/products/types";
 import { useDeleteProduct, useProductsPage } from "@/features/products/hooks";
-import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
+import { useUrlListState } from "@/lib/hooks/useUrlListState";
 import { useBrowserHydration } from "@/lib/hooks/useBrowserHydration";
 
-const SEARCH_DEBOUNCE_MS = 400;
 const VIEW_STORAGE_KEY = "shooyande-sabz-admin-products-view";
 export type ProductsView = "table" | "grid";
 
@@ -61,10 +59,6 @@ export function useProductsTable({
   categories: Category[];
   fetchedAt?: number;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [search, setSearch] = useState(() => searchParams.get("q") ?? "");
   const [view, setView] = useState<ProductsView>("table");
   const [uiState, dispatch] = useReducer(productsTableReducer, {
     modalOpen: false,
@@ -73,20 +67,15 @@ export function useProductsTable({
   });
   const { modalOpen, editingProduct, confirmDeleteProduct } = uiState;
 
-  const debouncedSearch = useDebouncedValue(search, SEARCH_DEBOUNCE_MS);
-  const pageParam = Number(searchParams.get("page"));
-  const page = Number.isFinite(pageParam) && pageParam >= 1 ? pageParam : 1;
-  const prevSearchRef = useRef(debouncedSearch);
-  const searchChanged = debouncedSearch !== prevSearchRef.current;
-  const searchParamsRef = useRef(searchParams);
-
-  useEffect(() => {
-    prevSearchRef.current = debouncedSearch;
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    searchParamsRef.current = searchParams;
-  }, [searchParams]);
+  const {
+    search,
+    setSearch,
+    debouncedSearch,
+    queryPage,
+    page,
+    setPage: handlePageChange,
+    clampPage,
+  } = useUrlListState();
 
   useBrowserHydration(readStoredView, setView);
 
@@ -95,7 +84,7 @@ export function useProductsTable({
   }, [view]);
 
   const { data, isError, isFetching, refetch } = useProductsPage(
-    { search: debouncedSearch, page: searchChanged ? 1 : page, pageSize },
+    { search: debouncedSearch, page: queryPage, pageSize },
     initialResult,
     fetchedAt
   );
@@ -104,37 +93,8 @@ export function useProductsTable({
   const deleteProduct = useDeleteProduct();
 
   useEffect(() => {
-    const currentParams = searchParamsRef.current;
-    const params = new URLSearchParams(currentParams.toString());
-    const trimmed = debouncedSearch.trim();
-    const currentQ = currentParams.get("q") ?? "";
-    if (trimmed) params.set("q", trimmed);
-    else params.delete("q");
-    if (trimmed !== currentQ) params.delete("page");
-    const nextQuery = params.toString();
-    const currentQuery = currentParams.toString();
-    if (nextQuery !== currentQuery) {
-      router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
-    }
-  }, [debouncedSearch, pathname, router]);
-
-  useEffect(() => {
-    if (page <= totalPages) return;
-    const params = new URLSearchParams(searchParamsRef.current.toString());
-    if (totalPages > 1) params.set("page", String(totalPages));
-    else params.delete("page");
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  }, [page, totalPages, pathname, router]);
-
-  const handlePageChange = useCallback((nextPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (nextPage > 1) params.set("page", String(nextPage));
-    else params.delete("page");
-    const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pathname, router, searchParams]);
+    if (data) clampPage(totalPages);
+  }, [clampPage, data, totalPages]);
 
   const openAddModal = useCallback(() => {
     dispatch({ type: "OPEN_ADD" });

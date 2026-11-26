@@ -45,8 +45,8 @@ const CategoryCard = memo(function CategoryCard({
           <button
             type="button"
             onClick={() => onEdit(category)}
-            aria-label="ویرایش دسته‌بندی"
-            className="cursor-pointer flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-primary transition hover:bg-admin-bg"
+            aria-label="Edit category"
+            className="flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-primary transition hover:bg-admin-bg"
           >
             <Pencil className="size-4" strokeWidth={2} />
           </button>
@@ -54,17 +54,17 @@ const CategoryCard = memo(function CategoryCard({
             type="button"
             onClick={() => onDelete(category)}
             disabled={isDeleting}
-            aria-label="حذف دسته‌بندی"
-            className="cursor-pointer flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
+            aria-label="Delete category"
+            className="flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Trash2 className="size-4" strokeWidth={2} />
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-end gap-1 text-right">
-        <h3 className="text-base font-bold text-admin-ink">{category.title}</h3>
+      <div className="flex flex-col items-start gap-1 text-left">
+        <h2 className="text-base font-bold text-admin-ink">{category.title}</h2>
         <p className="text-sm text-admin-muted">
-          {category.productCount.toLocaleString("fa-IR")} محصول
+          {category.productCount.toLocaleString("en-US")} Product
         </p>
       </div>
     </div>
@@ -121,7 +121,7 @@ export default function CategoriesGrid({
       return;
     }
     setConfirmDeleteCategory(null);
-    toast.success(`دسته‌بندی «${category.title}» حذف شد.`);
+    toast.success(`Category "${category.title}" deleted.`);
   }
 
   return (
@@ -131,8 +131,8 @@ export default function CategoriesGrid({
         {categories.length === 0 && (
           <GridStateBlock
             isError={isError}
-            errorMessage="دریافت دسته‌بندی‌ها با خطا مواجه شد."
-            emptyMessage="هنوز دسته‌بندی‌ای ثبت نشده است."
+            errorMessage="Couldn't load categories."
+            emptyMessage="No categories yet."
             onRetry={() => refetch()}
           />
         )}
@@ -149,10 +149,10 @@ export default function CategoriesGrid({
         <button
           type="button"
           onClick={openAddModal}
-          className="cursor-pointer flex min-h-[148px] flex-col items-center justify-center gap-2 rounded-[20px] border border-dashed border-admin-line bg-white text-admin-muted transition hover:border-admin-primary hover:text-admin-primary"
+          className="flex min-h-[148px] flex-col items-center justify-center gap-2 rounded-[20px] border border-dashed border-admin-line bg-white text-admin-muted transition hover:border-admin-primary hover:text-admin-primary"
         >
           <span className="text-2xl leading-none">+</span>
-          <span className="text-sm font-semibold">افزودن دسته‌بندی جدید</span>
+          <span className="text-sm font-semibold">Add new category</span>
         </button>
       </div>
 
@@ -167,7 +167,7 @@ export default function CategoriesGrid({
         open={confirmDeleteCategory !== null}
         onClose={() => setConfirmDeleteCategory(null)}
         onConfirm={handleConfirmDelete}
-        itemLabel={confirmDeleteCategory ? `دسته‌بندی «${confirmDeleteCategory.title}»` : ""}
+        itemLabel={confirmDeleteCategory ? `category "${confirmDeleteCategory.title}"` : ""}
         loading={deleteCategory.isPending}
       />
     </div>

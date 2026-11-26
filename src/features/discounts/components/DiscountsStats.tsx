@@ -19,10 +19,10 @@ export default function DiscountsStats({
   const expired = discounts.filter((d) => d.status === "expired").length;
 
   const stats = [
-    { icon: Percent, label: "کل کدهای تخفیف", value: discounts.length.toLocaleString("fa-IR") },
-    { icon: CheckCircle2, label: "فعال", value: active.toLocaleString("fa-IR") },
-    { icon: CalendarClock, label: "زمان‌بندی‌شده", value: scheduled.toLocaleString("fa-IR") },
-    { icon: XCircle, label: "منقضی‌شده", value: expired.toLocaleString("fa-IR") },
+    { icon: Percent, label: "Total codes", value: discounts.length.toLocaleString("en-US") },
+    { icon: CheckCircle2, label: "Active", value: active.toLocaleString("en-US") },
+    { icon: CalendarClock, label: "Scheduled", value: scheduled.toLocaleString("en-US") },
+    { icon: XCircle, label: "Expired", value: expired.toLocaleString("en-US") },
   ];
 
   return <StatsCardsGrid stats={stats} />;

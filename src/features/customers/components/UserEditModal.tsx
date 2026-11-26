@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { apiErrorMessage } from "@/lib/http";
 import { getFieldErrors, normalizePersianDigits } from "@/features/auth/validation";
@@ -12,6 +12,7 @@ import { roleLabel } from "@/features/auth/utils";
 import { customerStatusStyles } from "@/features/customers/constants";
 import { TextField } from "@/components/ui/FormField";
 import Modal from "@/components/ui/Modal";
+import { ModalFormActions } from "@/components/ui/ModalFormActions";
 
 const roleOptions: CustomerEditFormValues["role"][] = ["customer", "manager", "support"];
 const statusOptions: CustomerEditFormValues["status"][] = ["active", "inactive"];
@@ -40,7 +41,7 @@ export default function UserEditModal({
   const updateCustomer = useUpdateCustomer();
   const {
     register,
-    watch,
+    control,
     setValue,
     handleSubmit,
     reset,
@@ -48,13 +49,11 @@ export default function UserEditModal({
   } = useForm<CustomerEditFormValues>({
     defaultValues: user ? emptyForm(user) : undefined,
   });
-  const role = watch("role");
-  const status = watch("status");
+  const role = useWatch({ control, name: "role" });
+  const status = useWatch({ control, name: "status" });
 
   const [displayUser, setDisplayUser] = useState(user);
-  useEffect(() => {
-    if (user) setDisplayUser(user);
-  }, [user]);
+  if (user && user !== displayUser) setDisplayUser(user);
 
   useEffect(() => {
     if (open && user) {
@@ -72,7 +71,7 @@ export default function UserEditModal({
     };
     const fieldErrors = getFieldErrors(customerEditSchema, normalizedValues);
     if (Object.keys(fieldErrors).length > 0) {
-      toast.error("لطفاً اطلاعات را به‌درستی تکمیل کنید.");
+      toast.error("Please fill in the fields correctly.");
       return;
     }
     try {
@@ -90,7 +89,7 @@ export default function UserEditModal({
       toast.error(apiErrorMessage(error));
       return;
     }
-    toast.success(`اطلاعات ${values.name.trim()} با موفقیت به‌روزرسانی شد.`);
+    toast.success(`${values.name.trim()}'s details were updated.`);
     onSaved();
   }
 
@@ -100,12 +99,12 @@ export default function UserEditModal({
     <Modal
       open={open}
       onClose={onClose}
-      title="ویرایش کاربر"
+      title="Edit user"
       description={`${displayUser.name} — ${displayUser.email}`}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
         <TextField
-          label="نام و نام خانوادگی"
+          label="Full name"
           type="text"
           {...register("name")}
           error={formErrors.name?.message}
@@ -113,23 +112,21 @@ export default function UserEditModal({
 
         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
           <TextField
-            label="ایمیل"
+            label="Email"
             type="email"
-            dir="ltr"
             {...register("email")}
             error={formErrors.email?.message}
           />
           <TextField
-            label="شماره تماس"
+            label="Phone"
             type="text"
-            dir="ltr"
             {...register("phone")}
             error={formErrors.phone?.message}
           />
         </div>
 
-        <label className="flex w-full flex-col gap-2 text-right">
-          <span className="text-sm font-semibold text-admin-ink">نقش کاربر</span>
+        <label className="flex w-full flex-col gap-2 text-left">
+          <span className="text-sm font-semibold text-admin-ink">User role</span>
           <div className="grid w-full grid-cols-3 gap-1.5 sm:gap-2">
             {roleOptions.map((option) => {
               const selected = role === option;
@@ -138,7 +135,7 @@ export default function UserEditModal({
                   key={option}
                   type="button"
                   onClick={() => setValue("role", option, { shouldDirty: true })}
-                  className={`cursor-pointer rounded-xl border p-2 text-center text-xs font-bold transition sm:p-3 sm:text-sm ${
+                  className={`rounded-xl border p-2 text-center text-xs font-bold transition sm:p-3 sm:text-sm ${
                     selected
                       ? "border-admin-sidebar bg-admin-sidebar text-white"
                       : "border-admin-line bg-white text-admin-muted hover:text-admin-ink"
@@ -151,8 +148,8 @@ export default function UserEditModal({
           </div>
         </label>
 
-        <label className="flex w-full flex-col gap-2 text-right">
-          <span className="text-sm font-semibold text-admin-ink">وضعیت حساب</span>
+        <label className="flex w-full flex-col gap-2 text-left">
+          <span className="text-sm font-semibold text-admin-ink">Account status</span>
           <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
             {statusOptions.map((option) => {
               const selected = status === option;
@@ -162,7 +159,7 @@ export default function UserEditModal({
                   key={option}
                   type="button"
                   onClick={() => setValue("status", option, { shouldDirty: true })}
-                  className={`cursor-pointer rounded-xl border p-3 text-center text-sm font-bold transition ${
+                  className={`rounded-xl border p-3 text-center text-sm font-bold transition ${
                     selected
                       ? "border-admin-sidebar bg-admin-sidebar text-white"
                       : `${style.border} ${style.bg} ${style.text}`
@@ -175,27 +172,17 @@ export default function UserEditModal({
           </div>
           {status === "inactive" && (
             <span className="text-xs text-admin-muted">
-              کاربران غیرفعال دیگر امکان ورود به حساب کاربری خود را نخواهند داشت.
+              Inactive users can no longer sign in to their account.
             </span>
           )}
         </label>
 
-        <div className="flex items-center justify-end gap-3 pt-1">
-          <button
-            type="button"
-            onClick={onClose}
-            className="cursor-pointer rounded-xl border border-admin-line px-5 py-2.5 text-sm font-semibold text-admin-ink transition hover:bg-admin-bg"
-          >
-            انصراف
-          </button>
-          <button
-            type="submit"
-            disabled={updateCustomer.isPending}
-            className="cursor-pointer rounded-xl bg-admin-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {updateCustomer.isPending ? "در حال ذخیره..." : "ذخیره تغییرات"}
-          </button>
-        </div>
+        <ModalFormActions
+          onCancel={onClose}
+          saving={updateCustomer.isPending}
+          savingLabel="Saving..."
+          submitLabel="Save changes"
+        />
       </form>
     </Modal>
   );

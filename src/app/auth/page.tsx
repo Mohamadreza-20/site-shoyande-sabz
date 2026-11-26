@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { NO_INDEX } from "@/lib/seo";
 import AuthPortal from "@/features/auth/components/AuthPortal";
 
 export const metadata: Metadata = {
-  title: "ورود | ثبت‌نام | سبزینه پاک",
-  description: "ورود به حساب کاربری یا ایجاد حساب جدید در پنل مدیریت و فروشگاه سبزینه پاک.",
+  title: "Sign in | Create account",
+  robots: NO_INDEX,
+  description: "Sign in or create an account to shop and manage orders at Leafwash.",
 };
 
 export default function AuthPage() {

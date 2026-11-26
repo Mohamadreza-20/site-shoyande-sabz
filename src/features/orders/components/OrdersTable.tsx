@@ -8,26 +8,47 @@ import { TableStateRow } from "@/components/ui/TableStateRow";
 export default function OrdersTable({
   orders: initialOrders,
   fetchedAt,
+  limit,
 }: {
   orders: Order[];
   fetchedAt?: number;
+  limit?: number;
 }) {
-  const { data: orders = initialOrders, isError, refetch } = useOrders(initialOrders, fetchedAt);
+  const { data: allOrders = initialOrders, isError, refetch } = useOrders(initialOrders, fetchedAt);
+  const orders = limit ? allOrders.slice(0, limit) : allOrders;
   return (
     <div className="flex w-full flex-col overflow-hidden rounded-3xl border border-admin-line bg-white">
       <div className="flex items-center justify-end p-6">
-        <p className="text-lg font-bold text-admin-ink">آخرین سفارشات ثبت شده</p>
+        <p className="text-lg font-bold text-admin-ink">Latest orders</p>
       </div>
 
-      <div className="min-w-full overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse text-right">
+      <div
+        className="min-w-full overflow-x-auto"
+        role="region"
+        aria-label="Scrollable table"
+        tabIndex={0}
+      >
+        <table
+          data-table="recent-orders"
+          className="w-full min-w-[640px] border-collapse text-left"
+        >
           <thead>
             <tr className="border-y border-admin-line bg-admin-bg text-xs font-bold text-admin-muted">
-              <th scope="col" className="px-6 py-3 font-bold">شناسه</th>
-              <th scope="col" className="px-6 py-3 font-bold">مشتری</th>
-              <th scope="col" className="px-6 py-3 font-bold">محصولات انتخاب شده</th>
-              <th scope="col" className="px-6 py-3 font-bold">مجموع مبلغ</th>
-              <th scope="col" className="px-6 py-3 text-right font-bold">وضعیت سفارش</th>
+              <th scope="col" className="px-6 py-3 font-bold">
+                ID
+              </th>
+              <th scope="col" className="px-6 py-3 font-bold">
+                Customer
+              </th>
+              <th scope="col" className="px-6 py-3 font-bold">
+                Products
+              </th>
+              <th scope="col" className="px-6 py-3 font-bold">
+                Total
+              </th>
+              <th scope="col" className="px-6 py-3 text-left font-bold">
+                Order status
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -35,7 +56,7 @@ export default function OrdersTable({
               <TableStateRow
                 colSpan={5}
                 isError
-                errorMessage="دریافت سفارشات با خطا مواجه شد."
+                errorMessage="Couldn't load orders."
                 emptyMessage=""
                 onRetry={() => refetch()}
               />
@@ -44,7 +65,7 @@ export default function OrdersTable({
                 colSpan={5}
                 isError={false}
                 errorMessage=""
-                emptyMessage="هنوز سفارشی ثبت نشده است."
+                emptyMessage="No orders yet."
               />
             ) : (
               orders.map((order) => {

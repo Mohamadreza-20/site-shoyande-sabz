@@ -1,17 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiErrorMessage } from "@/lib/http";
 import type { Discount } from "@/features/discounts/types";
+import { orderKeys } from "@/features/orders/queryKeys";
 import { getDiscounts } from "@/features/discounts/api";
-import { discountIsUsable, normalizeDiscountCode, parseDiscountAmount } from "@/features/discounts/utils";
-import { useCart, useCartActions } from "../context/CartContext";
+import {
+  discountIsUsable,
+  normalizeDiscountCode,
+  parseDiscountAmount,
+} from "@/features/discounts/utils";
+import { useCart, useCartActions } from "./useCart";
 
 export function useCartPage() {
-  const { items, updateQuantity, removeItem, totalItems, totalPrice, syncError } = useCart();
+  const { items, updateQuantity, removeItem, clearCart, totalItems, totalPrice, syncError } =
+    useCart();
   const { syncCart } = useCartActions();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [checkedOut, setCheckedOut] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
@@ -31,16 +42,47 @@ export function useCartPage() {
     [updateQuantity]
   );
   const handleRemove = useCallback((id: string) => removeItem(id), [removeItem]);
-  const handleCheckout = useCallback(() => setCheckedOut(true), []);
+  const handleCheckout = useCallback(async () => {
+    if (isCheckingOut) return;
+    setIsCheckingOut(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((item) => ({ id: item.id, quantity: item.quantity })),
+          discountCode: appliedDiscount?.code,
+        }),
+      });
+      if (res.status === 401) {
+        toast.error("Please sign in to place your order.");
+        router.push("/auth?callbackUrl=%2Fcart");
+        return;
+      }
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { error?: string } | null;
+        toast.error(data?.error ?? "We couldn't place your order. Please try again.");
+        return;
+      }
+      await queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      setCheckedOut(true);
+      clearCart();
+      window.scrollTo({ top: 0 });
+    } catch {
+      toast.error("Could not reach the server. Please try again.");
+    } finally {
+      setIsCheckingOut(false);
+    }
+  }, [appliedDiscount, clearCart, isCheckingOut, items, queryClient, router]);
 
   const applyDiscount = useCallback(async () => {
     const code = normalizeDiscountCode(discountCode);
     if (!code) {
-      toast.error("لطفاً کد تخفیف را وارد کنید.");
+      toast.error("Please enter a discount code.");
       return;
     }
     if (totalPrice <= 0) {
-      toast.error("برای اعمال کد تخفیف، سبد خرید نباید خالی باشد.");
+      toast.error("Add something to your cart before applying a discount code.");
       return;
     }
 
@@ -50,27 +92,27 @@ export function useCartPage() {
       const discount = discounts.find((item) => normalizeDiscountCode(item.code) === code);
 
       if (!discount) {
-        toast.error("کد تخفیف واردشده معتبر نیست.");
+        toast.error("That discount code is not valid.");
         setAppliedDiscount(null);
         return;
       }
 
       if (!discountIsUsable(discount)) {
-        toast.error("این کد تخفیف فعال یا قابل استفاده نیست.");
+        toast.error("This discount code is inactive or can no longer be used.");
         setAppliedDiscount(null);
         return;
       }
 
       const amount = parseDiscountAmount(discount, totalPrice);
       if (amount <= 0) {
-        toast.error("این کد تخفیف برای سبد خرید فعلی قابل اعمال نیست.");
+        toast.error("This discount code does not apply to your current cart.");
         setAppliedDiscount(null);
         return;
       }
 
       setAppliedDiscount(discount);
       setDiscountCode(discount.code);
-      toast.success(`کد تخفیف «${discount.code}» اعمال شد.`);
+      toast.success(`Discount code "${discount.code}" applied.`);
     } catch (error) {
       toast.error(apiErrorMessage(error));
     } finally {
@@ -81,7 +123,7 @@ export function useCartPage() {
   const removeDiscount = useCallback(() => {
     setAppliedDiscount(null);
     setDiscountCode("");
-    toast.success("کد تخفیف از سفارش حذف شد.");
+    toast.success("Discount code removed.");
   }, []);
 
   return {
@@ -96,6 +138,7 @@ export function useCartPage() {
     syncError,
     syncCart,
     checkedOut,
+    isCheckingOut,
     handleCheckout,
     handleUpdateQuantity,
     handleRemove,

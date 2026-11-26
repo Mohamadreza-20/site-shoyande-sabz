@@ -27,7 +27,7 @@ export function isApiError(error: unknown): error is ApiError {
 
 export type NotFoundError = ApiError;
 
-export function createNotFoundError(path: string): NotFoundError {
+function createNotFoundError(path: string): NotFoundError {
   const error = createApiError(`Not found: ${path}`, 404, path) as NotFoundError;
   error.name = "NotFoundError";
   return error;
@@ -37,9 +37,9 @@ export function isNotFoundError(error: unknown): error is NotFoundError {
   return error instanceof Error && (error as NotFoundError).name === "NotFoundError";
 }
 
-export type ServerError = ApiError;
+type ServerError = ApiError;
 
-export function createServerError(status: number, path: string): ServerError {
+function createServerError(status: number, path: string): ServerError {
   const error = createApiError(
     `API request to ${path} failed with status ${status}`,
     status,
@@ -47,10 +47,6 @@ export function createServerError(status: number, path: string): ServerError {
   ) as ServerError;
   error.name = "ServerError";
   return error;
-}
-
-export function isServerError(error: unknown): error is ServerError {
-  return error instanceof Error && (error as ServerError).name === "ServerError";
 }
 
 export interface NetworkError extends Error {
@@ -76,16 +72,16 @@ export function throwForResponse(res: Response, path: string): never {
 }
 
 export function apiErrorMessage(error: unknown): string {
-  if (isNotFoundError(error)) return "آیتم موردنظر پیدا نشد.";
+  if (isNotFoundError(error)) return "The requested item was not found.";
   if (isNetworkError(error)) {
-    return "ارتباط با سرور برقرار نشد. لطفاً دوباره تلاش کنید.";
+    return "Could not reach the server. Please try again.";
   }
   if (isApiError(error) && error.status === 429) {
-    return "تعداد درخواست‌های شما زیاد بوده. لطفاً کمی صبر کنید و دوباره تلاش کنید.";
+    return "Too many requests. Please wait a moment and try again.";
   }
-  if (isApiError(error)) return `درخواست با خطای سرور (${error.status}) مواجه شد.`;
+  if (isApiError(error)) return `The request failed with server error (${error.status}).`;
   if (error instanceof Error && error.message.trim()) return error.message;
-  return "خطایی غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.";
+  return "An unexpected error occurred. Please try again.";
 }
 
 export async function apiFetch<T>(
@@ -144,7 +140,7 @@ export async function uploadImage(file: File): Promise<string> {
   const res = await fetch("/api/upload", { method: "POST", body: formData });
   if (!res.ok) {
     const data = await res.json().catch(() => null);
-    throw createApiError(data?.error ?? "آپلود تصویر ناموفق بود.", res.status, "/api/upload");
+    throw createApiError(data?.error ?? "Image upload failed.", res.status, "/api/upload");
   }
   const data = (await res.json()) as { url: string };
   return data.url;
@@ -164,4 +160,9 @@ export const CACHE_TAGS = {
   products: "products",
   categories: "categories",
   blog: "blog",
+  reviews: "reviews",
 } as const;
+
+export function fetchedAtNow(): number {
+  return Date.now();
+}

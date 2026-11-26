@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { API_BASE, generateId } from "@/lib/http";
-import { formatTomanAmount } from "@/lib/money";
+import { formatPrice, formatDate } from "@/lib/money";
 import { signupApiSchema } from "@/features/auth/validation";
 
 const SALT_ROUNDS = 10;
@@ -11,14 +11,14 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "بدنه درخواست نامعتبر است." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
   const parsed = signupApiSchema.safeParse(body);
   if (!parsed.success) {
     const firstIssue = parsed.error.issues[0];
     return NextResponse.json(
-      { error: firstIssue?.message ?? "اطلاعات ارسال‌شده نامعتبر است." },
+      { error: firstIssue?.message ?? "The submitted data is invalid." },
       { status: 400 }
     );
   }
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     });
   } catch {
     return NextResponse.json(
-      { error: 'سرور API در دسترس نیست. از اجرا بودن "npm run api" مطمئن شوید.' },
+      { error: 'The API server is unavailable. Make sure "npm run api" is running.' },
       { status: 503 }
     );
   }
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const existing = await existingRes.json();
     if (Array.isArray(existing) && existing.length > 0) {
       return NextResponse.json(
-        { error: "حسابی با این ایمیل قبلاً ثبت‌نام کرده است." },
+        { error: "An account with this email already exists." },
         { status: 409 }
       );
     }
@@ -58,8 +58,8 @@ export async function POST(request: Request) {
     password: hashedPassword,
     role: "customer" as const,
     ordersCount: 0,
-    totalSpent: formatTomanAmount(0),
-    joinDate: new Date().toLocaleDateString("fa-IR"),
+    totalSpent: formatPrice(0),
+    joinDate: formatDate(new Date()),
     status: "active" as const,
     wishlist: [] as string[],
   };
@@ -72,13 +72,13 @@ export async function POST(request: Request) {
     });
   } catch {
     return NextResponse.json(
-      { error: 'سرور API در دسترس نیست. از اجرا بودن "npm run api" مطمئن شوید.' },
+      { error: 'The API server is unavailable. Make sure "npm run api" is running.' },
       { status: 503 }
     );
   }
 
   if (!createRes.ok) {
-    return NextResponse.json({ error: "ثبت‌نام با خطا مواجه شد." }, { status: createRes.status });
+    return NextResponse.json({ error: "Sign-up failed." }, { status: createRes.status });
   }
 
   const created = (await createRes.json()) as { password: string } & Record<string, unknown>;

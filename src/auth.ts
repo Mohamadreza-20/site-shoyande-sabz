@@ -11,6 +11,9 @@ const credentialsSchema = z.object({
   password: z.string().min(1),
 });
 
+const DEV_FALLBACK_SECRET =
+  process.env.NODE_ENV === "production" ? undefined : "dev-only-secret-please-set-AUTH_SECRET";
+
 const REVALIDATE_INTERVAL_MS = 5 * 60 * 1000;
 
 async function fetchCustomers(): Promise<Customer[]> {
@@ -26,16 +29,16 @@ async function fetchCustomer(id: string): Promise<Customer | null> {
   return (await res.json()) as Customer;
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth } = NextAuth({
   session: { strategy: "jwt", maxAge: 7 * 24 * 60 * 60 },
   pages: { signIn: "/auth" },
   trustHost: true,
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET ?? DEV_FALLBACK_SECRET,
   providers: [
     Credentials({
       credentials: {
-        identifier: { label: "ایمیل یا شماره تلفن", type: "text" },
-        password: { label: "رمز عبور", type: "password" },
+        identifier: { label: "Email or phone number", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(raw) {
         const parsed = credentialsSchema.safeParse(raw);
@@ -88,7 +91,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       const shouldRevalidate =
         typeof token.id === "string" &&
-        (!token.revalidatedAt || Date.now() - (token.revalidatedAt as number) > REVALIDATE_INTERVAL_MS);
+        (!token.revalidatedAt ||
+          Date.now() - (token.revalidatedAt as number) > REVALIDATE_INTERVAL_MS);
 
       if (shouldRevalidate) {
         try {

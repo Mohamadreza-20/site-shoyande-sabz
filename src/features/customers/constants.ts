@@ -3,13 +3,13 @@ export const customerStatusStyles: Record<
   { label: string; text: string; bg: string; border: string }
 > = {
   active: {
-    label: "فعال",
+    label: "Active",
     text: "text-admin-success",
     bg: "bg-admin-success-bg",
     border: "border-admin-success",
   },
   inactive: {
-    label: "غیرفعال",
+    label: "Inactive",
     text: "text-admin-muted",
     bg: "bg-admin-bg",
     border: "border-admin-line",

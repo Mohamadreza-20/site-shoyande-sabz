@@ -1,8 +1,8 @@
 export const sortOptions = [
-  { value: "featured", label: "پیشنهادی" },
-  { value: "cheapest", label: "ارزان‌ترین" },
-  { value: "expensive", label: "گران‌ترین" },
-  { value: "top-rated", label: "پرفروش‌ترین" },
+  { value: "featured", label: "Featured" },
+  { value: "cheapest", label: "Price: low to high" },
+  { value: "expensive", label: "Price: high to low" },
+  { value: "top-rated", label: "Top rated" },
 ] as const;
 
 export type SortValue = (typeof sortOptions)[number]["value"];

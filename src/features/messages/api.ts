@@ -30,11 +30,7 @@ export async function createMessage(input: {
 
   if (!res.ok) {
     const data = await res.json().catch(() => null);
-    throw createApiError(
-      data?.error ?? "ارسال پیام با خطا مواجه شد.",
-      res.status,
-      "/api/contact"
-    );
+    throw createApiError(data?.error ?? "Failed to send your message.", res.status, "/api/contact");
   }
   return (await res.json()) as ContactMessage;
 }

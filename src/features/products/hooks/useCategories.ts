@@ -52,8 +52,7 @@ export function useCreateCategory() {
 export function useUpdateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: CategoryInput }) =>
-      updateCategory(id, input),
+    mutationFn: ({ id, input }: { id: string; input: CategoryInput }) => updateCategory(id, input),
     onSuccess: (data, variables) => {
       queryClient.setQueryData<Category[]>(categoryKeys.list(), (prev) =>
         prev ? prev.map((category) => (category.id === variables.id ? data : category)) : prev

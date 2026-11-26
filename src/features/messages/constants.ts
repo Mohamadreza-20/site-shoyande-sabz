@@ -3,13 +3,13 @@ export const messageStatusStyles: Record<
   { label: string; text: string; bg: string; border: string }
 > = {
   pending: {
-    label: "در انتظار پاسخ",
+    label: "Awaiting reply",
     text: "text-admin-warning",
     bg: "bg-admin-warning-bg",
     border: "border-admin-warning",
   },
   answered: {
-    label: "پاسخ داده شده",
+    label: "Answered",
     text: "text-admin-success",
     bg: "bg-admin-success-bg",
     border: "border-admin-success",

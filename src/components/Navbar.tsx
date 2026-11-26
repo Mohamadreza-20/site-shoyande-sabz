@@ -1,27 +1,28 @@
 "use client";
 
+import { cn } from "@/lib/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { LayoutDashboard, Leaf, Menu, ShoppingBag, User } from "lucide-react";
-import { useCartState } from "@/features/cart/context/CartContext";
+import { useCartTotalItems } from "@/features/cart/hooks/useCart";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 const MobileMenu = dynamic(() => import("@/components/MobileMenu"), { ssr: false });
 const CartDrawer = dynamic(() => import("@/components/CartDrawer"), { ssr: false });
 
 const navLinks = [
-  { label: "تماس با ما", href: "/contact" },
-  { label: "بلاگ", href: "/blog" },
-  { label: "درباره ما", href: "/about" },
-  { label: "محصولات", href: "/products" },
-  { label: "خانه", href: "/" },
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/products" },
+  { label: "About", href: "/about" },
+  { label: "Journal", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { totalItems } = useCartState();
+  const totalItems = useCartTotalItems();
   const { user, hydrated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -29,65 +30,38 @@ export default function Navbar() {
   const [cartTouched, setCartTouched] = useState(false);
 
   const accountButton = !hydrated
-    ? { label: "ورود | ثبت‌نام", href: "/auth" }
+    ? { label: "Sign in", href: "/auth" }
     : !user
-      ? { label: "ورود | ثبت‌نام", href: "/auth" }
+      ? { label: "Sign in", href: "/auth" }
       : user.role === "customer"
-        ? { label: "پنل کاربری", href: "/account" }
-        : { label: "مدیریت", href: "/dashboard" };
+        ? { label: "My account", href: "/account" }
+        : { label: "Dashboard", href: "/dashboard" };
 
   return (
-    <header className="w-full border-b border-brand-200 bg-white">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-3 py-4 sm:px-6 sm:py-5 lg:px-[120px]">
+    <header className="sticky top-0 z-40 w-full border-b border-brand-200/70 bg-[#f7f3e8]/85 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-4 py-3.5 sm:px-6 lg:px-[60px]">
+        <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="Leafwash home">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-700">
+            <Leaf className="size-[18px] text-accent" strokeWidth={2.25} />
+          </span>
+          <span className="font-display truncate text-xl font-extrabold text-brand-700 sm:text-2xl">
+            Leaf<span className="text-brand-400">wash</span>
+          </span>
+        </Link>
 
-        <div className="flex min-w-0 items-center gap-1.5 sm:gap-4">
-          <button
-            type="button"
-            onClick={() => {
-              setCartTouched(true);
-              setCartOpen(true);
-            }}
-            className="cursor-pointer relative flex shrink-0 items-center gap-1 rounded-full bg-brand-50 px-2.5 py-2 text-sm font-bold text-brand-700 transition hover:bg-brand-100 sm:gap-2 sm:px-4 sm:py-2.5"
-          >
-            <span className="hidden min-w-[20px] text-center tabular-nums sm:inline">
-              {totalItems.toLocaleString("fa-IR")}
-            </span>
-            <span className="hidden sm:inline">مورد</span>
-            <ShoppingBag className="size-5" strokeWidth={2} />
-            {totalItems > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-brand-400 text-[10px] font-bold tabular-nums text-white">
-                <span className="inline-block min-w-[14px] text-center">
-                  {totalItems > 99 ? "۹۹+" : totalItems.toLocaleString("fa-IR")}
-                </span>
-              </span>
-            )}
-          </button>
-          <Link
-            href={accountButton.href}
-            className="cursor-pointer flex shrink-0 items-center gap-2 rounded-full bg-brand-400 px-2.5 py-2 text-sm font-bold text-white transition hover:bg-brand-500 sm:px-4 sm:py-2.5"
-          >
-            {user ? (
-              <LayoutDashboard className="size-5" strokeWidth={2} />
-            ) : (
-              <User className="size-5" strokeWidth={2} />
-            )}
-            <span className="hidden sm:inline">{accountButton.label}</span>
-          </Link>
-        </div>
-
-        <nav className="hidden items-center gap-8 text-[15px] md:flex">
+        <nav className="hidden items-center gap-1 text-[15px] lg:flex">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             const className = isActive
-              ? "font-bold text-brand-500"
-              : "font-medium text-muted transition hover:text-brand-500";
+              ? "bg-accent text-brand-700 font-bold"
+              : "font-medium text-muted transition hover:bg-brand-100 hover:text-brand-700";
 
             return (
               <Link
                 key={link.label}
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`cursor-pointer ${className}`}
+                className={cn("rounded-full px-4 py-1.5", className)}
               >
                 {link.label}
               </Link>
@@ -95,24 +69,47 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="flex min-w-0 items-center gap-1.5 sm:gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setCartTouched(true);
+              setCartOpen(true);
+            }}
+            aria-label={`Open cart, ${totalItems} items`}
+            className="relative flex min-h-10 shrink-0 items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-2 text-sm font-bold text-brand-700 transition hover:bg-accent-soft sm:px-4 sm:py-2.5"
+          >
+            <ShoppingBag className="size-5" strokeWidth={2} />
+            <span className="hidden lg:inline">Cart</span>
+            {totalItems > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-extrabold tabular-nums text-brand-700">
+                {totalItems > 99 ? "99+" : totalItems.toLocaleString("en-US")}
+              </span>
+            )}
+          </button>
+          <Link
+            href={accountButton.href}
+            aria-label={accountButton.label}
+            className="flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-3 py-2 text-sm font-bold text-white transition hover:bg-brand-600 sm:px-4 sm:py-2.5"
+          >
+            {user ? (
+              <LayoutDashboard className="size-5" strokeWidth={2} />
+            ) : (
+              <User className="size-5" strokeWidth={2} />
+            )}
+            <span className="hidden lg:inline">{accountButton.label}</span>
+          </Link>
           <button
             type="button"
             onClick={() => {
               setMobileMenuTouched(true);
               setMobileMenuOpen(true);
             }}
-            aria-label="باز کردن منو"
-            className="cursor-pointer flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition hover:bg-brand-100 sm:size-10 md:hidden"
+            aria-label="Open menu"
+            className="flex size-10 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-brand-700 transition hover:bg-accent-soft lg:hidden"
           >
             <Menu className="size-5" strokeWidth={2} />
           </button>
-          <Link href="/" className="cursor-pointer flex min-w-0 items-center gap-1.5 sm:gap-2.5">
-            <span className="truncate text-base font-black text-brand-700 sm:text-[22px]">شست‌وشو سبز</span>
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-brand-400 sm:size-9">
-              <Leaf className="size-4 text-white sm:size-[22px]" strokeWidth={2} />
-            </span>
-          </Link>
         </div>
       </div>
 

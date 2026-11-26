@@ -7,8 +7,8 @@ import { getOrders } from "@/features/orders/api";
 import { getCustomers } from "@/features/customers/api";
 
 export const metadata: Metadata = {
-  title: "گزارشات | پنل مدیریت شست‌وشو سبز",
-  description: "گزارش‌های فروش، درآمد و عملکرد فروشگاه شست‌وشو سبز.",
+  title: "Reports | Admin",
+  description: "Sales, revenue and store performance reports.",
 };
 
 export default async function AdminReportsPage() {
@@ -22,8 +22,8 @@ export default async function AdminReportsPage() {
   return (
     <>
       <PageHeader
-        title="گزارشات و آمار فروش"
-        description="نمای کلی از عملکرد فروش، درآمد و رفتار مشتریان فروشگاه"
+        title="Reports & sales analytics"
+        description="An overview of sales, revenue and customer behaviour"
       />
       <ReportsOverview
         initialAnalytics={analytics}

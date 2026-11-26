@@ -1,31 +1,42 @@
-import type { Metadata } from "next";
-import "@fontsource-variable/vazirmatn/wght.css";
+import type { Metadata, Viewport } from "next";
+import "@fontsource-variable/manrope/wght.css";
+import "@fontsource-variable/bricolage-grotesque/wght.css";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { MotionConfig } from "framer-motion";
-import { CartProvider } from "@/features/cart/context/CartContext";
+import CartBootstrap from "@/features/cart/components/CartBootstrap";
 import { AuthProvider } from "@/features/auth/context/AuthContext";
+import { DEFAULT_OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/seo";
 import QueryProvider from "@/components/providers/QueryProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://shooyande-sabz.example.com"),
-  title: "شست‌وشو سبز | محصولات شوینده ارگانیک",
-  description:
-    "خانه‌ای درخشان و سالم با قدرت شفابخش طبیعت. محصولات شوینده گیاهی و ارگانیک شست‌وشو سبز.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: { canonical: "/" },
+  formatDetection: { telephone: false, email: false, address: false },
   openGraph: {
-    title: "شست‌وشو سبز | محصولات شوینده ارگانیک",
-    description:
-      "خانه‌ای درخشان و سالم با قدرت شفابخش طبیعت. محصولات شوینده گیاهی و ارگانیک شست‌وشو سبز.",
-    siteName: "شست‌وشو سبز",
-    locale: "fa_IR",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
+    locale: "en_US",
     type: "website",
+    url: "/",
+    images: [{ url: DEFAULT_OG_IMAGE, alt: SITE_NAME }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "شست‌وشو سبز | محصولات شوینده ارگانیک",
-    description:
-      "خانه‌ای درخشان و سالم با قدرت شفابخش طبیعت. محصولات شوینده گیاهی و ارگانیک شست‌وشو سبز.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0f2f22",
 };
 
 export default function RootLayout({
@@ -34,23 +45,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="en" dir="ltr">
       <body className="antialiased">
         <MotionConfig reducedMotion="user">
           <QueryProvider>
             <AuthProvider>
-              <CartProvider>{children}</CartProvider>
+              <CartBootstrap />
+              {children}
             </AuthProvider>
           </QueryProvider>
         </MotionConfig>
         <Toaster
           position="top-center"
-          dir="rtl"
           richColors
           closeButton
           toastOptions={{
             style: { fontFamily: "var(--font-sans)" },
-            className: "!text-right",
           }}
         />
       </body>

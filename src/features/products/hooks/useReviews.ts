@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createReview, getProductReviews } from "../api";
 import type { Review } from "../types";
 import { productKeys, reviewKeys } from "../queryKeys";
-import { revalidateProductsCache } from "@/lib/actions";
+import { revalidateProductsCache, revalidateReviewsCache } from "@/lib/actions";
 
 export function useProductReviews(
   productId: string,
@@ -13,9 +13,10 @@ export function useProductReviews(
     queryKey: reviewKeys.byProduct(productId),
     queryFn: () => getProductReviews(productId),
     initialData,
-    initialDataUpdatedAt,
+    initialDataUpdatedAt: initialDataUpdatedAt ?? 0,
     enabled: Boolean(productId),
     staleTime: 15_000,
+    refetchOnMount: "always",
   });
 }
 
@@ -30,11 +31,11 @@ export function useCreateReview() {
     }) => createReview(input),
     onSuccess: (data, variables) => {
       queryClient.setQueryData<Review[]>(reviewKeys.byProduct(variables.productId), (prev) =>
-        prev ? [data, ...prev] : prev
+        prev ? [data, ...prev.filter((review) => review.id !== data.id)] : [data]
       );
       queryClient.invalidateQueries({ queryKey: productKeys.detail(variables.productId) });
       queryClient.invalidateQueries({ queryKey: productKeys.list() });
-      void revalidateProductsCache();
+      void Promise.all([revalidateReviewsCache(), revalidateProductsCache()]);
     },
   });
 }

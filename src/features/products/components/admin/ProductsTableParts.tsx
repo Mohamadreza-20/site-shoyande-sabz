@@ -27,7 +27,7 @@ export const ProductTableRow = memo(function ProductTableRow({
           <div className="relative size-11 shrink-0 overflow-hidden rounded-xl bg-admin-bg">
             <ProductImage
               src={product.image}
-              alt={product.title}
+              alt=""
               fill
               sizes="44px"
               quality={40}
@@ -48,7 +48,7 @@ export const ProductTableRow = memo(function ProductTableRow({
         </div>
       </td>
       <td className="px-6 py-3.5 text-sm text-admin-ink">
-        {(product.stock ?? 0).toLocaleString("fa-IR")} عدد
+        {(product.stock ?? 0).toLocaleString("en-US")}
       </td>
       <td className="px-6 py-3.5">
         <span
@@ -62,8 +62,8 @@ export const ProductTableRow = memo(function ProductTableRow({
           <button
             type="button"
             onClick={() => onEdit(product)}
-            aria-label="ویرایش محصول"
-            className="cursor-pointer flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-primary transition hover:bg-admin-bg"
+            aria-label="Edit product"
+            className="flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-primary transition hover:bg-admin-bg"
           >
             <Pencil className="size-4" strokeWidth={2} />
           </button>
@@ -71,8 +71,8 @@ export const ProductTableRow = memo(function ProductTableRow({
             type="button"
             onClick={() => onDelete(product)}
             disabled={isDeleting}
-            aria-label="حذف محصول"
-            className="cursor-pointer flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
+            aria-label="Delete product"
+            className="flex size-8 items-center justify-center rounded-lg border border-admin-line text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Trash2 className="size-4" strokeWidth={2} />
           </button>
@@ -103,21 +103,19 @@ export const ProductGridCard = memo(function ProductGridCard({
           alt={product.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          quality={50}
+          quality={60}
           className="object-cover"
         />
         <span
-          className={`absolute right-2 top-2 inline-block rounded-full border px-2.5 py-1 text-[11px] font-semibold ${status.bg} ${status.border} ${status.text}`}
+          className={`absolute left-2 top-2 inline-block rounded-full border px-2.5 py-1 text-[11px] font-semibold ${status.bg} ${status.border} ${status.text}`}
         >
           {status.label}
         </span>
       </div>
 
-      <div className="flex flex-col items-end gap-1 text-right">
+      <div className="flex flex-col items-start gap-1 text-left">
         <p className="text-xs font-medium text-admin-muted">{product.category}</p>
-        <p className="line-clamp-2 w-full text-sm font-semibold text-admin-ink">
-          {product.title}
-        </p>
+        <p className="line-clamp-2 w-full text-sm font-semibold text-admin-ink">{product.title}</p>
         <div className="flex items-center gap-1 text-xs text-admin-ink">
           <span>{product.rating}</span>
           <Star className="size-3.5 fill-admin-accent text-admin-accent" />
@@ -127,7 +125,7 @@ export const ProductGridCard = memo(function ProductGridCard({
       <div className="flex items-center justify-between border-t border-admin-line pt-3">
         <span className="text-sm font-semibold text-admin-primary">{product.price}</span>
         <span className="text-xs text-admin-muted">
-          {(product.stock ?? 0).toLocaleString("fa-IR")} عدد
+          {(product.stock ?? 0).toLocaleString("en-US")}
         </span>
       </div>
 
@@ -135,21 +133,21 @@ export const ProductGridCard = memo(function ProductGridCard({
         <button
           type="button"
           onClick={() => onEdit(product)}
-          aria-label="ویرایش محصول"
-          className="cursor-pointer flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-admin-line py-2 text-xs font-semibold text-admin-primary transition hover:bg-admin-bg"
+          aria-label="Edit product"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-admin-line py-2 text-xs font-semibold text-admin-primary transition hover:bg-admin-bg"
         >
           <Pencil className="size-3.5" strokeWidth={2} />
-          ویرایش
+          Edit
         </button>
         <button
           type="button"
           onClick={() => onDelete(product)}
           disabled={isDeleting}
-          aria-label="حذف محصول"
-          className="cursor-pointer flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-admin-line py-2 text-xs font-semibold text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label="Delete product"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-admin-line py-2 text-xs font-semibold text-admin-danger transition hover:bg-admin-danger-bg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Trash2 className="size-3.5" strokeWidth={2} />
-          حذف
+          Delete
         </button>
       </div>
     </div>
@@ -160,8 +158,7 @@ export function TableLoadingOverlay() {
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-3xl bg-white/70 text-sm font-semibold text-admin-primary backdrop-blur-[1px]">
       <Loader2 className="size-5 animate-spin" strokeWidth={2} />
-      در حال دریافت اطلاعات...
+      Loading...
     </div>
   );
 }
-

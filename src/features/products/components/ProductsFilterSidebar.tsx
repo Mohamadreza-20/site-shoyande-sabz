@@ -1,7 +1,8 @@
 "use client";
 
-import { memo } from "react";
-import { Search, SlidersHorizontal } from "lucide-react";
+import Collapse from "@/components/ui/Collapse";
+import { memo, useState } from "react";
+import { ChevronDown, Search, SlidersHorizontal } from "lucide-react";
 
 function ProductsFilterSidebar({
   allCategories,
@@ -20,51 +21,75 @@ function ProductsFilterSidebar({
   search: string;
   onSearchChange: (value: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
   return (
-    <aside className="flex w-full flex-col gap-6 rounded-3xl border border-brand-200 bg-white p-6 lg:w-[280px] lg:shrink-0">
-      <div className="flex items-center justify-between">
+    <aside className="flex w-full flex-col gap-4 rounded-[28px] border border-brand-200 bg-white p-4 shadow-[0_8px_24px_rgba(15,47,34,0.05)] sm:p-6 lg:sticky lg:top-24 lg:w-[290px] lg:shrink-0 lg:gap-6">
+      <div className="flex items-center justify-between gap-3">
         <button
-          onClick={onClearFilters}
-          className="cursor-pointer text-xs font-bold text-brand-500 transition hover:text-brand-700"
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="products-category-filters"
+          className="flex min-h-10 items-center gap-2 font-display text-lg font-extrabold text-brand-700 lg:pointer-events-none"
         >
-          پاک کردن فیلترها
+          <SlidersHorizontal className="size-4" strokeWidth={2.5} />
+          Filters
+          {selectedCategories.length > 0 && (
+            <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-extrabold text-brand-700">
+              {selectedCategories.length}
+            </span>
+          )}
+          <ChevronDown
+            className={`size-4 transition-transform lg:hidden ${open ? "rotate-180" : ""}`}
+            strokeWidth={2.5}
+          />
         </button>
-        <div className="flex items-center gap-2 text-[15px] font-bold text-brand-700">
-          فیلترها
-          <SlidersHorizontal className="size-4" strokeWidth={2} />
-        </div>
+        <button
+          type="button"
+          onClick={onClearFilters}
+          className="min-h-10 px-1 text-xs font-bold text-brand-400 underline-offset-4 transition hover:text-brand-700 hover:underline"
+        >
+          Clear all
+        </button>
       </div>
 
-      <div className="flex items-center rounded-full border border-brand-200 bg-brand-50 px-4 py-2.5">
+      <div className="flex items-center gap-2 rounded-full border border-brand-200 bg-brand-100 px-4 py-2.5 focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-400/30 transition-shadow">
+        <Search className="size-4 shrink-0 text-muted" strokeWidth={2} />
         <input
           type="text"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="جستجوی محصول..."
-          dir="rtl"
-          className="w-full bg-transparent text-right text-sm text-ink placeholder:text-muted focus:outline-none"
+          placeholder="Search products..."
+          aria-label="Search products"
+          className="w-full bg-transparent text-left text-sm text-ink placeholder:text-muted focus:outline-none"
         />
-        <Search className="size-4 shrink-0 text-muted" strokeWidth={2} />
       </div>
 
-      <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-bold text-brand-700">دسته‌بندی</h3>
-        {allCategories.map((category) => {
-          const count = categoryCounts[category] ?? 0;
-          return (
-            <label key={category} className="flex cursor-pointer items-center gap-2.5 text-sm text-ink">
-              <input
-                type="checkbox"
-                checked={selectedCategories.includes(category)}
-                onChange={() => onToggleCategory(category)}
-                className="size-4 shrink-0 rounded border-brand-300 accent-brand-400"
-              />
-              <span className="flex-1 text-right">{category}</span>
-              <span className="text-xs text-muted">{count}</span>
-            </label>
-          );
-        })}
-      </div>
+      <Collapse id="products-category-filters" open={open} alwaysOpenFromLg>
+        <div className="flex flex-col gap-3">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted">Category</h2>
+          {allCategories.map((category) => {
+            const count = categoryCounts[category] ?? 0;
+            return (
+              <label
+                key={category}
+                className="flex min-h-8 cursor-pointer items-center gap-2.5 text-sm text-ink"
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.includes(category)}
+                  onChange={() => onToggleCategory(category)}
+                  className="size-[18px] shrink-0 rounded border-brand-200 accent-brand-700"
+                />
+                <span className="flex-1 text-left">{category}</span>
+                <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-bold text-brand-600">
+                  {count}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </Collapse>
     </aside>
   );
 }

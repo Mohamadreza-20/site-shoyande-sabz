@@ -24,9 +24,9 @@ export function TableStateRow({
               <button
                 type="button"
                 onClick={onRetry}
-                className="cursor-pointer mt-1 rounded-lg border border-admin-line px-3 py-1.5 text-xs font-semibold text-admin-ink transition hover:bg-admin-bg"
+                className="mt-1 rounded-lg border border-admin-line px-3 py-1.5 text-xs font-semibold text-admin-ink transition hover:bg-admin-bg"
               >
-                تلاش دوباره
+                Try again
               </button>
             )}
           </div>
@@ -67,9 +67,9 @@ export function GridStateBlock({
           <button
             type="button"
             onClick={onRetry}
-            className="cursor-pointer mt-1 rounded-lg border border-admin-line bg-white px-3 py-1.5 text-xs font-semibold text-admin-ink transition hover:bg-admin-bg"
+            className="mt-1 rounded-lg border border-admin-line bg-white px-3 py-1.5 text-xs font-semibold text-admin-ink transition hover:bg-admin-bg"
           >
-            تلاش دوباره
+            Try again
           </button>
         )}
       </div>

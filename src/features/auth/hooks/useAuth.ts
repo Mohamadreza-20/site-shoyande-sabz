@@ -2,7 +2,11 @@
 
 import { useCallback, useMemo } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { loginWithCredentials, mapSessionUser, signupWithCredentials } from "../services/session.service";
+import {
+  loginWithCredentials,
+  mapSessionUser,
+  signupWithCredentials,
+} from "../services/session.service";
 import { toggleUserWishlist, updateUserProfile } from "../services/account.service";
 import type { ActionResult, AuthUser } from "../types";
 import type { SignupInput } from "../validation";
@@ -38,7 +42,7 @@ export function useAuth() {
 
   const updateProfile = useCallback(
     async (input: { name: string; email: string; phone: string }) => {
-      if (!user) return { ok: false as const, error: "ابتدا وارد حساب کاربری خود شوید." };
+      if (!user) return { ok: false as const, error: "Please sign in first." };
       return updateUserProfile(user, input, update);
     },
     [user, update]

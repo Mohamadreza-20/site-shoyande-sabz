@@ -12,41 +12,43 @@ export default function NewsletterForm() {
     const trimmed = email.trim();
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
     if (!isValidEmail) {
-      toast.error("لطفاً یک ایمیل معتبر وارد کنید.");
+      toast.error("Please enter a valid email address.");
       return;
     }
     setSubmitting(true);
     setTimeout(() => {
-      toast.info("این بخش در نسخه نمایشی فعال نیست و ایمیل شما ذخیره نمی‌شود.");
+      toast.info("This is a demo, so your email is not saved.");
       setEmail("");
       setSubmitting(false);
     }, 400);
   }
 
   return (
-    <div className="flex w-full max-w-[360px] flex-col items-end gap-4 text-right">
-      <h3 className="text-lg font-bold text-white">عضویت در خبرنامه سبز</h3>
+    <div className="flex w-full max-w-[360px] flex-col items-start gap-4 text-left">
+      <h3 className="font-display text-base font-bold text-accent">Join the green list</h3>
       <p className="text-sm leading-[1.6] text-muted-light">
-        با عضویت در خبرنامه ما از آخرین تخفیف‌ها، مقالات آموزشی و جوایز دوره‌ای بهره‌مند شوید.
+        Get offers, cleaning tips and early access to new formulas. No spam, ever.
       </p>
       <form
         onSubmit={handleSubmit}
-        className="flex w-full items-center justify-between rounded-full bg-white/10 p-1.5"
+        className="flex w-full flex-row-reverse items-center justify-between rounded-full bg-white/10 p-1.5 transition-shadow focus-within:ring-2 focus-within:ring-accent/60"
       >
         <button
           type="submit"
           disabled={submitting}
-          className="cursor-pointer rounded-full bg-brand-400 px-4 py-2.5 text-[13px] font-bold text-white transition hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-full bg-accent px-4 py-2.5 text-[13px] font-extrabold text-brand-700 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {submitting ? "..." : "تایید"}
+          {submitting ? "..." : "Join"}
         </button>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="ایمیل شما..."
-          dir="rtl"
-          className="w-full bg-transparent px-3 text-right text-sm text-muted-light placeholder:text-muted-light focus:outline-none"
+          placeholder="Your email"
+          aria-label="Email address"
+          autoComplete="email"
+          inputMode="email"
+          className="w-full bg-transparent px-3 text-left text-sm text-muted-light placeholder:text-muted-light focus:outline-none"
         />
       </form>
     </div>
